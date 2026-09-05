@@ -810,31 +810,63 @@ function playIPA(mp3Url) {
 }
 
 function playIPAThenWords(mp3Url, wordsCsv) {
-  // Play symbol sound first, then chain through example words
-  if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
+  stopAllAudio();
+  _seqCancelled = false;
   var words = wordsCsv.split(',').filter(Boolean);
-  var audio = new Audio(mp3Url);
-  audio.onended = function() {
+  // Highlight the active word entry in the IPA card
+  function highlightWord(idx) {
+    document.querySelectorAll('.ipa-word-entry').forEach(function(el, i) {
+      el.style.background = '';
+    });
+    // Find the word entries near the clicked button
+    var entries = document.querySelectorAll('.ipa-word-entry');
+    // We don't know which card was clicked, so highlight by word text
+    entries.forEach(function(el) {
+      var wtext = el.querySelector('.ipa-word-text');
+      if (wtext && words[idx] && wtext.textContent.trim() === words[idx]) {
+        el.style.background = 'rgba(108,99,255,.18)';
+        el.style.borderRadius = '8px';
+        el.style.transition = 'background .2s';
+      }
+    });
+  }
+  function clearHighlight() {
+    document.querySelectorAll('.ipa-word-entry').forEach(function(el) {
+      el.style.background = '';
+    });
+  }
+
+  var symAudio = new Audio(mp3Url);
+  _ipaAudio = symAudio;
+  symAudio.onended = function() {
     if (_seqCancelled) return;
     var i = 0;
     function nextWord() {
-      if (_seqCancelled || i >= words.length) return;
-      var w = words[i++];
+      if (_seqCancelled || i >= words.length) { clearHighlight(); return; }
+      var w = words[i];
+      highlightWord(i);
+      i++;
       var utt = new SpeechSynthesisUtterance(w);
       utt.lang = 'en-US';
-      utt.rate = 0.45;
+      utt.rate = 0.72;
       var voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
       var v = voices.find(function(v){ return v.lang==='en-US'&&v.localService; })
              || voices.find(function(v){ return v.lang.startsWith('en'); });
       if (v) utt.voice = v;
-      utt.onend = function() { if (!_seqCancelled) setTimeout(nextWord, 250); };
+      utt.onend = function() {
+        if (!_seqCancelled) setTimeout(nextWord, 350);
+        else clearHighlight();
+      };
+      utt.onerror = function() {
+        clearHighlight();
+        if (!_seqCancelled) setTimeout(nextWord, 350);
+      };
       window.speechSynthesis.speak(utt);
     }
-    setTimeout(nextWord, 300);
+    setTimeout(nextWord, 250);
   };
-  audio.onerror = function() {};
-  _ipaAudio = audio;
-  audio.play().catch(function() {});
+  symAudio.onerror = function() {};
+  symAudio.play().catch(function() {});
 }
 
 function boldIPA(pron, bold) {
