@@ -155,6 +155,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-sym-grid-btn:hover{border-color:var(--accent);color:var(--accent);}
 .iq-sym-grid-btn.iq-sym-answer{border-color:var(--accent3)!important;color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;font-weight:800;}
 .iq-sym-grid-btn.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.3)!important;color:#1a9e5c!important;transform:scale(1.18);box-shadow:0 0 12px rgba(26,158,92,.4);}
+.iq-opt.iq-word-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.2)!important;color:#1a9e5c!important;transform:scale(1.1);box-shadow:0 0 10px rgba(26,158,92,.3);transition:all .15s;}
 .iq-score-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px;font-size:.85rem;}
 .iq-score-num{font-weight:800;color:var(--gold);}
 .tw-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .6s step-end infinite;margin-left:1px;}
@@ -246,6 +247,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-sym-grid-btn:hover{border-color:var(--accent);color:var(--accent);}
 .iq-sym-grid-btn.iq-sym-answer{border-color:var(--accent3)!important;color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;font-weight:800;}
 .iq-sym-grid-btn.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.3)!important;color:#1a9e5c!important;transform:scale(1.18);box-shadow:0 0 12px rgba(26,158,92,.4);}
+.iq-opt.iq-word-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.2)!important;color:#1a9e5c!important;transform:scale(1.1);box-shadow:0 0 10px rgba(26,158,92,.3);transition:all .15s;}
 .iq-score-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px;font-size:.85rem;}
 .iq-score-num{font-weight:800;color:var(--gold);}
 .tw-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .6s step-end infinite;margin-left:1px;}
@@ -781,13 +783,15 @@ function stopAllAudio() {
 }
 
 function speakWordsSequence(words, rate) {
-  // Speak an array of words one by one, respecting _seqCancelled
   _seqCancelled = false;
   rate = rate || 0.6;
   var i = 0;
   function next() {
     if (_seqCancelled || i >= words.length) return;
     var w = words[i++];
+    // Highlight the matching word button
+    var btn = document.querySelector('.iq-opt[data-val="' + w + '"]');
+    if (btn) btn.classList.add('iq-word-playing');
     var utt = new SpeechSynthesisUtterance(w);
     utt.lang = 'en-US';
     utt.rate = rate;
@@ -795,8 +799,14 @@ function speakWordsSequence(words, rate) {
     var v = voices.find(function(v){ return v.lang==='en-US'&&v.localService; })
            || voices.find(function(v){ return v.lang.startsWith('en'); });
     if (v) utt.voice = v;
-    utt.onend = function() { if (!_seqCancelled) setTimeout(next, 300); };
-    utt.onerror = function() { if (!_seqCancelled) setTimeout(next, 300); };
+    utt.onend = function() {
+      if (btn) btn.classList.remove('iq-word-playing');
+      if (!_seqCancelled) setTimeout(next, 250);
+    };
+    utt.onerror = function() {
+      if (btn) btn.classList.remove('iq-word-playing');
+      if (!_seqCancelled) setTimeout(next, 250);
+    };
     window.speechSynthesis.speak(utt);
   }
   next();
