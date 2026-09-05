@@ -1138,16 +1138,19 @@ function gradeSingleSelect(chosen, btn) {
     setTimeout(function() {
       _seqCancelled = false;
       var optBtns = Array.from(document.querySelectorAll('.iq-opt'));
-      var queue = optBtns.map(function(b) {
-        return IPA_DATA.find(function(d){ return d.sym === b.dataset.val; });
-      }).filter(Boolean);
       var qi = 0;
       function playNextSym() {
-        if (_seqCancelled || qi >= queue.length) return;
-        var d = queue[qi++];
-        var btn = document.querySelector('.iq-opt[data-val="' + d.sym + '"]');
-        if (btn) { btn.classList.add('iq-playing'); }
-        var a = new Audio(d.mp3); _ipaAudio = a;
+        if (_seqCancelled || qi >= optBtns.length) return;
+        var btn = optBtns[qi++];
+        // Use data-mp3 directly if available, else look up IPA_DATA
+        var mp3 = btn.dataset.mp3;
+        if (!mp3) {
+          var d = IPA_DATA.find(function(d){ return d.sym === btn.dataset.val; });
+          if (d) mp3 = d.mp3;
+        }
+        if (!mp3) { setTimeout(playNextSym, 200); return; }
+        btn.classList.add('iq-playing');
+        var a = new Audio(mp3); _ipaAudio = a;
         a.onended = function() {
           if (btn) btn.classList.remove('iq-playing');
           if (!_seqCancelled) setTimeout(playNextSym, 180);
@@ -1245,17 +1248,19 @@ function gradeMultiSelect() {
 function playSymbolsSequence() {
   _seqCancelled = false;
   var allOpts = Array.from(document.querySelectorAll('.iq-opt'));
-  var queue = allOpts.filter(function(b) {
-    return IPA_DATA.find(function(x){ return x.sym === b.dataset.val; });
-  });
   var i = 0;
   function next() {
-    if (_seqCancelled || i >= queue.length) return;
-    var b = queue[i++];
-    var d = IPA_DATA.find(function(x){ return x.sym === b.dataset.val; });
-    if (!d || !d.mp3) { setTimeout(next, 200); return; }
+    if (_seqCancelled || i >= allOpts.length) return;
+    var b = allOpts[i++];
+    // Use data-mp3 directly — avoids sym mismatch (e.g. 'ɡ' vs 'g')
+    var mp3 = b.dataset.mp3;
+    if (!mp3) {
+      var d = IPA_DATA.find(function(x){ return x.sym === b.dataset.val; });
+      mp3 = d ? d.mp3 : null;
+    }
+    if (!mp3) { setTimeout(next, 200); return; }
     b.classList.add('iq-playing');
-    var audio = new Audio(d.mp3);
+    var audio = new Audio(mp3);
     _ipaAudio = audio;
     audio.onended = function() { b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next, 180); };
     audio.onerror = function() { b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next, 300); };
