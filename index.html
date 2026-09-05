@@ -154,20 +154,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .ipa-section-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
   font-weight:700;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
 
-.ipa-table{width:100%;border-collapse:collapse;font-size:.92rem;}
-.ipa-table thead th{background:var(--surface2);color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;text-align:left;border-bottom:2px solid var(--border);}
-.ipa-table tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
-.ipa-table tbody tr:hover{background:rgba(108,99,255,.06);}
-.ipa-sym-cell{padding:10px 12px;white-space:nowrap;vertical-align:middle;}
-.ipa-sym-cell{display:flex;align-items:center;gap:8px;}
-.ipa-ex-cell{padding:10px 12px;vertical-align:top;}
-.ipa-play-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 7px;font-size:.9rem;cursor:pointer;color:var(--muted);transition:all .15s;line-height:1;}
-.ipa-play-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(108,99,255,.1);}
-.ipa-sym-text{font-size:1.3rem;font-weight:800;color:var(--accent);font-family:'Courier New',monospace;}
-.ipa-ex-word{color:var(--accent3);font-weight:700;cursor:pointer;transition:opacity .15s;}
-.ipa-ex-word:hover{opacity:.7;text-decoration:underline;}
-.ipa-desc-row{font-size:.78rem;color:var(--muted);margin-top:4px;line-height:1.4;}
 .ipa-section-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:10px;display:flex;gap:18px;align-items:flex-start;}
+.ipa-sym-btn{background:var(--surface2);border:2px solid var(--accent);border-radius:12px;padding:12px 16px;cursor:pointer;font-size:1.6rem;font-weight:800;color:var(--accent);font-family:'Courier New',monospace;flex-shrink:0;min-width:64px;text-align:center;transition:all .18s;line-height:1;}
+.ipa-sym-btn:hover{background:var(--accent);color:#fff;transform:scale(1.05);}
+.ipa-sym-btn:active{transform:scale(.97);}
+.ipa-body{flex:1;min-width:0;}
+.ipa-desc-main{font-size:1.05rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:12px;}
+.ipa-words-list{display:flex;flex-direction:column;gap:6px;}
+.ipa-word-entry{display:flex;align-items:center;gap:8px;font-size:.9rem;cursor:pointer;padding:5px 8px;border-radius:8px;transition:background .15s;}
+.ipa-word-entry:hover{background:var(--surface2);}
+.ipa-word-text{font-weight:700;color:var(--accent3);}
+.ipa-word-pron{color:var(--muted);font-family:'Courier New',monospace;font-size:.85rem;}
+.ipa-word-pron .ipa-bold{color:var(--accent);font-weight:800;}
 @keyframes blink{0%,100%{opacity:0;}50%{opacity:1;}}
 .tw-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .6s step-end infinite;margin-left:1px;}
 
@@ -686,33 +685,43 @@ function playIPA(mp3Url) {
   _ipaAudio.play().catch(function(e) { console.warn('IPA audio failed:', e); });
 }
 
+function boldIPA(pron, bold) {
+  // Wrap the target IPA chars in a bold span
+  if (!bold) return pron;
+  var escaped = bold.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return pron.replace(new RegExp(escaped), '<span class="ipa-bold">' + bold + '</span>');
+}
+
 function showIPA() {
   show('ipaScreen');
   var vowels = IPA_DATA.filter(function(d){ return d.cat === 'Vowel'; });
   var consonants = IPA_DATA.filter(function(d){ return d.cat === 'Consonant'; });
 
-  function makeTable(items) {
-    var h = '<table class="ipa-table"><thead><tr><th>IPA</th><th>Examples</th></tr></thead><tbody>';
+  function makeCards(items) {
+    var h = '';
     items.forEach(function(item) {
-      var exWords = item.words.map(function(wobj) {
-        return '<span class="ipa-ex-word" onclick="speak(\'' + wobj.w + '\',0.8)" title="Click to hear">' + wobj.w + '</span>';
-      }).join(', ');
-      h += '<tr>'
-        + '<td class="ipa-sym-cell">'
-        + '<button class="ipa-play-btn" onclick="playIPA(\'' + item.mp3 + '\')" title="Play sound">&#128266;</button>'
-        + '<span class="ipa-sym-text">' + item.sym + '</span>'
-        + '</td>'
-        + '<td class="ipa-ex-cell">' + exWords
-        + '<div class="ipa-desc-row">' + item.desc + '</div>'
-        + '</td>'
-        + '</tr>';
+      var wordEntries = item.words.map(function(wobj) {
+        var pronDisplay = boldIPA(wobj.ipa, wobj.bold);
+        return '<div class="ipa-word-entry" onclick="speak(\'' + wobj.w + '\', 0.4)" title="Click to hear">'
+          + '<span class="ipa-word-text">' + wobj.w + '</span>'
+          + '<span class="ipa-word-pron">[' + pronDisplay + ']</span>'
+          + '</div>';
+      }).join('');
+      h += '<div class="ipa-card">'
+        + '<button class="ipa-sym-btn" onclick="playIPA(\'' + item.mp3 + '\')" title="Click to hear this sound">'
+        + item.sym
+        + '</button>'
+        + '<div class="ipa-body">'
+        + '<div class="ipa-desc-main">' + item.desc + '</div>'
+        + '<div class="ipa-words-list">' + wordEntries + '</div>'
+        + '</div>'
+        + '</div>';
     });
-    h += '</tbody></table>';
     return h;
   }
 
-  var html = '<div class="ipa-section-title">Vowels</div>' + makeTable(vowels)
-           + '<div class="ipa-section-title" style="margin-top:20px">Consonants</div>' + makeTable(consonants);
+  var html = '<div class="ipa-section-title">Vowels</div>' + makeCards(vowels)
+           + '<div class="ipa-section-title" style="margin-top:20px">Consonants</div>' + makeCards(consonants);
   document.getElementById('ipaContent').innerHTML = html;
 }
 
