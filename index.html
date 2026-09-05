@@ -780,6 +780,28 @@ function stopAllAudio() {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
 }
 
+function speakWordsSequence(words, rate) {
+  // Speak an array of words one by one, respecting _seqCancelled
+  _seqCancelled = false;
+  rate = rate || 0.6;
+  var i = 0;
+  function next() {
+    if (_seqCancelled || i >= words.length) return;
+    var w = words[i++];
+    var utt = new SpeechSynthesisUtterance(w);
+    utt.lang = 'en-US';
+    utt.rate = rate;
+    var voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    var v = voices.find(function(v){ return v.lang==='en-US'&&v.localService; })
+           || voices.find(function(v){ return v.lang.startsWith('en'); });
+    if (v) utt.voice = v;
+    utt.onend = function() { if (!_seqCancelled) setTimeout(next, 300); };
+    utt.onerror = function() { if (!_seqCancelled) setTimeout(next, 300); };
+    window.speechSynthesis.speak(utt);
+  }
+  next();
+}
+
 function playIPA(mp3Url) {
   if (!mp3Url) return;
   if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
@@ -1068,7 +1090,11 @@ function gradeSingleSelect(chosen, btn) {
         + '<div style="font-size:.75rem;color:var(--muted);margin-top:8px">&#128266; Click any symbol to hear it</div>'
         + '</div>'
         + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-      playSymbolsSequenceGrid();
+      var singleOpts = Array.from(document.querySelectorAll('.iq-opt')).map(function(b){ return b.dataset.val; });
+      speakWordsSequence(singleOpts.filter(function(v){ return v.length > 1; }), 0.6); // only real words not symbols
+      // For word→symbol quiz, the opts are symbols not words - speak differently
+      // Just run grid sequence
+      setTimeout(function(){ if(!_seqCancelled) playSymbolsSequenceGrid(); }, 1000);
     }, 1500);
   } else {
     fbEl.innerHTML = '<div class="iq-feedback wrong">'
@@ -1076,6 +1102,17 @@ function gradeSingleSelect(chosen, btn) {
       + '<div style="font-size:.78rem;margin-top:6px;color:var(--muted)">&#128266; Click any symbol above to hear its sound</div>'
       + '</div>'
       + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
+    // Auto-play the correct symbol then its example words
+    setTimeout(function() {
+      if (!item.mp3) return;
+      _seqCancelled = false;
+      var audio = new Audio(item.mp3);
+      _ipaAudio = audio;
+      audio.onended = function() {
+        if (!_seqCancelled) speakWordsSequence(item.words.map(function(w){ return w.w; }), 0.6);
+      };
+      audio.play().catch(function(){});
+    }, 400);
   }
 }
 
@@ -1134,10 +1171,23 @@ function gradeMultiSelect() {
         + '<div style="font-size:.75rem;color:var(--muted);margin-top:8px">&#128266; Click any symbol to hear it</div>'
         + '</div>'
         + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-      playSymbolsSequenceGrid();
+      // Also speak all option words in order before grid sequence
+      var allOptWords = Array.from(document.querySelectorAll('#iqOpts .iq-opt')).map(function(b){ return b.dataset.val; });
+      speakWordsSequence(allOptWords, 0.6);
+      setTimeout(function(){ if(!_seqCancelled) playSymbolsSequenceGrid(); }, allOptWords.length * 1200 + 500);
     }, 1500);
   } else {
     fbEl2.innerHTML = feedbackContent + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
+    // Auto-play symbol sound then ALL option words in display order
+    setTimeout(function() {
+      _seqCancelled = false;
+      var allWords = Array.from(document.querySelectorAll('#iqOpts .iq-opt')).map(function(b){ return b.dataset.val; });
+      if (item.mp3) {
+        var a = new Audio(item.mp3); _ipaAudio = a;
+        a.onended = function() { if (!_seqCancelled) speakWordsSequence(allWords, 0.6); };
+        a.play().catch(function() { speakWordsSequence(allWords, 0.6); });
+      } else { speakWordsSequence(allWords, 0.6); }
+    }, 400);
   }
 }
 
