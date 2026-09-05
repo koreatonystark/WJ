@@ -631,7 +631,7 @@ function showWrong(word,ai,extraMsg){
 // AI CALLS
 function getAI(word){
   var k=word.word+'_i';if(cache[k])return Promise.resolve(cache[k]);
-  var fb={def:'An English word used in the category of '+(word.cat||'everyday communication')+'.',ex:'The word "'+word.word+'" is commonly used in English.'};
+  var fb={ipa:'',def:'An English word used in the category of '+(word.cat||'everyday communication')+'.',ex:'The word "'+word.word+'" is commonly used in English.'};
   var prompt='You are an English teacher for a 10-year-old student.\n'
     +'For the word "'+word.word+'" (category: '+word.cat+'):\n'
     +'1. IPA pronunciation (e.g. /haepI/)\n'
@@ -656,7 +656,7 @@ function getSents(word){
 function getWrongEx(word,ai){
   var k=word.word+'_w';if(cache[k])return Promise.resolve(cache[k]);
   var bd=(ai&&ai.def)||'';var be=(ai&&ai.ex)||'';
-  var fb={definition:bd||'"'+word.word+'" is an English word in the category of '+word.cat+'.',examples:[be||'She used "'+word.word+'" correctly in class.','"'+word.word+'" is an important word to practice.','Try using "'+word.word+'" when you speak or write today.']};
+  var fb={ipa:'',definition:bd||'"'+word.word+'" is an English word in the category of '+word.cat+'.',examples:[be||'She used "'+word.word+'" correctly in class.','"'+word.word+'" is an important word to practice.','Try using "'+word.word+'" when you speak or write today.']};
   var prompt='You are a friendly English teacher for a 10-year-old who just got a word wrong.\n'
     +'The word is: "'+word.word+'" (category: '+word.cat+', tier: '+word.tier+')\n'
     +'Provide:\n'
@@ -666,11 +666,11 @@ function getWrongEx(word,ai){
     +'Return ONLY valid JSON, no markdown:\n'
     +'{"ipa":"...","definition":"...","examples":["s1","s2","s3"]}';
   return apiCall(prompt,400)
-    .then(function(raw){var p=JSON.parse(raw);if(p.definition&&Array.isArray(p.examples)&&p.examples.length===3){cache[k]=p;return p;}return fb;}).catch(function(){return fb;});
+    .then(function(raw){var p=JSON.parse(raw);if(p.definition&&Array.isArray(p.examples)&&p.examples.length===3){p.ipa=p.ipa||'';cache[k]=p;return p;}return fb;}).catch(function(){return fb;});
 }
 function apiCall(prompt,maxTok){
   return Promise.race([
-    fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})}),
+    fetch(API,{method:'POST',headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})}),
     new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'));},8000);})
   ]).then(function(r){return r.json();}).then(function(d){
     var raw=(d.content&&d.content[0]&&d.content[0].text)||'';
