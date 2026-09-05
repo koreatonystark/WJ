@@ -1134,16 +1134,34 @@ function gradeSingleSelect(chosen, btn) {
       + '<div style="font-size:.78rem;margin-top:6px;color:var(--muted)">&#128266; Click any symbol above to hear its sound</div>'
       + '</div>'
       + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-    // Auto-play the correct symbol then its example words
+    // Auto-play all option symbols in order via MP3
     setTimeout(function() {
-      if (!item.mp3) return;
       _seqCancelled = false;
-      var audio = new Audio(item.mp3);
-      _ipaAudio = audio;
-      audio.onended = function() {
-        if (!_seqCancelled) speakWordsSequence(item.words.map(function(w){ return w.w; }), 0.6);
-      };
-      audio.play().catch(function(){});
+      var optBtns = Array.from(document.querySelectorAll('.iq-opt'));
+      var queue = optBtns.map(function(b) {
+        return IPA_DATA.find(function(d){ return d.sym === b.dataset.val; });
+      }).filter(Boolean);
+      var qi = 0;
+      function playNextSym() {
+        if (_seqCancelled || qi >= queue.length) return;
+        var d = queue[qi++];
+        var btn = document.querySelector('.iq-opt[data-val="' + d.sym + '"]');
+        if (btn) { btn.classList.add('iq-playing'); }
+        var a = new Audio(d.mp3); _ipaAudio = a;
+        a.onended = function() {
+          if (btn) btn.classList.remove('iq-playing');
+          if (!_seqCancelled) setTimeout(playNextSym, 180);
+        };
+        a.onerror = function() {
+          if (btn) btn.classList.remove('iq-playing');
+          if (!_seqCancelled) setTimeout(playNextSym, 300);
+        };
+        a.play().catch(function() {
+          if (btn) btn.classList.remove('iq-playing');
+          if (!_seqCancelled) setTimeout(playNextSym, 300);
+        });
+      }
+      playNextSym();
     }, 400);
   }
 }
