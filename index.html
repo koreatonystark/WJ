@@ -378,6 +378,7 @@ function loadWords(){
 }
 
 function showHome(){
+  stopAllAudio();
   show('homeScreen');
   var m=allWords.filter(mastered);
   document.getElementById('statTotal').textContent=allWords.length.toLocaleString();
@@ -771,11 +772,47 @@ var IPA_DATA = [
 ];
 
 var _ipaAudio = null;
+var _seqCancelled = false;  // global cancel flag for sequences
+
+function stopAllAudio() {
+  _seqCancelled = true;
+  if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
 function playIPA(mp3Url) {
   if (!mp3Url) return;
   if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   _ipaAudio = new Audio(mp3Url);
   _ipaAudio.play().catch(function(e) { console.warn('IPA audio failed:', e); });
+}
+
+function playIPAThenWords(mp3Url, wordsCsv) {
+  // Play symbol sound first, then chain through example words
+  if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
+  var words = wordsCsv.split(',').filter(Boolean);
+  var audio = new Audio(mp3Url);
+  audio.onended = function() {
+    if (_seqCancelled) return;
+    var i = 0;
+    function nextWord() {
+      if (_seqCancelled || i >= words.length) return;
+      var w = words[i++];
+      var utt = new SpeechSynthesisUtterance(w);
+      utt.lang = 'en-US';
+      utt.rate = 0.45;
+      var voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+      var v = voices.find(function(v){ return v.lang==='en-US'&&v.localService; })
+             || voices.find(function(v){ return v.lang.startsWith('en'); });
+      if (v) utt.voice = v;
+      utt.onend = function() { if (!_seqCancelled) setTimeout(nextWord, 250); };
+      window.speechSynthesis.speak(utt);
+    }
+    setTimeout(nextWord, 300);
+  };
+  audio.onerror = function() {};
+  _ipaAudio = audio;
+  audio.play().catch(function() {});
 }
 
 function boldIPA(pron, bold) {
@@ -793,17 +830,19 @@ function showIPA() {
   function makeCards(items) {
     var h = '';
     items.forEach(function(item) {
+      // Encode word list for the chain function
+      var wordList = item.words.map(function(w){ return w.w; }).join(',');
       var wordEntries = item.words.map(function(wobj) {
         var pronDisplay = boldIPA(wobj.ipa, wobj.bold);
-        return '<div class="ipa-word-entry" onclick="speak(\'' + wobj.w + '\', 0.4)" title="Click to hear">'
+        return '<div class="ipa-word-entry" onclick="speak(\'' + wobj.w + '\', 0.45)" title="Click to hear">'
           + '<span class="ipa-word-text">' + wobj.w + '</span>'
           + '<span class="ipa-word-pron">[' + pronDisplay + ']</span>'
           + '</div>';
       }).join('');
-      // Highlight quoted sound hints in green e.g. "ee", "ih", "aah"
       var descHL = item.desc.replace(/"([^"]+)"/g, '"<span class="ipa-sound">$1</span>"');
       h += '<div class="ipa-card">'
-        + '<button class="ipa-sym-btn ' + (item.cat==='Vowel'?'vowel':'consonant') + '" onclick="playIPA(\'' + item.mp3 + '\')" title="Click to hear this sound">'
+        + '<button class="ipa-sym-btn ' + (item.cat==='Vowel'?'vowel':'consonant') + '" '
+        + 'onclick="playIPAThenWords(\'' + item.mp3 + '\',\'' + wordList + '\')" title="Click to hear sound + example words">'
         + item.sym
         + '</button>'
         + '<div class="ipa-body">'
@@ -852,6 +891,12 @@ function startIPAQuiz() {
 }
 
 function renderIQQuestion() {
+  stopAllAudio();  // stop any ongoing sequence from previous question
+  // Check if 10 questions done
+  if (iqTotal >= 10) {
+    showIQResult();
+    return;
+  }
   var area = document.getElementById('ipaQuizArea');
   // Pick random question type
   var type = Math.floor(Math.random() * 3); // 0, 1, 2
@@ -1098,34 +1143,75 @@ function gradeMultiSelect() {
 
 
 function playSymbolsSequence() {
+  _seqCancelled = false;
   var allOpts = Array.from(document.querySelectorAll('.iq-opt'));
-  var delay = 0;
-  allOpts.forEach(function(b) {
-    var sym = b.dataset.val;
-    var d = IPA_DATA.find(function(x){ return x.sym === sym; });
-    if (!d) return;
-    setTimeout(function() {
-      b.classList.add('iq-playing');
-      if (d.mp3) playIPA(d.mp3);
-      setTimeout(function() { b.classList.remove('iq-playing'); }, 700);
-    }, delay);
-    delay += 900;
+  var queue = allOpts.filter(function(b) {
+    return IPA_DATA.find(function(x){ return x.sym === b.dataset.val; });
   });
+  var i = 0;
+  function next() {
+    if (_seqCancelled || i >= queue.length) return;
+    var b = queue[i++];
+    var d = IPA_DATA.find(function(x){ return x.sym === b.dataset.val; });
+    if (!d || !d.mp3) { setTimeout(next, 200); return; }
+    b.classList.add('iq-playing');
+    var audio = new Audio(d.mp3);
+    _ipaAudio = audio;
+    audio.onended = function() { b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next, 180); };
+    audio.onerror = function() { b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next, 300); };
+    audio.play().catch(function() { b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next, 300); });
+  }
+  next();
 }
 
 function playSymbolsSequenceGrid() {
-  // Play all symbols in the grid sequentially with green highlight
-  var delay = 0;
-  IPA_DATA.forEach(function(item) {
+  _seqCancelled = false;
+  var items = IPA_DATA.slice();
+  var idx = 0;
+  function playNext() {
+    if (_seqCancelled || idx >= items.length) return;
+    var item = items[idx++];
     var btn = document.querySelector('.iq-sym-grid-btn[data-sym="' + item.sym + '"]');
-    if (!btn) return;
-    setTimeout(function() {
-      btn.classList.add('iq-playing');
-      playIPA(item.mp3);
-      setTimeout(function() { btn.classList.remove('iq-playing'); }, 700);
-    }, delay);
-    delay += 500;
-  });
+    if (!item.mp3) { setTimeout(playNext, 200); return; }
+    if (btn) btn.classList.add('iq-playing');
+    var audio = new Audio(item.mp3);
+    _ipaAudio = audio;
+    audio.onended = function() {
+      if (btn) btn.classList.remove('iq-playing');
+      if (!_seqCancelled) setTimeout(playNext, 180);
+    };
+    audio.onerror = function() {
+      if (btn) btn.classList.remove('iq-playing');
+      if (!_seqCancelled) setTimeout(playNext, 300);
+    };
+    audio.play().catch(function() {
+      if (btn) btn.classList.remove('iq-playing');
+      if (!_seqCancelled) setTimeout(playNext, 300);
+    });
+  }
+  playNext();
+}
+
+
+function showIQResult() {
+  var area = document.getElementById('ipaQuizArea');
+  var pct = Math.round(iqScore / (iqTotal * 12) * 100); // rough max
+  var trophy = iqScore >= 100 ? '🏆' : iqScore >= 70 ? '🥇' : iqScore >= 40 ? '🥈' : '🥉';
+  area.innerHTML = '<div style="text-align:center;padding:20px 0">'
+    + '<div style="font-size:4rem;margin-bottom:12px">' + trophy + '</div>'
+    + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:2.5rem;font-weight:700;color:var(--gold)">' + iqScore + ' pts</div>'
+    + '<div style="color:var(--muted);font-size:.9rem;margin:6px 0 20px">10 questions completed</div>'
+    + '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">'
+    + '<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 20px;text-align:center">'
+    + '<div style="font-size:1.5rem;font-weight:800;color:var(--accent3)">' + iqTotal + '</div>'
+    + '<div style="font-size:.72rem;color:var(--muted)">Questions</div></div>'
+    + '<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 20px;text-align:center">'
+    + '<div style="font-size:1.5rem;font-weight:800;color:var(--gold)">' + iqScore + '</div>'
+    + '<div style="font-size:.72rem;color:var(--muted)">Total Pts</div></div>'
+    + '</div>'
+    + '<button class="iq-next-btn" onclick="startIPAQuiz()" style="max-width:280px;margin:0 auto;display:block">Play Again 🚀</button>'
+    + '<button class="btn-s" onclick="showHome()" style="width:100%;max-width:280px;margin:10px auto 0;display:block;padding:12px">Home</button>'
+    + '</div>';
 }
 
 
