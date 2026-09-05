@@ -92,6 +92,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 @keyframes suUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .wrong-word-big{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;color:var(--accent2);display:block;margin-bottom:3px;}
 .wrong-meta{font-size:.7rem;color:var(--muted);}
+.word-speak-header{padding:12px 14px;margin:-14px -14px 14px -14px;padding-bottom:12px;border-bottom:1px solid var(--border);cursor:pointer;border-radius:16px 16px 0 0;transition:background .15s;user-select:none;}.word-speak-header:hover{background:rgba(108,99,255,.07);}.word-speak-header:active{background:rgba(108,99,255,.14);}
 .dblock{margin-bottom:13px;padding-bottom:13px;border-bottom:1px solid var(--border);}
 .dblock:last-of-type{border-bottom:none;}
 .dlabel{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px;font-weight:700;}
@@ -712,7 +713,7 @@ function showWrong(word,ai,extraMsg){
   getWrongEx(word,ai).then(function(d){
     var fa=document.getElementById('fa');if(!fa)return;
     document.getElementById('headerScore').textContent=score+' pts';
-    fa.innerHTML='<div class="wrong-panel"><div style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)"><span class="wrong-word-big">'+word.word+'</span>'+( d.ipa ? '<span class="wrong-ipa">'+ d.ipa +'</span>' : '' )+'<span class="wrong-meta">'+word.tier+' &middot; '+word.cat+'</span></div><div class="dblock"><div class="dlabel">Definition</div><div class="ddef" id="ddef"></div><div class="dkid" id="dkid"></div></div><div class="dblock"><div class="dlabel">Example Sentences</div><div id="dex"><div class="shimmer" style="height:14px;width:86%;margin-bottom:4px"></div><div class="shimmer" style="height:14px;width:70%"></div></div></div>'+( d.logic ? '<div class="dblock"><div class="dlabel">Word Structure</div><div class="dlogic">'+d.logic+'</div></div>' : '' )+''+( d.nuance ? '<div class="dblock"><div class="dlabel">Nuance & Usage</div><div class="dnuance">'+d.nuance+'</div></div>' : '' )+'<button class="next-btn" id="nb">Next Question &rarr;</button></div>';
+    fa.innerHTML='<div class="wrong-panel"><div class="word-speak-header" id="wspeakHdr" title="Click anywhere to hear pronunciation"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px"><span class="wrong-word-big">'+word.word+'</span><span style="font-size:1rem;opacity:.6">&#128266;</span></div>'+( d.ipa ? '<span class="wrong-ipa">'+ d.ipa +'</span>' : '' )+'<span class="wrong-meta">'+word.tier+' &middot; '+word.cat+'</span></div><div class="dblock"><div class="dlabel">Definition</div><div class="ddef" id="ddef"></div><div class="dkid" id="dkid"></div></div><div class="dblock"><div class="dlabel">Example Sentences</div><div id="dex"><div class="shimmer" style="height:14px;width:86%;margin-bottom:4px"></div><div class="shimmer" style="height:14px;width:70%"></div></div></div>'+( d.logic ? '<div class="dblock"><div class="dlabel">Word Structure</div><div class="dlogic">'+d.logic+'</div></div>' : '' )+''+( d.nuance ? '<div class="dblock"><div class="dlabel">Nuance & Usage</div><div class="dnuance">'+d.nuance+'</div></div>' : '' )+'<button class="next-btn" id="nb">Next Question &rarr;</button></div>';
     var dd=document.getElementById('ddef');if(dd)typeWrite(dd,d.definition,19);
     var dk=document.getElementById('dkid');
     if(dk&&d.kid){setTimeout(function(){dk.style.opacity='0';dk.style.transition='opacity .4s';dk.innerHTML='&#128161; '+d.kid;setTimeout(function(){dk.style.opacity='1';},50);},900);}
@@ -730,10 +731,9 @@ function showWrong(word,ai,extraMsg){
     var nb=document.getElementById('nb');if(nb)nb.addEventListener('click',function(){qIdx++;showQ();});
     // Auto-speak the word when wrong panel appears
     setTimeout(function(){speak(word.word, 0.7);}, 400);
-    // Make word clickable to re-speak
-    var wwb=fa.querySelector('.wrong-word-big');
-    if(wwb){wwb.style.cursor='pointer';wwb.title='Click to hear again';
-      wwb.addEventListener('click',function(){speak(word.word,0.75);});}
+    // Entire word header is clickable to re-speak
+    var wspeakHdr=fa.querySelector('#wspeakHdr');
+    if(wspeakHdr){wspeakHdr.addEventListener('click',function(){speak(word.word,0.75);});}
     // Make example lines speakable after typewriter
     setTimeout(function(){
       fa.querySelectorAll('.dex').forEach(function(el){
