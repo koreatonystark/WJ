@@ -1413,12 +1413,10 @@ function gradeSingleSelect(chosen, btn) {
       + '&#9989; Correct! <strong>' + item.sym + '</strong> &mdash; ' + item.name + ': ' + descHL
       + (iqCurrent.entry ? '<div style="font-size:.9rem;margin-top:8px;font-weight:700;color:var(--text)">' + iqCurrent.entry.word + ' <span style="font-family:serif;font-weight:400;color:var(--muted);font-size:.85rem">[' + iqCurrent.entry.ipa + ']</span></div>' : '')
       + '</div>';
-    // Play correct symbol MP3 immediately
-    if (item.mp3) {
-      _ipaAudio = new Audio(item.mp3);
-      _ipaAudio.play().catch(function(){});
-    }
-    setTimeout(function() {
+    // Play correct symbol MP3, then after it ends show grid + play sequence
+    var _myIqId = ++_ipaSeqId;
+    function showGridAndPlay() {
+      if (_myIqId !== _ipaSeqId) return;
       // Build full IPA symbol grid grouped by category
       var vowels = IPA_DATA.filter(function(d){ return d.cat === 'Vowel'; });
       var consonants = IPA_DATA.filter(function(d){ return d.cat === 'Consonant'; });
@@ -1443,9 +1441,19 @@ function gradeSingleSelect(chosen, btn) {
         + '<div style="font-size:.75rem;color:var(--muted);margin-top:8px">&#128266; Click any symbol to hear it</div>'
         + '</div>'
         + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-      // Play grid symbols sequence only (options are IPA symbols, not words)
-      setTimeout(function(){ if(!_seqCancelled) playSymbolsSequenceGrid(); }, 1500);
-    }, 1500);
+      // Play grid symbols sequence after short delay
+      setTimeout(function(){ if(_myIqId === _ipaSeqId) playSymbolsSequenceGrid(); }, 1000);
+    }
+    // Trigger: play MP3 then showGridAndPlay, or show immediately
+    if (item.mp3) {
+      var _iqAudio = new Audio(item.mp3);
+      _ipaAudio = _iqAudio;
+      _iqAudio.onended = function() { showGridAndPlay(); };
+      _iqAudio.onerror = function() { showGridAndPlay(); };
+      _iqAudio.play().catch(function() { showGridAndPlay(); });
+    } else {
+      setTimeout(showGridAndPlay, 200);
+    }
   } else {
     fbEl.innerHTML = '<div class="iq-feedback wrong">'
       + '&#10060; Not quite. Correct: <strong>' + correct + '</strong> &mdash; ' + item.name + ': ' + descHL
@@ -1453,14 +1461,15 @@ function gradeSingleSelect(chosen, btn) {
       + '</div>'
       + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
     // Auto-play: play correct symbol MP3 -> then speak word (type1) -> then option buttons
-    _seqCancelled = false;
+    var _myWqId = ++_ipaSeqId;
+    function wqActive() { return _myWqId === _ipaSeqId; }
     var _corSym = IPA_DATA.find(function(s){ return s.sym === correct; });
     function startSymSeq() {
-      if (_seqCancelled) return;
+      if (!wqActive()) return;
       var optBtns = Array.from(document.querySelectorAll('.iq-opt'));
       var qi = 0;
       function playNextSym() {
-        if (_seqCancelled || qi >= optBtns.length) return;
+        if (!wqActive() || qi >= optBtns.length) return;
         var btn = optBtns[qi++];
         var mp3 = btn.dataset.mp3;
         if (!mp3) {
@@ -1472,28 +1481,29 @@ function gradeSingleSelect(chosen, btn) {
         var a = new Audio(mp3); _ipaAudio = a;
         a.onended = function() {
           if (btn) btn.classList.remove('iq-playing');
-          if (!_seqCancelled) setTimeout(playNextSym, 180);
+          if (wqActive()) setTimeout(playNextSym, 180);
         };
         a.onerror = function() {
           if (btn) btn.classList.remove('iq-playing');
-          if (!_seqCancelled) setTimeout(playNextSym, 300);
+          if (wqActive()) setTimeout(playNextSym, 300);
         };
         a.play().catch(function() {
           if (btn) btn.classList.remove('iq-playing');
-          if (!_seqCancelled) setTimeout(playNextSym, 300);
+          if (wqActive()) setTimeout(playNextSym, 300);
         });
       }
       playNextSym();
     }
     // Play correct symbol MP3 first, then word TTS (type 1), then option sequence
     function afterMp3() {
+      if (!wqActive()) return;
       if (iqCurrent.entry) {
         var wu = new SpeechSynthesisUtterance(iqCurrent.entry.word);
         wu.lang = 'en-US'; wu.rate = 0.6;
         var vs = window.speechSynthesis.getVoices();
         var v = vs.find(function(x){return x.lang==='en-US'&&x.localService;})||vs.find(function(x){return x.lang.startsWith('en-US');});
         if (v) wu.voice = v;
-        wu.onend = function() { setTimeout(startSymSeq, 400); };
+        wu.onend = function() { if (wqActive()) setTimeout(startSymSeq, 400); };
         window.speechSynthesis.cancel();
         setTimeout(function(){ window.speechSynthesis.speak(wu); }, 200);
       } else {
