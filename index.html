@@ -784,16 +784,16 @@ function renderQ(word,type){
     var opts=shuf([word].concat(dist));
     (function(){
     var db=WORD_DB[word.word]||{};
-    var ai={def:db.def||'An English word in '+word.cat+'.',ex:db.exA||db.ex&&db.ex[0]||'The word "'+word.word+'" is used in English.'};
-    area.innerHTML='<div class="game-card"><span class="badge badge-mc">&#128214; Choose the Word</span>'+bb+meta+'<div class="qlabel">Which word matches this description?</div><div class="def-box"><div class="def-text">'+ai.def+'</div><div class="ex-text">'+ai.ex+'</div></div><div class="options-grid" id="og">'+opts.map(function(o){return '<button class="option-btn" data-w="'+o.word+'">'+o.word+'</button>';}).join('')+'</div><div class="feedback-area" id="fa"></div></div>';
+    var ai={def:db.def||'',ex:db.exA||db.ex&&db.ex[0]||''};
+    area.innerHTML='<div class="game-card"><span class="badge badge-mc">&#128214; Choose the Word</span>'+bb+meta+'<div class="qlabel">Which word matches this description?</div><div class="def-box"><div class="def-text">'+ai.def+'</div>'+(ai.ex?'<div class="ex-text">'+ai.ex+'</div>':'')+'</div><div class="options-grid" id="og">'+opts.map(function(o){return '<button class="option-btn" data-w="'+o.word+'">'+o.word+'</button>';}).join('')+'</div><div class="feedback-area" id="fa"></div></div>';
     document.getElementById('og').addEventListener('click',function(e){var b=e.target.closest('.option-btn');if(!b||answering)return;doMC(word,b.dataset.w,bonus,ai);});
   })();
   }else if(type==='ty'){
     area.innerHTML='<div class="game-card"><span class="badge badge-type">&#9000; Type the Word</span>'+bb+meta+'<div class="qlabel">Type the correct English word - 60 seconds!</div><div class="def-box" id="db"><div class="shimmer" style="width:76%"></div><div class="shimmer" style="width:66%"></div></div><div class="timer-container"><svg class="timer-ring" width="64" height="64"><circle cx="32" cy="32" r="27" fill="none" stroke="var(--border)" stroke-width="6"/><circle id="tc" cx="32" cy="32" r="27" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="'+circ+'" stroke-dashoffset="0"/></svg><div class="timer-text" id="tn">60</div></div><input class="type-input" id="ti" placeholder="Type the word here..." autocomplete="off" autocorrect="off" spellcheck="false" autofocus><div style="height:14px"></div><button class="submit-btn" id="sb">Submit</button><div class="feedback-area" id="fa"></div></div>';
     (function(){
     var dbw=WORD_DB[word.word]||{};
-    var ai={def:dbw.def||'An English word in '+word.cat+'.',ex:dbw.exA||dbw.ex&&dbw.ex[0]||'The word "'+word.word+'" is used in English.'};
-    var db=document.getElementById('db');if(db)db.innerHTML='<div class="def-text">'+ai.def+'</div><div class="ex-text">'+ai.ex+'</div>';
+    var ai={def:dbw.def||'',ex:dbw.exA||dbw.ex&&dbw.ex[0]||''};
+    var db=document.getElementById('db');if(db)db.innerHTML='<div class="def-text">'+ai.def+'</div>'+(ai.ex?'<div class="ex-text">'+ai.ex+'</div>':'');
     startTimer(TYPE_TIME,function(){doType(word,bonus,true,ai);});
     var sb2=document.getElementById('sb');if(sb2)sb2.addEventListener('click',function(){doType(word,bonus,false,ai);});
     var ti2=document.getElementById('ti');if(ti2)ti2.addEventListener('keydown',function(e){if(e.key==='Enter')doType(word,bonus,false,ai);});
@@ -815,7 +815,7 @@ function renderQ(word,type){
       var sa=document.getElementById('sa');if(sa)sa.innerHTML=sents.map(function(s){return '<div class="sentence-item">'+s.replace(/___/g,'<span class="blank"></span>')+'</div>';}).join('');
       var wc=document.getElementById('wc');
       if(wc){wc.style.opacity='1';wc.style.pointerEvents='';wc.innerHTML=choices.map(function(w2){return '<button class="word-chip" data-w="'+w2.word+'">'+w2.word+'</button>';}).join('');wc.addEventListener('click',function(e){var ch=e.target.closest('.word-chip');if(!ch||answering)return;doSent(word,ch.dataset.w,bonus,sents);});}
-    })());
+  })();
   }
 }
 
