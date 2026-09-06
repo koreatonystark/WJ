@@ -861,7 +861,7 @@ function showOK(p,word,bonus,ai,jm){
     +'</div>'
     +'</div>';
 }
-function showWrong(word,null,extraMsg){
+function showWrong(word,ai,extraMsg){
   var db=WORD_DB[word.word]||{};
   var fa=document.getElementById('feedbackArea');
   if(!fa){fa=document.getElementById('fa');}
