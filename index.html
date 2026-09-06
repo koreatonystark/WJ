@@ -1003,6 +1003,9 @@ function endRound(){
 // ─── SPEECH ───────────────────────────────────────────────────
 function speak(word, rate, pitch) {
   if (!window.speechSynthesis) return;
+  // Stop any ongoing IPA sequence
+  _seqCancelled = true;
+  if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   window.speechSynthesis.cancel();
   setTimeout(function() {
     var utt = new SpeechSynthesisUtterance(word);
@@ -1105,7 +1108,10 @@ function speakWordsSequence(words, rate) {
 
 function playIPA(mp3Url) {
   if (!mp3Url) return;
+  _seqCancelled = true;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
   if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
+  _seqCancelled = false;
   _ipaAudio = new Audio(mp3Url);
   _ipaAudio.play().catch(function(e) { console.warn('IPA audio failed:', e); });
 }
@@ -1401,6 +1407,11 @@ function gradeSingleSelect(chosen, btn) {
       + '&#9989; Correct! <strong>' + item.sym + '</strong> &mdash; ' + item.name + ': ' + descHL
       + (iqCurrent.entry ? '<div style="font-size:.9rem;margin-top:8px;font-weight:700;color:var(--text)">' + iqCurrent.entry.word + ' <span style="font-family:serif;font-weight:400;color:var(--muted);font-size:.85rem">[' + iqCurrent.entry.ipa + ']</span></div>' : '')
       + '</div>';
+    // Play correct symbol MP3 immediately
+    if (item.mp3) {
+      _ipaAudio = new Audio(item.mp3);
+      _ipaAudio.play().catch(function(){});
+    }
     setTimeout(function() {
       // Build full IPA symbol grid grouped by category
       var vowels = IPA_DATA.filter(function(d){ return d.cat === 'Vowel'; });
@@ -1435,8 +1446,9 @@ function gradeSingleSelect(chosen, btn) {
       + '<div style="font-size:.78rem;margin-top:6px;color:var(--muted)">&#128266; Click any symbol above to hear its sound</div>'
       + '</div>'
       + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-    // Auto-play: for type 1 (Word->Symbol), speak word first, THEN play MP3 sequence
+    // Auto-play: play correct symbol MP3 -> then speak word (type1) -> then option buttons
     _seqCancelled = false;
+    var _corSym = IPA_DATA.find(function(s){ return s.sym === correct; });
     function startSymSeq() {
       if (_seqCancelled) return;
       var optBtns = Array.from(document.querySelectorAll('.iq-opt'));
@@ -1467,19 +1479,31 @@ function gradeSingleSelect(chosen, btn) {
       }
       playNextSym();
     }
-    // If type 1: speak the word first, then chain MP3 sequence
-    if (iqCurrent.entry) {
-      var wu = new SpeechSynthesisUtterance(iqCurrent.entry.word);
-      wu.lang = 'en-US'; wu.rate = 0.6;
-      var vs = window.speechSynthesis.getVoices();
-      var v = vs.find(function(x){return x.lang==='en-US'&&x.localService;})||vs.find(function(x){return x.lang.startsWith('en-US');});
-      if (v) wu.voice = v;
-      wu.onend = function() { setTimeout(startSymSeq, 400); };
-      window.speechSynthesis.cancel();
-      setTimeout(function(){ window.speechSynthesis.speak(wu); }, 300);
-    } else {
-      setTimeout(startSymSeq, 400);
+    // Play correct symbol MP3 first, then word TTS (type 1), then option sequence
+    function afterMp3() {
+      if (iqCurrent.entry) {
+        var wu = new SpeechSynthesisUtterance(iqCurrent.entry.word);
+        wu.lang = 'en-US'; wu.rate = 0.6;
+        var vs = window.speechSynthesis.getVoices();
+        var v = vs.find(function(x){return x.lang==='en-US'&&x.localService;})||vs.find(function(x){return x.lang.startsWith('en-US');});
+        if (v) wu.voice = v;
+        wu.onend = function() { setTimeout(startSymSeq, 400); };
+        window.speechSynthesis.cancel();
+        setTimeout(function(){ window.speechSynthesis.speak(wu); }, 200);
+      } else {
+        setTimeout(startSymSeq, 400);
+      }
     }
+    setTimeout(function(){
+      if (_corSym && _corSym.mp3) {
+        var ca = new Audio(_corSym.mp3); _ipaAudio = ca;
+        ca.onended = function(){ afterMp3(); };
+        ca.onerror = function(){ afterMp3(); };
+        ca.play().catch(function(){ afterMp3(); });
+      } else {
+        afterMp3();
+      }
+    }, 300);
   }
 }
 
