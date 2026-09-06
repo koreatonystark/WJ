@@ -1116,19 +1116,25 @@ function playIPA(mp3Url) {
   _ipaAudio.play().catch(function(e) { console.warn('IPA audio failed:', e); });
 }
 
+var _ipaSeqId = 0;  // session token — incremented each time a new sequence starts
+
 function playIPAThenWords(mp3Url, wordsCsv) {
-  stopAllAudio();
+  // Cancel everything and get a new session token
+  _seqCancelled = true;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   _seqCancelled = false;
+
+  var myId = ++_ipaSeqId;           // this sequence's unique ID
   var words = wordsCsv.split(',').filter(Boolean);
-  // Highlight the active word entry in the IPA card
+
+  function isActive() { return myId === _ipaSeqId && !_seqCancelled; }
+
   function highlightWord(idx) {
-    document.querySelectorAll('.ipa-word-entry').forEach(function(el, i) {
+    document.querySelectorAll('.ipa-word-entry').forEach(function(el) {
       el.style.background = '';
     });
-    // Find the word entries near the clicked button
-    var entries = document.querySelectorAll('.ipa-word-entry');
-    // We don't know which card was clicked, so highlight by word text
-    entries.forEach(function(el) {
+    document.querySelectorAll('.ipa-word-entry').forEach(function(el) {
       var wtext = el.querySelector('.ipa-word-text');
       if (wtext && words[idx] && wtext.textContent.trim() === words[idx]) {
         el.style.background = 'rgba(108,99,255,.18)';
@@ -1146,27 +1152,27 @@ function playIPAThenWords(mp3Url, wordsCsv) {
   var symAudio = new Audio(mp3Url);
   _ipaAudio = symAudio;
   symAudio.onended = function() {
-    if (_seqCancelled) return;
+    if (!isActive()) return;
     var i = 0;
     function nextWord() {
-      if (_seqCancelled || i >= words.length) { clearHighlight(); return; }
+      if (!isActive() || i >= words.length) { clearHighlight(); return; }
       var w = words[i];
       highlightWord(i);
       i++;
       var utt = new SpeechSynthesisUtterance(w);
       utt.lang = 'en-US';
-      utt.rate = 0.72;
+      utt.rate = 0.65;
       var voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
       var v = voices.find(function(v){ return v.lang==='en-US'&&v.localService; })
              || voices.find(function(v){ return v.lang.startsWith('en'); });
       if (v) utt.voice = v;
       utt.onend = function() {
-        if (!_seqCancelled) setTimeout(nextWord, 350);
+        if (isActive()) setTimeout(nextWord, 350);
         else clearHighlight();
       };
       utt.onerror = function() {
         clearHighlight();
-        if (!_seqCancelled) setTimeout(nextWord, 350);
+        if (isActive()) setTimeout(nextWord, 350);
       };
       window.speechSynthesis.speak(utt);
     }
