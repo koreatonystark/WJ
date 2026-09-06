@@ -465,7 +465,14 @@ var prog={},recs=[],gCount=0,filter='all',timer=null,answering=false,cache={};
 
 function show(id){['loadingScreen','homeScreen','masteredScreen','gameScreen','resultScreen','ipaScreen','ipaQuizScreen','reviewScreen'].forEach(function(s){document.getElementById(s).classList.toggle('hidden',s!==id);});}
 function shuf(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
-function pts(ok,bonus,type){if(!ok)return 0;var b=type==='mc'?10:type==='ty'?20:15;return bonus?Math.round(b*WMULT):b;}
+function pts(ok,bonus,type,word){
+  if(!ok)return 0;
+  var base=type==='mc'?2:type==='ty'?4:3;
+  var db=(typeof WORD_DB!=='undefined')&&word?WORD_DB[word.word]||{}:{};
+  var stars=db.stars||1;
+  var p=base*stars;
+  return bonus?Math.round(p*WMULT):p;
+}
 function mastered(w){return((prog[w.word]||{}).correct||0)>=MASTERY_CORRECT;}
 function missed(w){return((prog[w.word]||{}).wrong||0)>0;}
 function gp(k){return prog[k]||(prog[k]={correct:0,wrong:0,lastCorrectGame:0});}
@@ -686,13 +693,7 @@ function showReview(recIdx){
     var body=document.getElementById('rb'+i);
     if(body)body.classList.toggle('open');
   };
-  window.spkReview = function(t){
-    if(window.speechSynthesis)window.speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.75;
-    var vs=window.speechSynthesis.getVoices();
-    var v=vs.find(function(x){return x.lang==='en-US'&&x.localService;})||vs.find(function(x){return x.lang.startsWith('en-US');});
-    if(v)u.voice=v;setTimeout(function(){window.speechSynthesis.speak(u);},50);
-  };
+  window.spkReview=function(t){speak(t,0.75);};
   renderReview();
 }
 
@@ -877,13 +878,7 @@ function showWrong(word,ai,extraMsg){
   var nuance=db.nuance||db.nua||'';
 
   // Helper: speak text, stopping current
-  function spk(t){if(!t)return;if(window.speechSynthesis)window.speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.75;
-    var vs=window.speechSynthesis.getVoices();
-    var v=vs.find(function(x){return x.lang==='en-US'&&x.localService;})||vs.find(function(x){return x.lang.startsWith('en-US');});
-    if(v)u.voice=v;
-    setTimeout(function(){window.speechSynthesis.speak(u);},50);
-  }
+  function spk(t){speak(t,0.75);}
   function hw(s,w){var e=w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return s.replace(new RegExp('('+e+'(?:s|es|ed|ing|er|d|ly)?)', 'gi'),'<span class="hw">$1</span>');}
 
   var html='<div class="wrong-panel" id="wpanel">';
@@ -963,8 +958,8 @@ function showWrong(word,ai,extraMsg){
   var wpsTest=fa.querySelector('#wps-test');
   if(wpsTest)wpsTest.addEventListener('click',function(){spk(exD+(ans?' '+ans:''));});
 
-  // Auto speak word on load
-  spk(word.word);
+  // Auto speak word on load (delay lets DOM settle)
+  setTimeout(function(){spk(word.word);},200);
 
   var nb=fa.querySelector('#nb');
   if(nb)nb.addEventListener('click',function(e){e.stopPropagation();if(window.speechSynthesis)window.speechSynthesis.cancel();qIdx++;showQ();});
