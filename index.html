@@ -11,26 +11,26 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 .bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(108,99,255,.12) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(255,101,132,.08) 0%,transparent 60%);}
-.screen{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.screen{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:28px 5%;gap:18px;}
 .screen.hidden{display:none!important;}
 .logo{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.2rem,7vw,4rem);font-weight:700;letter-spacing:-2px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
 .tagline{color:var(--muted);font-size:1rem;margin-bottom:22px;text-align:center;max-width:450px;line-height:1.5;}
-.stats-strip{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;justify-content:center;}
+.stats-strip{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:720px;}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:10px 15px;text-align:center;min-width:82px;}
 .stat-num{font-size:1.45rem;font-weight:800;color:var(--accent);}
 .stat-label{font-size:.68rem;color:var(--muted);margin-top:1px;}
-.filter-section{width:100%;max-width:580px;margin-bottom:18px;}
+.filter-section{width:100%;max-width:720px;}
 .filter-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
-.filter-row{display:flex;gap:7px;flex-wrap:wrap;}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;width:100%;}
 .filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:30px;padding:6px 14px;font-size:.79rem;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 .filter-btn.warn{background:rgba(255,101,132,.12);border-color:var(--accent2);color:var(--accent2);}
 .filter-btn.g4btn{border-color:#ffb700;color:#ffb700;}
 .filter-btn.g4btn.active{background:linear-gradient(135deg,#ffb700,#ff8c00);color:#1a1a2e;border-color:#ffb700;}
 .filter-btn.warn.active{background:var(--accent2);border-color:var(--accent2);color:#fff;}
-.start-btn{background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;border:none;border-radius:50px;padding:14px 50px;font-size:1.08rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 8px 26px rgba(108,99,255,.4);transition:transform .15s,box-shadow .15s;margin-bottom:7px;}
+.start-btn{width:100%;max-width:720px;background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;border:none;border-radius:50px;padding:14px 50px;font-size:1.08rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 8px 26px rgba(108,99,255,.4);transition:transform .15s,box-shadow .15s;margin-bottom:7px;}
 .start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(108,99,255,.5);}
-.records-section{margin-top:22px;width:100%;max-width:500px;}
+.records-section{width:100%;max-width:720px;}
 .section-title{font-weight:700;color:var(--muted);font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
 .record-row{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:6px;}
 .record-score{font-weight:800;color:var(--gold);font-size:.98rem;}
@@ -71,7 +71,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .type-input:focus{border-color:var(--accent);}
 .type-input.correct-input{border-color:var(--accent3)!important;}
 .type-input.wrong-input{border-color:var(--accent2)!important;}
-.submit-btn{margin-top:8px;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;transition:opacity .2s;}
+.submit-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;transition:opacity .2s;}
 .submit-btn:hover{opacity:.85;}
 .timer-container{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
 .timer-ring{transform:rotate(-90deg);}
@@ -121,7 +121,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .shimmer{background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:6px;height:16px;margin-bottom:5px;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 @keyframes blink{0%,100%{opacity:0;}50%{opacity:1;}}
-.home-boxes{display:flex;gap:10px;width:100%;max-width:440px;margin-top:8px;}
+.home-boxes{display:flex;gap:10px;width:100%;max-width:720px;}
 .home-box-btn{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .home-box-btn:hover{border-color:var(--accent);background:rgba(108,99,255,.08);}
 .home-box-icon{font-size:1.5rem;line-height:1;}
@@ -135,7 +135,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-question{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:6px;}
 .iq-question .iq-sym{font-size:1.6rem;color:var(--accent);font-family:'Courier New',monospace;margin-right:8px;}
 .iq-question .iq-sound{color:var(--accent3);font-weight:800;}
-.iq-hint{font-size:.82rem;color:var(--muted);margin-bottom:18px;}
+.iq-hint{font-size:.82rem;color:var(--muted);}
 .iq-options{display:flex;flex-wrap:wrap;gap:9px;}
 .iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
@@ -213,7 +213,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .ipa-word-pron{color:var(--muted);font-family:'Courier New',monospace;font-size:.8rem;}
 .ipa-word-pron .ipa-bold{color:var(--accent);font-weight:800;font-family:'Courier New',monospace;}
 @keyframes blink{0%,100%{opacity:0;}50%{opacity:1;}}
-.home-boxes{display:flex;gap:10px;width:100%;max-width:440px;margin-top:8px;}
+.home-boxes{display:flex;gap:10px;width:100%;max-width:720px;}
 .home-box-btn{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .home-box-btn:hover{border-color:var(--accent);background:rgba(108,99,255,.08);}
 .home-box-icon{font-size:1.5rem;line-height:1;}
@@ -227,7 +227,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-question{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:6px;}
 .iq-question .iq-sym{font-size:1.6rem;color:var(--accent);font-family:'Courier New',monospace;margin-right:8px;}
 .iq-question .iq-sound{color:var(--accent3);font-weight:800;}
-.iq-hint{font-size:.82rem;color:var(--muted);margin-bottom:18px;}
+.iq-hint{font-size:.82rem;color:var(--muted);}
 .iq-options{display:flex;flex-wrap:wrap;gap:9px;}
 .iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
@@ -267,7 +267,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .wp-section:last-of-type{border-bottom:none;}
 .wp-slabel{font-size:.62rem;font-weight:800;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
 .wp-def{font-size:.95rem;font-weight:600;line-height:1.65;color:var(--text);min-height:24px;}
-.wp-kid{font-size:.85rem;color:var(--accent3);line-height:1.55;margin-top:8px;padding:8px 12px;background:rgba(67,233,123,.06);border-radius:8px;border-left:3px solid var(--accent3);transition:opacity .5s;}
+.wp-kid{font-size:.85rem;color:var(--accent3);line-height:1.55;padding:8px 12px;background:rgba(67,233,123,.06);border-radius:8px;border-left:3px solid var(--accent3);transition:opacity .5s;}
 .wp-logic{font-size:.82rem;color:var(--accent);line-height:1.5;padding:7px 12px;background:rgba(108,99,255,.07);border-radius:8px;border-left:3px solid var(--accent);}
 .wp-nuance{font-size:.82rem;color:var(--muted);line-height:1.5;padding:7px 12px;background:var(--surface2);border-radius:8px;}
 .ex-rows{display:flex;flex-direction:column;}
@@ -301,20 +301,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="stat-card"><div class="stat-num" id="statBest">-</div><div class="stat-label">Best Score</div></div>
     <div class="stat-card"><div class="stat-num" id="statMastered">0</div><div class="stat-label">Mastered</div></div>
   </div>
-  <div class="filter-section">
-    <div class="filter-label">Word Set</div>
-    <div class="filter-row" id="filterTier">
-      <button class="filter-btn active" data-tier="all">All Tiers</button>
-      <button class="filter-btn" data-tier="Tier 1">Tier 1</button>
-      <button class="filter-btn" data-tier="Tier 2">Tier 2</button>
-      <button class="filter-btn" data-tier="Tier 3">Tier 3</button>
-      <button class="filter-btn" data-tier="Tier 4">Tier 4</button>
-      <button class="filter-btn g4btn" data-tier="g4essential">&#9733; G4</button>
-      <button class="filter-btn warn" data-tier="wrong">&#9889; Missed Words</button>
-    </div>
-  </div>
-  <button class="start-btn" id="startBtn">Start 10 Questions &#9654;</button>
-  <button class="btn-w" id="masteredBtn" style="margin-top:7px;padding:7px 18px;font-size:.8rem;">&#11088; View Mastered Words</button>
   <div class="home-boxes">
     <button class="home-box-btn" id="ipaBtn">
       <div class="home-box-icon">&#128362;</div>
@@ -327,18 +313,23 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="home-box-sub">Test your sound knowledge</div>
     </button>
   </div>
+  <div class="filter-section">
+    <div class="filter-label">Word Set</div>
+    <div class="filter-row" id="filterTier">
+      <button class="filter-btn active" data-tier="all">All</button>
+      <button class="filter-btn" data-tier="Tier 1">Tier 1</button>
+      <button class="filter-btn" data-tier="Tier 2">Tier 2</button>
+      <button class="filter-btn" data-tier="Tier 3">Tier 3</button>
+      <button class="filter-btn" data-tier="Tier 4">Tier 4</button>
+      <button class="filter-btn g4btn" data-tier="g4essential">&#9733; G4</button>
+      <button class="filter-btn warn" data-tier="wrong">&#9889; Missed</button>
+    </div>
+  </div>
+  <button class="start-btn" id="startBtn">Start 10 Questions &#9654;</button>
+  <button class="btn-w" id="masteredBtn" style="margin-top:7px;padding:10px 18px;font-size:.88rem;width:100%;border-radius:50px;">&#11088; View Mastered Words</button>
   <div class="records-section">
     <div class="section-title">Recent Scores</div>
     <div id="recordsList"></div>
-  </div>
-</div>
-<div id="masteredScreen" class="screen hidden">
-  <div style="font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:700;margin-bottom:4px;">&#11088; Mastered Words</div>
-  <div style="color:var(--muted);font-size:.86rem;margin-bottom:9px;" id="masteredCount">Words answered correctly 5+ times</div>
-  <div class="mastered-grid" id="masteredGrid"></div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:7px;">
-    <button class="restore-all-btn" id="restoreAllBtn">Restore All to Active</button>
-    <button class="btn-s" id="masteredBackBtn">Back</button>
   </div>
 </div>
 <div id="gameScreen" class="screen hidden" style="padding:0;">
@@ -362,9 +353,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <button class="btn-s" id="homeBtn">Home</button>
   </div>
 </div>
+
+<div id="masteredScreen" class="screen hidden">
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:700;margin-bottom:4px;">&#11088; Mastered Words</div>
+  <div style="color:var(--muted);font-size:.86rem;margin-bottom:9px;" id="masteredCount">Words answered correctly 5+ times</div>
+  <div class="mastered-grid" id="masteredGrid"></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:7px;">
+    <button class="restore-all-btn" id="restoreAllBtn">Restore All to Active</button>
+    <button class="btn-s" id="masteredBackBtn">Back</button>
+  </div>
+</div>
 <div id="ipaScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:700px;width:100%;margin:0 auto;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
       <div>
         <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide</div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
@@ -1433,7 +1434,7 @@ loadWords();
 </script>
 <div id="ipaQuizScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:660px;width:100%;margin:0 auto;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
       <div>
         <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;">&#127381; IPA Quiz</div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;" id="iqSubtitle">Test your pronunciation knowledge</div>
