@@ -71,7 +71,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .type-input:focus{border-color:var(--accent);}
 .type-input.correct-input{border-color:var(--accent3)!important;}
 .type-input.wrong-input{border-color:var(--accent2)!important;}
-.submit-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;transition:opacity .2s;}
+.submit-btn{margin-top:12px;width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;transition:opacity .2s;}
 .submit-btn:hover{opacity:.85;}
 .timer-container{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
 .timer-ring{transform:rotate(-90deg);}
@@ -127,16 +127,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .home-box-icon{font-size:1.5rem;line-height:1;}
 .home-box-label{font-size:.9rem;font-weight:700;color:var(--text);}
 .home-box-sub{font-size:.72rem;color:var(--muted);}
-.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:14px;}
-.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:14px;}
+.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px 28px 24px;margin-bottom:0;}
+.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:0;}
 .iq-badge-1{background:rgba(108,99,255,.2);color:var(--accent);}
 .iq-badge-2{background:rgba(247,151,30,.2);color:var(--accent4);}
 .iq-badge-3{background:rgba(67,233,123,.2);color:var(--accent3);}
 .iq-question{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:6px;}
 .iq-question .iq-sym{font-size:1.6rem;color:var(--accent);font-family:'Courier New',monospace;margin-right:8px;}
 .iq-question .iq-sound{color:var(--accent3);font-weight:800;}
-.iq-hint{font-size:.82rem;color:var(--muted);}
-.iq-options{display:flex;flex-wrap:wrap;gap:9px;}
+.iq-hint{font-size:.88rem;color:var(--muted);line-height:1.5;}
+.iq-options{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
 .iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
 .iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
@@ -219,16 +219,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .home-box-icon{font-size:1.5rem;line-height:1;}
 .home-box-label{font-size:.9rem;font-weight:700;color:var(--text);}
 .home-box-sub{font-size:.72rem;color:var(--muted);}
-.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:14px;}
-.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:14px;}
+.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px 28px 24px;margin-bottom:0;}
+.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:0;}
 .iq-badge-1{background:rgba(108,99,255,.2);color:var(--accent);}
 .iq-badge-2{background:rgba(247,151,30,.2);color:var(--accent4);}
 .iq-badge-3{background:rgba(67,233,123,.2);color:var(--accent3);}
 .iq-question{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:6px;}
 .iq-question .iq-sym{font-size:1.6rem;color:var(--accent);font-family:'Courier New',monospace;margin-right:8px;}
 .iq-question .iq-sound{color:var(--accent3);font-weight:800;}
-.iq-hint{font-size:.82rem;color:var(--muted);}
-.iq-options{display:flex;flex-wrap:wrap;gap:9px;}
+.iq-hint{font-size:.88rem;color:var(--muted);line-height:1.5;}
+.iq-options{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
 .iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
 .iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
@@ -284,6 +284,36 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .wp-test-ans{font-size:.8rem;color:var(--accent3);padding:6px 10px;background:rgba(67,233,123,.07);border-radius:7px;line-height:1.5;font-weight:600;}
 .shimmer{background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* IPA Quiz Type 2 improvements */
+.iq-q2-sym-row{display:flex;justify-content:flex-start;margin:0 0 14px;}
+.iq-sym-big{font-size:2.6rem;font-weight:400;font-family:'Courier New',monospace;background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:8px 20px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:opacity .2s;}
+.iq-sym-big:hover{opacity:.8;}
+.iq-sym-speaker{font-size:1.1rem;opacity:.5;}
+.iq-q2-desc{font-size:.95rem;font-weight:500;line-height:1.6;color:var(--text);margin-top:14px;margin-bottom:10px;text-align:left;}
+/* IPA Quiz Type 1 improvements */
+.iq-q1-word-row{display:flex;justify-content:flex-start;margin:0 0 20px;}
+.iq-word-big{font-size:2.4rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent);background:none;border:none;cursor:pointer;padding:8px 0;border-radius:10px;transition:opacity .15s;letter-spacing:.01em;}
+.iq-word-big:hover{background:rgba(108,99,255,.1);}
+/* Better spacing for iq-question */
+.iq-question{font-size:1rem;font-weight:600;color:var(--text);line-height:1.65;margin-bottom:0;}
+/* Larger word buttons in multi-select */
+#iqOpts .iq-opt{font-size:.95rem;padding:10px 18px;min-width:64px;}
+.iq-opt.iq-sym-opt{font-family:'Courier New',monospace;font-size:1.3rem;font-weight:400;width:58px;height:58px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:12px;}
+
+/* IPA Quiz — unified focus layout for all types */
+.iq-t0-hint{font-size:.72rem;color:var(--muted);font-weight:500;letter-spacing:.03em;text-transform:uppercase;margin:4px 0 20px;display:block;}
+.iq-t0-desc{font-size:1.2rem;font-weight:700;color:var(--text);line-height:1.65;margin-bottom:32px;}
+.iq-t1-word-block{margin:0 0 32px;}
+.iq-word-big{font-size:2.8rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;display:block;transition:opacity .15s;}
+.iq-word-big:hover{opacity:.75;}
+
+.iq-focus-block{margin:0 0 28px;display:flex;flex-direction:column;gap:18px;}
+
+/* Wrong panel clickable sections */
+.wp-clickable{cursor:pointer;transition:background .15s;}
+.wp-clickable:hover{background:rgba(108,99,255,.06);}
+.wp-clickable:active{background:rgba(108,99,255,.12);}
 </style>
 </head>
 <body>
@@ -612,7 +642,7 @@ function renderQ(word,type){
       document.getElementById('og').addEventListener('click',function(e){var b=e.target.closest('.option-btn');if(!b||answering)return;doMC(word,b.dataset.w,bonus,ai);});
     });
   }else if(type==='ty'){
-    area.innerHTML='<div class="game-card"><span class="badge badge-type">&#9000; Type the Word</span>'+bb+meta+'<div class="qlabel">Type the correct English word - 60 seconds!</div><div class="def-box" id="db"><div class="shimmer" style="width:76%"></div><div class="shimmer" style="width:66%"></div></div><div class="timer-container"><svg class="timer-ring" width="64" height="64"><circle cx="32" cy="32" r="27" fill="none" stroke="var(--border)" stroke-width="6"/><circle id="tc" cx="32" cy="32" r="27" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="'+circ+'" stroke-dashoffset="0"/></svg><div class="timer-text" id="tn">60</div></div><input class="type-input" id="ti" placeholder="Type the word here..." autocomplete="off" autocorrect="off" spellcheck="false" autofocus><button class="submit-btn" id="sb">Submit</button><div class="feedback-area" id="fa"></div></div>';
+    area.innerHTML='<div class="game-card"><span class="badge badge-type">&#9000; Type the Word</span>'+bb+meta+'<div class="qlabel">Type the correct English word - 60 seconds!</div><div class="def-box" id="db"><div class="shimmer" style="width:76%"></div><div class="shimmer" style="width:66%"></div></div><div class="timer-container"><svg class="timer-ring" width="64" height="64"><circle cx="32" cy="32" r="27" fill="none" stroke="var(--border)" stroke-width="6"/><circle id="tc" cx="32" cy="32" r="27" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="'+circ+'" stroke-dashoffset="0"/></svg><div class="timer-text" id="tn">60</div></div><input class="type-input" id="ti" placeholder="Type the word here..." autocomplete="off" autocorrect="off" spellcheck="false" autofocus><div style="height:14px"></div><button class="submit-btn" id="sb">Submit</button><div class="feedback-area" id="fa"></div></div>';
     getAI(word).then(function(ai){
       var db=document.getElementById('db');if(db)db.innerHTML='<div class="def-text">'+ai.def+'</div><div class="ex-text">'+ai.ex+'</div>';
       startTimer(TYPE_TIME,function(){doType(word,bonus,true,ai);});
@@ -672,7 +702,7 @@ function showWrong(word,ai,extraMsg){
   document.getElementById('headerScore').textContent=score+' pts';
 
   var pri=db.pri||db.priority||'';
-  var priLabel=pri.indexOf('Essential')>-1?'Essential':pri.indexOf('★★★★')>-1?'High Priority':pri.indexOf('★★★')>-1?'Grade 4':'';
+  var priLabel=pri.indexOf('Essential')>-1?'Essential':pri.indexOf('\u2605\u2605\u2605\u2605')>-1?'High Priority':pri.indexOf('\u2605\u2605\u2605')>-1?'Grade 4':'';
   var afc=(db.afc||'');
   var showAfc=afc&&afc!=='General Academic Vocabulary';
   var exA=db.exA||''; var exB=db.exB||''; var exC=db.exC||'';
@@ -684,53 +714,99 @@ function showWrong(word,ai,extraMsg){
   var logic=db.logic||'';
   var nuance=db.nuance||db.nua||'';
 
+  // Helper: speak text, stopping current
+  function spk(t){if(!t)return;if(window.speechSynthesis)window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.75;
+    var vs=window.speechSynthesis.getVoices();
+    var v=vs.find(function(x){return x.lang==='en-US'&&x.localService;})||vs.find(function(x){return x.lang.startsWith('en-US');});
+    if(v)u.voice=v;
+    setTimeout(function(){window.speechSynthesis.speak(u);},50);
+  }
+  function hw(s,w){var e=w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return s.replace(new RegExp('('+e+'(?:s|es|ed|ing|er|d|ly)?)', 'gi'),'<span class="hw">$1</span>');}
+
   var html='<div class="wrong-panel" id="wpanel">';
-  html+='<div class="wp-header">'
+
+  // Header — click speaks word
+  html+='<div class="wp-header" id="wph">'
     +'<div class="wp-word-row">'
     +'<span class="wrong-word-big">'+word.word+'</span>'
     +'<span style="font-size:1rem;opacity:.5;margin-left:4px">&#128266;</span>'
-    +(priLabel?'<span class="g4-badge'+(pri.indexOf('★★★')>-1?' high':'')+'">'+priLabel+'</span>':'')
+    +(priLabel?'<span class="g4-badge'+(pri.indexOf('\u2605\u2605\u2605')>-1?' high':'')+'">'+priLabel+'</span>':'')
     +'</div>'
     +(ipa?'<span class="wrong-ipa">'+ipa+'</span>':'')
     +'<div class="wp-meta-row">'
     +'<span class="wp-tier">'+word.tier+' &middot; '+word.cat+'</span>'
     +(showAfc?'<span class="afc-tag">'+afc+'</span>':'')
     +'</div></div>';
-  html+='<div class="wp-section"><div class="wp-slabel">Core Meaning</div>'
+
+  // Core Meaning — click speaks definition + kid explanation
+  html+='<div class="wp-section wp-clickable" id="wps-def" title="Click to hear">'
+    +'<div class="wp-slabel">&#128266; Core Meaning</div>'
     +'<div class="wp-def" id="wpDef"><div class="shimmer" style="height:18px;width:90%"></div></div>'
     +(kid?'<div class="wp-kid" id="wpKid" style="opacity:0">&#128161; '+kid+'</div>':'')
     +'</div>';
+
+  // Examples — each row click speaks that sentence
   if(hasExamples){
     html+='<div class="wp-section"><div class="wp-slabel">Examples</div><div class="ex-rows">';
-    if(exA)html+='<div class="ex-row"><div class="ex-icon">&#128218;</div><div class="ex-col"><div class="ex-type">Everyday / School</div><div class="ex-text" id="wpExA"></div></div></div>';
-    if(exB)html+='<div class="ex-row"><div class="ex-icon">&#128214;</div><div class="ex-col"><div class="ex-type">ELA / Literature</div><div class="ex-text" id="wpExB"></div></div></div>';
-    if(exC)html+='<div class="ex-row"><div class="ex-icon">&#128300;</div><div class="ex-col"><div class="ex-type">Science / Social Studies</div><div class="ex-text" id="wpExC"></div></div></div>';
+    if(exA)html+='<div class="ex-row wp-clickable" id="wps-exA" title="Click to hear"><div class="ex-icon">&#128218;</div><div class="ex-col"><div class="ex-type">Everyday / School</div><div class="ex-text" id="wpExA"></div></div></div>';
+    if(exB)html+='<div class="ex-row wp-clickable" id="wps-exB" title="Click to hear"><div class="ex-icon">&#128214;</div><div class="ex-col"><div class="ex-type">ELA / Literature</div><div class="ex-text" id="wpExB"></div></div></div>';
+    if(exC)html+='<div class="ex-row wp-clickable" id="wps-exC" title="Click to hear"><div class="ex-icon">&#128300;</div><div class="ex-col"><div class="ex-type">Science / Social Studies</div><div class="ex-text" id="wpExC"></div></div></div>';
     html+='</div></div>';
   }
-  if(logic)html+='<div class="wp-section"><div class="wp-slabel">Word Structure</div><div class="wp-logic">'+logic+'</div></div>';
-  if(nuance)html+='<div class="wp-section"><div class="wp-slabel">Nuance &amp; Usage</div><div class="wp-nuance">'+nuance+'</div></div>';
-  if(exD)html+='<div class="wp-test"><div class="wp-test-lbl">&#127919; State Test Thinking</div><div class="wp-test-q">'+exD+'</div>'+(ans?'<div class="wp-test-ans">'+ans+'</div>':'')+'</div>';
-  html+='<button class="next-btn" id="nb" onclick="event.stopPropagation()">Next Question &rarr;</button></div>';
+
+  // Word Structure — click speaks logic
+  if(logic)html+='<div class="wp-section wp-clickable" id="wps-logic" title="Click to hear"><div class="wp-slabel">&#128266; Word Structure</div><div class="wp-logic">'+logic+'</div></div>';
+
+  // Nuance — click speaks nuance
+  if(nuance)html+='<div class="wp-section wp-clickable" id="wps-nuance" title="Click to hear"><div class="wp-slabel">&#128266; Nuance &amp; Usage</div><div class="wp-nuance">'+nuance+'</div></div>';
+
+  // State Test — click speaks prompt
+  if(exD)html+='<div class="wp-test wp-clickable" id="wps-test" title="Click to hear"><div class="wp-test-lbl">&#127919; State Test Thinking</div><div class="wp-test-q">'+exD+'</div>'+(ans?'<div class="wp-test-ans">'+ans+'</div>':'')+'</div>';
+
+  html+='<button class="next-btn" id="nb">Next Question &rarr;</button></div>';
 
   fa.innerHTML=html;
 
+  // Typewriter for definition
   var wpDef=fa.querySelector('#wpDef');
-  if(wpDef&&def){wpDef.innerHTML='';var i=0,t=def;(function tick(){if(i<t.length){wpDef.textContent+=t[i++];setTimeout(tick,15);}})();}
+  if(wpDef&&def){wpDef.innerHTML='';var ti=0;(function tick(){if(ti<def.length){wpDef.textContent+=def[ti++];setTimeout(tick,15);}})();}
   var wpKid=fa.querySelector('#wpKid');
   if(wpKid)setTimeout(function(){wpKid.style.opacity='1';},900);
-  function hw(s,w){var e=w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return s.replace(new RegExp('('+e+'(?:s|es|ed|ing|er|d|ly)?)', 'gi'),'<span class="hw">$1</span>');}
+
+  // Fade in examples with word highlight
   [['wpExA',exA],['wpExB',exB],['wpExC',exC]].forEach(function(p,i){
     var el=fa.querySelector('#'+p[0]);
     if(el&&p[1]){setTimeout(function(){el.style.opacity='0';el.innerHTML=hw(p[1],word.word);el.style.transition='opacity .4s';el.style.opacity='1';},300+i*250);}
   });
-  var panel=fa.querySelector('#wpanel');
-  if(panel)panel.addEventListener('click',function(){speak(word.word,0.75);});
-  speak(word.word,0.7);
-  var nb=fa.querySelector('#nb');
-  if(nb)nb.addEventListener('click',function(){if(window.speechSynthesis)window.speechSynthesis.cancel();qIdx++;renderQ();});
-}
 
-// AI CALLS
+  // Section click → TTS
+  var wph=fa.querySelector('#wph');
+  if(wph)wph.addEventListener('click',function(){spk(word.word);});
+
+  var wpsDef=fa.querySelector('#wps-def');
+  if(wpsDef)wpsDef.addEventListener('click',function(){spk(def+(kid?' '+kid:''));});
+
+  var wpsExA=fa.querySelector('#wps-exA');
+  if(wpsExA)wpsExA.addEventListener('click',function(){spk(exA);});
+  var wpsExB=fa.querySelector('#wps-exB');
+  if(wpsExB)wpsExB.addEventListener('click',function(){spk(exB);});
+  var wpsExC=fa.querySelector('#wps-exC');
+  if(wpsExC)wpsExC.addEventListener('click',function(){spk(exC);});
+
+  var wpsLogic=fa.querySelector('#wps-logic');
+  if(wpsLogic)wpsLogic.addEventListener('click',function(){spk(logic);});
+  var wpsNuance=fa.querySelector('#wps-nuance');
+  if(wpsNuance)wpsNuance.addEventListener('click',function(){spk(nuance);});
+  var wpsTest=fa.querySelector('#wps-test');
+  if(wpsTest)wpsTest.addEventListener('click',function(){spk(exD+(ans?' '+ans:''));});
+
+  // Auto speak word on load
+  spk(word.word);
+
+  var nb=fa.querySelector('#nb');
+  if(nb)nb.addEventListener('click',function(e){e.stopPropagation();if(window.speechSynthesis)window.speechSynthesis.cancel();qIdx++;renderQ();});
+}
 function getAI(word){
   var k=word.word+'_i';if(cache[k])return Promise.resolve(cache[k]);
   var fb={ipa:IPA_MAP[word.word]?'['+IPA_MAP[word.word]+']':'',def:'An English word used in the category of '+(word.cat||'everyday communication')+'.',ex:'The word "'+word.word+'" is commonly used in English.'};
@@ -1085,8 +1161,8 @@ function renderIQQuestion() {
     area.innerHTML = '<div class="iq-score-bar"><span>Question ' + (iqTotal+1) + '</span><span class="iq-score-num">' + iqScore + ' pts</span></div>'
       + '<div class="iq-card">'
       + '<span class="iq-type-badge iq-badge-1">&#128214; Description &#8594; Symbol</span>'
-      + '<div class="iq-question">' + descHL + '</div>'
-      + '<div class="iq-hint">Which IPA symbol makes this sound?</div>'
+      + '<div class="iq-t0-hint">Which IPA symbol makes this sound?</div>'
+      + '<div class="iq-t0-desc">' + descHL + '</div>'
       + '<div class="iq-options">' + optsHTML + '</div>'
       + '<div id="iqFeedback"></div>'
       + '</div>';
@@ -1109,8 +1185,8 @@ function renderIQQuestion() {
     area.innerHTML = '<div class="iq-score-bar"><span>Question ' + (iqTotal+1) + '</span><span class="iq-score-num">' + iqScore + ' pts</span></div>'
       + '<div class="iq-card">'
       + '<span class="iq-type-badge iq-badge-2">&#128488; Word &#8594; Symbol</span>'
-      + '<div class="iq-question"><span class="iq-sym" onclick="speak(\'' + entry.word + '\',0.5)" style="cursor:pointer" title="Click to hear the word">&#128266; ' + entry.word + '</span></div>'
-      + '<div class="iq-hint">Which IPA symbol represents the <strong>' + entry.name + '</strong> sound in this word?</div>'
+      + '<div class="iq-t0-hint">Which IPA symbol represents the <strong>' + entry.name + '</strong> sound?</div>'
+      + '<div class="iq-t1-word-block"><button class="iq-word-big" onclick="speak(\'' + entry.word + '\',0.5)" title="Click to hear">' + entry.word + '</button></div>'
       + '<div class="iq-options">' + optsHTML + '</div>'
       + '<div id="iqFeedback"></div>'
       + '</div>';
@@ -1146,13 +1222,14 @@ function renderIQQuestion() {
     area.innerHTML = '<div class="iq-score-bar"><span>Question ' + (iqTotal+1) + '</span><span class="iq-score-num">' + iqScore + ' pts</span></div>'
       + '<div class="iq-card">'
       + '<span class="iq-type-badge iq-badge-3">&#9745; Symbol &#8594; Words (multi-select)</span>'
-      + '<div class="iq-question">'
-      + '<span class="iq-sym" style="color:' + catColor + ';cursor:pointer" onclick="playIPA(\'' + correct.mp3 + '\')" title="Click to hear">' + correct.sym + '</span>'
-      + descHL
+      + '<div class="iq-t0-hint">Select ALL words that contain this sound, then press Check.</div>'
+      + '<div class="iq-focus-block">'
+      + '<button class="iq-sym-big" style="color:' + catColor + '" onclick="playIPA(\'' + correct.mp3 + '\')" title="Click to hear">'
+      + correct.sym + '<span class="iq-sym-speaker">&#128266;</span></button>'
+      + '<div class="iq-q2-desc">' + descHL + '</div>'
       + '</div>'
-      + '<div class="iq-hint">Select ALL words that contain this sound, then press Check.</div>'
       + '<div class="iq-options" id="iqOpts">' + optsHTML + '</div>'
-      + '<button class="iq-next-btn" id="iqCheckBtn" style="margin-top:12px;background:var(--surface2);color:var(--text);border:1px solid var(--border);">Check Answers</button>'
+      + '<button class="iq-next-btn" id="iqCheckBtn" style="margin-top:16px;background:var(--surface2);color:var(--text);border:1px solid var(--border);">Check &#10003;</button>'
       + '<div id="iqFeedback"></div>'
       + '</div>';
 
@@ -1209,6 +1286,7 @@ function gradeSingleSelect(chosen, btn) {
     // Show correct feedback briefly
     fbEl.innerHTML = '<div class="iq-feedback correct">'
       + '&#9989; Correct! <strong>' + item.sym + '</strong> &mdash; ' + item.name + ': ' + descHL
+      + (iqCurrent.entry ? '<div style="font-size:.9rem;margin-top:8px;font-weight:700;color:var(--text)">' + iqCurrent.entry.word + ' <span style="font-family:serif;font-weight:400;color:var(--muted);font-size:.85rem">[' + iqCurrent.entry.ipa + ']</span></div>' : '')
       + '</div>';
     setTimeout(function() {
       // Build full IPA symbol grid grouped by category
@@ -1225,6 +1303,7 @@ function gradeSingleSelect(chosen, btn) {
       }
       fbEl.innerHTML = '<div class="iq-feedback correct" style="margin-bottom:14px">'
         + '&#9989; Correct! <strong>' + item.sym + '</strong> &mdash; ' + item.name + ': ' + descHL
+        + (iqCurrent.entry ? '<div style="font-size:.9rem;margin-top:8px;font-weight:700;color:var(--text)">' + iqCurrent.entry.word + ' <span style="font-family:serif;font-weight:400;color:var(--muted);font-size:.85rem">[' + iqCurrent.entry.ipa + ']</span></div>' : '')
         + '</div>'
         + '<div class="iq-all-syms-panel">'
         + '<div class="iq-syms-label">Vowels</div>'
@@ -1234,11 +1313,8 @@ function gradeSingleSelect(chosen, btn) {
         + '<div style="font-size:.75rem;color:var(--muted);margin-top:8px">&#128266; Click any symbol to hear it</div>'
         + '</div>'
         + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-      var singleOpts = Array.from(document.querySelectorAll('.iq-opt')).map(function(b){ return b.dataset.val; });
-      speakWordsSequence(singleOpts.filter(function(v){ return v.length > 1; }), 0.6); // only real words not symbols
-      // For word→symbol quiz, the opts are symbols not words - speak differently
-      // Just run grid sequence
-      setTimeout(function(){ if(!_seqCancelled) playSymbolsSequenceGrid(); }, 1000);
+      // Play grid symbols sequence only (options are IPA symbols, not words)
+      setTimeout(function(){ if(!_seqCancelled) playSymbolsSequenceGrid(); }, 1500);
     }, 1500);
   } else {
     fbEl.innerHTML = '<div class="iq-feedback wrong">'
@@ -1246,15 +1322,15 @@ function gradeSingleSelect(chosen, btn) {
       + '<div style="font-size:.78rem;margin-top:6px;color:var(--muted)">&#128266; Click any symbol above to hear its sound</div>'
       + '</div>'
       + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-    // Auto-play all option symbols in order via MP3
-    setTimeout(function() {
-      _seqCancelled = false;
+    // Auto-play: for type 1 (Word->Symbol), speak word first, THEN play MP3 sequence
+    _seqCancelled = false;
+    function startSymSeq() {
+      if (_seqCancelled) return;
       var optBtns = Array.from(document.querySelectorAll('.iq-opt'));
       var qi = 0;
       function playNextSym() {
         if (_seqCancelled || qi >= optBtns.length) return;
         var btn = optBtns[qi++];
-        // Use data-mp3 directly if available, else look up IPA_DATA
         var mp3 = btn.dataset.mp3;
         if (!mp3) {
           var d = IPA_DATA.find(function(d){ return d.sym === btn.dataset.val; });
@@ -1277,7 +1353,20 @@ function gradeSingleSelect(chosen, btn) {
         });
       }
       playNextSym();
-    }, 400);
+    }
+    // If type 1: speak the word first, then chain MP3 sequence
+    if (iqCurrent.entry) {
+      var wu = new SpeechSynthesisUtterance(iqCurrent.entry.word);
+      wu.lang = 'en-US'; wu.rate = 0.6;
+      var vs = window.speechSynthesis.getVoices();
+      var v = vs.find(function(x){return x.lang==='en-US'&&x.localService;})||vs.find(function(x){return x.lang.startsWith('en-US');});
+      if (v) wu.voice = v;
+      wu.onend = function() { setTimeout(startSymSeq, 400); };
+      window.speechSynthesis.cancel();
+      setTimeout(function(){ window.speechSynthesis.speak(wu); }, 300);
+    } else {
+      setTimeout(startSymSeq, 400);
+    }
   }
 }
 
