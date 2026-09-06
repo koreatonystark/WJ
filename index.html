@@ -124,6 +124,8 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:
 .mastered-word{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:8px 10px;font-size:.82rem;font-weight:700;}
 .ipa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin:12px 0;}
 .ipa-btn{background:var(--surface);border:2px solid var(--border);border-radius:11px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;}
+.ipa-name{font-size:.65rem;color:var(--muted);margin-top:2px;display:block;}
+.ipa-words{font-size:.7rem;color:var(--accent3);margin-top:3px;display:block;border-top:1px solid var(--border);padding-top:3px;}
 .ipa-btn:hover,.ipa-btn.active{border-color:var(--accent);background:rgba(108,99,255,.1);}
 .ipa-sym{font-size:1.2rem;font-weight:700;display:block;color:var(--text);}
 .ipa-name{font-size:.65rem;color:var(--muted);margin-top:2px;}
@@ -133,7 +135,8 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:
 .ipa-back-btn{background:none;border:1px solid var(--border);color:var(--muted);border-radius:11px;padding:8px 16px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.82rem;margin-bottom:12px;}
 .iq-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;width:100%;margin-bottom:10px;}
 .iq-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:11px;padding:10px;text-align:center;cursor:pointer;font-size:.9rem;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s;min-height:44px;}
+.iq-opts .iq-opt:last-child:nth-child(odd){grid-column:1/-1;max-width:50%;margin:0 auto;}
+.iq-opt{background:var(--surface);border:2px solid var(--accent);border-radius:11px;padding:10px;text-align:center;cursor:pointer;font-size:.9rem;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text);transition:all .2s;min-height:44px;}
 .iq-opt:hover{border-color:var(--accent);}
 .iq-opt.correct{background:rgba(67,233,123,.15);border-color:var(--accent3);color:var(--accent3);}
 .iq-opt.wrong{background:rgba(255,101,132,.15);border-color:var(--accent2);color:var(--accent2);}
@@ -639,7 +642,12 @@ function showIPA(){
     +'<div class="ipa-grid cons-group">'+c.map(function(s,i){return ipaBtnH(s,i+15);}).join('')+'</div>';
 }
 function ipaBtnH(s,i){
-  return '<div class="ipa-btn" onclick="playIPS('+i+')" data-idx="'+i+'"><span class="ipa-sym">'+s.sym+'</span><span class="ipa-name">'+s.name+'</span><span class="ipa-words">'+s.words+'</span></div>';
+  return '<div class="ipa-btn" onclick="playIPS('+i+')" data-idx="'+i+'">'
+    +'<span class="ipa-sym">'+s.sym+'</span>'
+    +'<span class="ipa-name">'+s.name+'</span>'
+    +'<div style="width:60%;height:1px;background:var(--border);margin:4px auto;"></div>'
+    +'<span class="ipa-words">'+s.words.replace(/,/g,', ')+'</span>'
+    +'</div>';
 }
 function playIPS(idx){
   var s=IPA_DATA[idx];
@@ -671,9 +679,47 @@ function renderIQQ(){
 function gradeIQ(btn,sel,cor,pts){
   document.querySelectorAll('.iq-opt').forEach(function(b){b.onclick=null;b.style.pointerEvents='none';});
   var fb=document.getElementById('iqFb');
-  if(sel===cor){btn.classList.add('correct');iqScore+=pts;document.getElementById('iqScore').textContent=iqScore+' pts';fb.innerHTML='<div class="iq-feedback correct">&#10003; Correct! +'+pts+' pts</div>';}
-  else{btn.classList.add('wrong');document.querySelectorAll('.iq-opt').forEach(function(b){if(b.dataset.val===cor)b.classList.add('correct');});fb.innerHTML='<div class="iq-feedback wrong">&#10007; Correct: '+cor+'</div>';}
+  var isCorrect=(sel===cor);
+  if(isCorrect){
+    btn.classList.add('correct');iqScore+=pts;
+    document.getElementById('iqScore').textContent=iqScore+' pts';
+    fb.innerHTML='<div class="iq-feedback correct">&#10003; Correct! +'+pts+' pts</div>';
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.iq-opt').forEach(function(b){if(b.dataset.val===cor)b.classList.add('correct');});
+    var corS=IPA_DATA.find(function(s){return s.sym===cor;});
+    var corInfo=corS?cor+' = '+corS.name+' ('+corS.words+')':cor;
+    fb.innerHTML='<div class="iq-feedback wrong">&#10007; Correct: '+corInfo+'</div>';
+  }
   fb.innerHTML+='<button class="iq-next-btn" onclick="renderIQQ()">Next &rarr;</button>';
+  // Auto-play whether correct or wrong - student needs to hear the sound
+  var corSym=IPA_DATA.find(function(s){return s.sym===cor;});
+  if(corSym){
+    setTimeout(function(){
+      // First speak the symbol name
+      speak(corSym.name, 0.8);
+      // Then speak example words one by one
+      var words=corSym.words.split(',');
+      // Also highlight each word button as it's spoken
+      var allBtns=document.querySelectorAll('.iq-opt');
+      var delay=900;
+      words.forEach(function(w,i){
+        setTimeout(function(){
+          if(!_seqCancelled){
+            speak(w.trim(), 0.7);
+            // highlight matching button
+            allBtns.forEach(function(b){
+              var bw=b.textContent.trim().toLowerCase();
+              if(bw===w.trim().toLowerCase()){
+                b.style.background='rgba(108,99,255,.25)';
+                setTimeout(function(){b.style.background='';},800);
+              }
+            });
+          }
+        }, delay + i*1000);
+      });
+    }, 200);
+  }
 }
 function showIQResult(){
   document.getElementById('ipaQuizArea').innerHTML='<div class="iq-card" style="text-align:center"><div style="font-size:3rem">'+(iqScore>=80?'&#127942;':iqScore>=50?'&#129352;':'&#127944;')+'</div><div style="font-size:2rem;font-weight:800;color:var(--accent);margin:8px 0">'+iqScore+'</div><div style="color:var(--muted);font-size:.85rem;margin-bottom:14px;">out of 100 pts</div><button class="iq-next-btn" onclick="startIPAQuiz()">Play Again</button><button class="btn-w" style="width:100%;margin-top:8px" onclick="showHome()">Home</button></div>';
