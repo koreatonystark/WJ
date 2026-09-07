@@ -372,6 +372,20 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   80%{transform:translateX(2px) scale(.98);}
   100%{opacity:1;transform:translateX(0) scale(1);}
 }
+
+@keyframes ipaSlideIn{
+  0%{opacity:0;transform:translateX(70px) scale(.8);}
+  55%{opacity:1;transform:translateX(-6px) scale(1.08);}
+  75%{transform:translateX(3px) scale(.97);}
+  100%{opacity:1;transform:translateX(0) scale(1);}
+}
+.ipa-playing{box-shadow:0 0 0 3px var(--accent),0 0 20px rgba(108,99,255,.4)!important;animation:ipaPulse 1.2s ease-in-out infinite;}
+@keyframes ipaPulse{0%,100%{box-shadow:0 0 0 3px var(--accent),0 0 12px rgba(108,99,255,.3);}50%{box-shadow:0 0 0 3px var(--accent),0 0 24px rgba(108,99,255,.6);}}
+.ipa-word-stage{height:60px;display:flex;align-items:center;overflow:hidden;position:relative;border-top:1px solid var(--border);margin-top:4px;padding-top:6px;}
+.ipa-word-slide{display:flex;align-items:baseline;gap:12px;opacity:0;white-space:nowrap;}
+.ipa-slide-word{font-size:2rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;}
+.ipa-slide-pron{font-size:.95rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.04em;}
+.ipa-slide-pron .ipa-bold{color:var(--accent3);font-weight:800;font-size:1.05rem;}
 </style>
 </head>
 <body>
@@ -563,6 +577,8 @@ function loadIPA(){
         IPA_DATA.push({sym:sym,mp3:mp3,img:img,src:src,name:sym,cat:cat,desc:desc,words:words});
       }
       console.log('IPA_DATA loaded:',IPA_DATA.length,'symbols');
+      // Load pro2 AFTER IPA_DATA is ready
+      loadPro2();
     })
     .catch(function(e){console.warn('IPA CSV failed:',e);});
 }
@@ -1251,13 +1267,11 @@ function showIPA() {
     items.forEach(function(item, idx) {
       var cardId = 'ipacard-' + idx;
       var wordList = item.words.map(function(w){ return w.w; }).join(',');
-      var descHL = item.desc.replace(/"([^"]+)"/g, '"<span class="ipa-sound">$1</span>"');
-      // Encode word+ipa pairs as JSON-safe string
-      var wordDataJson = JSON.stringify(item.words.map(function(w){return {w:w.w,ipa:w.ipa,bold:w.bold};}));
+      var descHL = item.desc ? item.desc.replace(/\"([^\"]+)\"/g, '"<span class="ipa-sound">$1</span>"') : '';
       h += '<div class="ipa-card" id="' + cardId + '">'
         + '<button class="ipa-sym-btn ' + (item.cat==='Vowel'?'vowel':'consonant') + '" '
-        + 'onclick="startIPACardAnim(\'' + cardId + '\',\'' + item.mp3 + '\',\'' + wordList + '\')" '
-        + 'title="Click to hear">'
+        + 'onclick="toggleIPACard(\'' + cardId + '\',\'' + item.mp3 + '\',\'' + wordList + '\')" '
+        + 'title="Click to play / stop">'
         + item.sym + '</button>'
         + '<div class="ipa-body">'
         + '<div class="ipa-desc-main">' + descHL + '</div>'
@@ -1270,66 +1284,98 @@ function showIPA() {
     return h;
   }
 
-  // IPA card animation: play mp3 then slide words one by one
-  var _cardAnimId = 0;
-  function startIPACardAnim(cardId, mp3, wordCsv) {
-    // Stop any running animation
+  // Active card tracking for toggle
+  var _activeCard = null;
+
+  function toggleIPACard(cardId, mp3, wordCsv) {
+    // If same card is active → stop
+    if (_activeCard === cardId) {
+      stopCardAnim();
+      return;
+    }
+    stopCardAnim();
+    _activeCard = cardId;
+    startIPACardAnim(cardId, mp3, wordCsv);
+  }
+
+  function stopCardAnim() {
     _ipaSeqId++;
     _seqCancelled = true;
-    if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio = null; }
+    if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
     if (window.speechSynthesis) window.speechSynthesis.cancel();
-    // Reset all cards' stages
-    document.querySelectorAll('.ipa-word-slide').forEach(function(el){
-      el.textContent = ''; el.className = 'ipa-word-slide';
+    // Clear slide in all cards
+    document.querySelectorAll('.ipa-word-slide').forEach(function(el) {
+      el.innerHTML = '';
+      el.style.animation = 'none';
+      el.style.opacity = '0';
     });
+    // Remove active state from buttons
+    document.querySelectorAll('.ipa-sym-btn').forEach(function(b) {
+      b.classList.remove('ipa-playing');
+    });
+    _activeCard = null;
+  }
 
-    var mySeqId = ++_ipaSeqId;
+  function startIPACardAnim(cardId, mp3, wordCsv) {
+    var myId = _ipaSeqId;
     _seqCancelled = false;
+
+    // Mark button as playing
+    var card = document.getElementById(cardId);
+    if (card) card.querySelector('.ipa-sym-btn').classList.add('ipa-playing');
+
     var words = wordCsv.split(',').filter(Boolean);
-    var stage = document.getElementById(cardId + '-stage');
     var slide = document.getElementById(cardId + '-slide');
     if (!slide) return;
 
-    // Find word IPA data from IPA_DATA
-    var symEntry = IPA_DATA.find(function(d){ return ('ipacard-' + IPA_DATA.indexOf(d)) === cardId || true; });
-    // Build word→ipa map from all IPA_DATA entries
+    // Build word→ipa map from IPA_DATA
     var ipaMap = {};
-    IPA_DATA.forEach(function(d){
-      d.words.forEach(function(w){ if(!ipaMap[w.w]) ipaMap[w.w]={ipa:w.ipa,bold:w.bold}; });
+    IPA_DATA.forEach(function(d) {
+      (d.words||[]).forEach(function(w) {
+        if (!ipaMap[w.w]) ipaMap[w.w] = {ipa: w.ipa||'', bold: w.bold||''};
+      });
     });
 
-    function isActive(){ return mySeqId === _ipaSeqId && !_seqCancelled; }
+    function isActive() { return myId === _ipaSeqId && !_seqCancelled; }
 
     function showWord(i) {
-      if (!isActive() || i >= words.length) {
-        if (slide) { slide.style.animation = 'none'; slide.textContent = ''; }
+      if (!isActive()) { slide.style.opacity='0'; return; }
+      if (i >= words.length) {
+        // Loop back to start after short pause
+        setTimeout(function() { if(isActive()) showWord(0); }, 1500);
         return;
       }
       var w = words[i];
       var wdata = ipaMap[w] || {ipa:'', bold:''};
-      var pronHTML = wdata.ipa ? '<span class="ipa-slide-pron">[' + boldIPA(wdata.ipa, wdata.bold) + ']' + '</span>' : '';
+      var pronHTML = wdata.ipa
+        ? '<span class="ipa-slide-pron">[' + boldIPA(wdata.ipa, wdata.bold) + ']</span>'
+        : '';
       slide.innerHTML = '<span class="ipa-slide-word">' + w + '</span>' + pronHTML;
+      // Reset then animate
       slide.style.animation = 'none';
-      // Force reflow
-      void slide.offsetWidth;
-      slide.style.animation = 'ipaSlideIn 0.4s cubic-bezier(.22,.68,0,1.2) forwards';
-      // Speak the word
+      slide.style.opacity = '0';
+      void slide.offsetWidth; // reflow
+      slide.style.animation = 'ipaSlideIn 0.45s cubic-bezier(.22,.68,0,1.2) forwards';
+      // Speak
       speak(w, 0.5);
-      // Show next word after delay
-      var delay = Math.max(1200, w.length * 80 + 800);
-      setTimeout(function(){ if(isActive()) showWord(i + 1); }, delay);
+      // Next word after word length-based delay
+      var delay = Math.max(1400, w.length * 90 + 900);
+      setTimeout(function() { if(isActive()) showWord(i + 1); }, delay);
     }
 
-    // Play MP3 first, then animate words
+    // Play symbol MP3 first, then animate words
     if (mp3) {
-      var a = new Audio(mp3); _ipaAudio = a;
-      a.onended = function(){ if(isActive()) setTimeout(function(){ showWord(0); }, 200); };
-      a.onerror = function(){ if(isActive()) showWord(0); };
-      a.play().catch(function(){ if(isActive()) showWord(0); });
+      var a = new Audio(mp3);
+      _ipaAudio = a;
+      a.onended = function() { if (isActive()) setTimeout(function(){ showWord(0); }, 300); };
+      a.onerror = function() { if (isActive()) showWord(0); };
+      a.play().catch(function() { if (isActive()) showWord(0); });
     } else {
       showWord(0);
     }
   }
+
+
 
   var html = '<div class="ipa-section-title">Vowels</div>' + makeCards(vowels)
            + '<div class="ipa-section-title" style="margin-top:20px">Consonants</div>' + makeCards(consonants);
@@ -1783,8 +1829,7 @@ function showIQResult() {
     + '</div>';
 }
 loadWords();
-loadIPA();
-loadPro2();
+loadIPA(); // loadPro2 is called inside loadIPA after IPA_DATA ready
 </script>
 <div id="ipaQuizScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:660px;width:100%;margin:0 auto;">
