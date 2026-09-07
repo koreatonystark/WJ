@@ -317,6 +317,39 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   .ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:1.05rem;}
   .ipa-desc-main{font-size:.83rem;}
 }
+
+/* v14 — restore the clearer pre-v13 explanation hierarchy while exposing every DB field */
+.wrong-panel-full{padding:18px 18px 16px;}
+.explain-section{padding:13px 0;border-top:1px solid var(--border);}
+.explain-section:first-of-type{border-top:none;padding-top:2px;}
+.explain-title{font-size:.68rem;font-weight:900;letter-spacing:.085em;color:var(--muted);margin-bottom:8px;text-transform:uppercase;}
+.core-definition{font-size:1rem;line-height:1.55;color:var(--text);font-weight:650;margin-bottom:8px;}
+.explain-box{font-size:.84rem;line-height:1.58;color:var(--text);padding:9px 11px;border-radius:8px;background:var(--surface2);border-left:3px solid var(--border);white-space:pre-wrap;}
+.hint-box{color:var(--accent3);background:rgba(67,233,123,.07);border-left-color:var(--accent3);}
+.structure-box{color:#8e91ff;background:rgba(108,99,255,.10);border-left-color:var(--accent);}
+.nuance-box{color:var(--muted);}
+.origin-box{background:rgba(247,151,30,.06);border-left-color:var(--accent4);}
+.korean-box{color:var(--accent3);font-size:.95rem;font-weight:800;background:rgba(67,233,123,.055);border-left-color:var(--accent3);}
+.source-box{font-size:.76rem;color:var(--muted);}
+.example-row{padding:9px 2px;border-bottom:1px solid rgba(46,51,80,.75);}
+.example-row:last-child{border-bottom:none;}
+.example-label,.info-label{font-size:.61rem;font-weight:900;letter-spacing:.075em;color:var(--muted);margin-bottom:4px;}
+.example-text{font-size:.86rem;line-height:1.55;color:var(--text);font-style:italic;padding-left:26px;}
+.info-row{padding:8px 10px;margin-bottom:6px;background:rgba(255,255,255,.018);border-radius:7px;}
+.info-row:last-child{margin-bottom:0;}
+.info-text{font-size:.82rem;line-height:1.55;color:var(--text);white-space:pre-wrap;}
+.state-section{background:rgba(255,101,132,.035);padding-left:12px;padding-right:12px;margin-left:-12px;margin-right:-12px;}
+.state-section .explain-title{color:var(--accent2);}
+.state-question{font-size:.9rem;line-height:1.6;color:var(--text);font-style:italic;margin-bottom:9px;}
+.strategy-box{color:var(--accent3);background:rgba(67,233,123,.07);border-left-color:var(--accent3);}
+.extra-message{font-size:.76rem;color:var(--accent4);margin-top:10px;}
+@media(max-width:480px){
+  .wrong-panel-full{padding:14px 13px 13px;}
+  .explain-section{padding:11px 0;}
+  .example-text{padding-left:20px;font-size:.83rem;}
+  .info-text,.explain-box{font-size:.81rem;}
+}
+
 </style>
 </head>
 <body>
@@ -949,40 +982,66 @@ function showWrong(word,ai,extraMsg){
   getWrongEx(word,ai).then(function(d){
     var fa=document.getElementById('fa');if(!fa)return;
     document.getElementById('headerScore').textContent=score+' pts';
-    function block(label,text,cls){
+
+    function section(title,body,cls){
+      if(!body)return '';
+      return '<section class="explain-section '+(cls||'')+'"><div class="explain-title">'+title+'</div>'+body+'</section>';
+    }
+    function box(text,cls){
       if(!text)return '';
-      return '<div class="learn-block '+(cls||'')+'"><div class="dlabel">'+label+'</div><div class="learn-text">'+escHTML(text)+'</div></div>';
+      return '<div class="explain-box '+(cls||'')+'">'+escHTML(text)+'</div>';
     }
-    function sentenceBlock(label,text){
+    function spokenRow(label,text,icon){
       if(!text)return '';
-      return '<div class="learn-block"><div class="dlabel">'+label+'</div><div class="learn-text dex" data-spoken="'+escHTML(text)+'">'+escHTML(text)+'</div></div>';
+      return '<div class="example-row dex" data-spoken="'+escHTML(text)+'"><div class="example-label">'+(icon||'')+' '+label+'</div><div class="example-text">'+escHTML(text)+'</div></div>';
     }
-    var examplesHTML='';
-    if(d.examples.length){
-      examplesHTML='<div class="learn-block learn-examples"><div class="dlabel">Example Sentences / Test Prompt</div><div id="dex">'
-        +d.examples.map(function(ex,i){var labels=['A · Everyday / School','B · ELA / Literature','C · Science / Social Studies / Math','D · State-Test Thinking Prompt'];return '<div class="dex" data-spoken="'+escHTML(ex)+'"><strong>'+labels[i]+'</strong><br>'+escHTML(ex)+'</div>';}).join('')+'</div></div>';
+    function infoRow(label,text){
+      if(!text)return '';
+      return '<div class="info-row"><div class="info-label">'+label+'</div><div class="info-text">'+escHTML(text)+'</div></div>';
     }
+
     var meta=[word.tier||d.tier,word.level||d.level,word.cat||d.cat,d.subcat].filter(Boolean).map(escHTML).join(' &middot; ');
-    fa.innerHTML='<div class="wrong-panel">'
+
+    var core='';
+    if(d.definition) core+='<div class="core-definition">'+escHTML(d.definition)+'</div>';
+    if(d.kid) core+=box('💡 '+d.kid,'hint-box');
+
+    var examples='';
+    examples+=spokenRow('EVERYDAY / SCHOOL',d.examples[0],'📚');
+    examples+=spokenRow('ELA / LITERATURE',d.examples[1],'📖');
+    examples+=spokenRow('SCIENCE / SOCIAL STUDIES / MATH',d.examples[2],'🔬');
+
+    var meaningLogic='';
+    meaningLogic+=infoRow('MEANING',d.learn1);
+    meaningLogic+=infoRow('CONTEXT',d.learn2);
+    meaningLogic+=infoRow('NUANCE CHECK',d.learn3);
+
+    var academic='';
+    academic+=infoRow('GRADE 4 PRIORITY',d.priority);
+    academic+=infoRow('ACADEMIC FUNCTION',d.academicFunction);
+    academic+=infoRow('STATE TEST RELEVANCE',d.stateTest);
+    academic+=infoRow('REVIEW NOTES',d.review);
+
+    var statePrompt=d.examples[3]||'';
+    var state='';
+    if(statePrompt) state+='<div class="state-question dex" data-spoken="'+escHTML(statePrompt)+'">'+escHTML(statePrompt)+'</div>';
+    if(d.answerStrategy) state+=box(d.answerStrategy,'strategy-box');
+
+    fa.innerHTML='<div class="wrong-panel wrong-panel-full">'
       +'<div class="wrong-head"><div class="wrong-head-row"><span class="wrong-word-big">'+escHTML(word.word)+'</span>'+(d.ipa?'<span class="wrong-ipa">'+escHTML(d.ipa)+'</span>':'')+'</div><span class="wrong-meta">'+meta+'</span></div>'
-      +block('Definition — Core Meaning',d.definition)
-      +block('Kid Explanation — Core Idea',d.kid,'learn-hint')
-      +block('Word Logic / Structure',d.logic)
-      +block('Nuance & Usage',d.nuance,'learn-nuance')
-      +block('Origin / Memory Hook',d.origin)
-      +sentenceBlock('Learning Sentence 1 — Meaning',d.learn1)
-      +sentenceBlock('Learning Sentence 2 — Context',d.learn2)
-      +sentenceBlock('Learning Sentence 3 — Nuance',d.learn3)
-      +block('Korean — Reference',d.korean||word.korean,'learn-korean')
-      +block('Review Notes',d.review)
-      +block('Grade 4 Priority',d.priority)
-      +block('Academic Function',d.academicFunction)
-      +block('State Test Relevance',d.stateTest)
-      +examplesHTML
-      +block('Answer / Thinking Cue',d.answerStrategy,'learn-hint')
-      +block('Assessment Source Basis',d.sourceBasis)
-      +(extraMsg?'<div style="font-size:.76rem;color:var(--accent4);margin-top:10px">'+escHTML(extraMsg)+'</div>':'')
+      +section('🔊 CORE MEANING',core,'core-section')
+      +section('🧩 EXAMPLES',examples,'examples-section')
+      +section('🔊 WORD STRUCTURE',box(d.logic,'structure-box'),'structure-section')
+      +section('🔊 NUANCE &amp; USAGE',box(d.nuance,'nuance-box'),'nuance-section')
+      +section('🧠 ORIGIN / MEMORY HOOK',box(d.origin,'origin-box'),'origin-section')
+      +section('🧭 MEANING LOGIC / CONTEXT',meaningLogic,'logic-section')
+      +section('🇰🇷 KOREAN MEANING',box(d.korean||word.korean,'korean-box'),'korean-section')
+      +section('🎓 ACADEMIC / TEST USE',academic,'academic-section')
+      +section('🎯 STATE TEST THINKING',state,'state-section')
+      +section('📌 ASSESSMENT SOURCE BASIS',box(d.sourceBasis,'source-box'),'source-section')
+      +(extraMsg?'<div class="extra-message">'+escHTML(extraMsg)+'</div>':'')
       +'<button class="next-btn" id="nb">Next Question &rarr;</button></div>';
+
     var nb=document.getElementById('nb');if(nb)nb.addEventListener('click',function(){qIdx++;showQ();});
     setTimeout(function(){speak(word.word,0.7);},350);
     var wwb=fa.querySelector('.wrong-word-big');
