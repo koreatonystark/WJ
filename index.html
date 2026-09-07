@@ -434,8 +434,7 @@ function loadWords(){
 function loadIPA(){
   if(!PRO_CSV_URL)return;
   fetch(PRO_CSV_URL).then(function(r){return r.ok?r.text():Promise.reject(r.status);}).then(function(csv){
-    var lines=csv.split('
-');IPA_DATA=[];
+    var lines=csv.split('\n');IPA_DATA=[];
     for(var i=1;i<lines.length;i++){
       var cols=ssplit(lines[i]);if(cols.length<5||!cols[0].trim())continue;
       var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
@@ -450,8 +449,7 @@ function loadIPA(){
 function loadPro2(){
   if(!PRO2_CSV_URL)return;
   fetch(PRO2_CSV_URL).then(function(r){return r.ok?r.text():Promise.reject(r.status);}).then(function(csv){
-    var lines=csv.split('
-');
+    var lines=csv.split('\n');
     var hdrs=ssplit(lines[0]).map(function(h){return h.trim().toLowerCase().replace(/^"|"$/g,'');});
     var ci={sym:0,word:2,ipa:3,bold:4};
     hdrs.forEach(function(h,i){if(h==='symbol')ci.sym=i;else if(h==='word')ci.word=i;else if(h==='ipa')ci.ipa=i;else if(h==='bold')ci.bold=i;});
@@ -483,7 +481,7 @@ function showHome(){
   var recTotal=recs.length;
   el.innerHTML=recent.map(function(r,i){var recIdx=recTotal-1-i;var hw=r.words&&r.words.length>0;
     return '<div class="record-row" style="cursor:'+(hw?'pointer':'default')+'"'+(hw?' onclick="showReview('+recIdx+')"':'')+'>'+
-    '<div><span class="record-score">'+r.score+' pts</span>'+(hw?'<span style="font-size:.68rem;color:var(--accent);margin-left:8px;font-weight:700">&#128196; Review</span>':'')+'</div>+(r.score===top&&i===0?'<span class="new-badge">NEW</span>':'')+'</div><div style="font-size:.74rem;color:var(--muted)">'+r.correct+' correct / '+r.wrong+' missed'+(r.nm?' / +'+r.nm+' mastered':'')+'</div><div style="font-size:.71rem;color:var(--muted)">'+r.date+'</div></div>';}).join('');
+    '<div><span class="record-score">'+r.score+' pts</span>'+(r.score===top&&i===0?'<span class="new-badge">NEW</span>':'')+(hw?'<span style="font-size:.68rem;color:var(--accent);margin-left:8px;font-weight:700">&#128196; Review</span>':'')+'</div><div style="font-size:.74rem;color:var(--muted)">'+r.correct+' correct / '+r.wrong+' missed'+(r.nm?' / +'+r.nm+' mastered':'')+'</div><div style="font-size:.71rem;color:var(--muted)">'+r.date+'</div></div>';}).join('');
 }
 
 document.addEventListener('DOMContentLoaded',function(){
@@ -554,36 +552,44 @@ function showReview(recIdx){
   var curFilter='all';
   function renderReview(){
     var filtered=curFilter==='wrong'?words.filter(function(r){return !r.ok;}):curFilter==='correct'?words.filter(function(r){return r.ok;}):words;
-    var html='<div class="review-filter-row">'
-      +'<button class="review-filter'+(curFilter==='all'?' active':'')+'" onclick="setRF('all')">All ('+words.length+')</button>'
-      +'<button class="review-filter'+(curFilter==='wrong'?' active wrong-filter':'')+'" onclick="setRF('wrong')">&#10007; Missed ('+words.filter(function(r){return !r.ok;}).length+')</button>'
-      +'<button class="review-filter'+(curFilter==='correct'?' active':'')+'" onclick="setRF('correct')">&#10003; Correct ('+words.filter(function(r){return r.ok;}).length+')</button>'
-      +'</div>';
+    var list=document.getElementById('reviewList');
+    // Filter row
+    var fr=document.createElement('div');fr.className='review-filter-row';
+    ['all','wrong','correct'].forEach(function(f){
+      var btn=document.createElement('button');
+      btn.className='review-filter'+(f===curFilter?' active':'')+(f==='wrong'&&f===curFilter?' wrong-filter':'');
+      var wf=f==='wrong'?words.filter(function(r){return !r.ok;}):f==='correct'?words.filter(function(r){return r.ok;}):words;
+      btn.textContent=(f==='all'?'All':f==='wrong'?'✗ Missed':'✓ Correct')+' ('+wf.length+')';
+      btn.addEventListener('click',function(){curFilter=f;renderReview();});
+      fr.appendChild(btn);
+    });
+    list.innerHTML='';
+    list.appendChild(fr);
+    // Word cards
     filtered.forEach(function(r,i){
       var w=r.word;var db=WORD_DB[w.word]||{};
-      var stars=db.stars||1;var starStr='';for(var s=0;s<stars;s++)starStr+='&#9733;';
-      html+='<div class="review-card '+(r.ok?'correct-card':'wrong-card')+'">'
-        +'<div class="review-card-header" onclick="toggleReview('+i+')">'
-        +'<div><div class="review-word">'+w.word+'</div>'
+      var stars=db.stars||1;var starStr='';for(var s=0;s<stars;s++)starStr+='★';
+      var card=document.createElement('div');
+      card.className='review-card '+(r.ok?'correct-card':'wrong-card');
+      var header=document.createElement('div');header.className='review-card-header';
+      header.innerHTML='<div><div class="review-word">'+w.word+'</div>'
         +'<div style="display:flex;gap:8px;align-items:center;margin-top:2px">'
         +'<span class="review-stars">'+starStr+'</span>'
         +(db.ipa?'<span style="font-size:.78rem;color:var(--muted);font-family:serif">'+db.ipa+'</span>':'')
         +'</div></div>'
-        +'<span class="review-result '+(r.ok?'ok':'miss')+'">'+(r.ok?'&#10003; Correct':'&#10007; Missed')+'</span>'
-        +'</div>'
-        +'<div class="review-body" id="rb'+i+'">'
-        +(db.def?'<div class="review-def">'+db.def+'</div>':'')
-        +(db.kid?'<div class="review-kid">&#128161; '+db.kid+'</div>':'')
+        +'<span class="review-result '+(r.ok?'ok':'miss')+'">'+(r.ok?'✓ Correct':'✗ Missed')+'</span>';
+      var body=document.createElement('div');body.className='review-body';body.id='rb'+i;
+      body.innerHTML=(db.def?'<div class="review-def">'+db.def+'</div>':'')
+        +(db.kid?'<div class="review-kid">💡 '+db.kid+'</div>':'')
         +(db.exA?'<div class="review-ex-label">Everyday</div><div class="review-ex">'+db.exA+'</div>':'')
-        +(db.exB?'<div class="review-ex-label" style="margin-top:6px">ELA</div><div class="review-ex">'+db.exB+'</div>':'')
-        +'</div></div>';
+        +(db.exB?'<div class="review-ex-label" style="margin-top:6px">ELA</div><div class="review-ex">'+db.exB+'</div>':'');
+      header.addEventListener('click',function(){body.classList.toggle('open');});
+      card.appendChild(header);card.appendChild(body);list.appendChild(card);
     });
-    document.getElementById('reviewList').innerHTML=html;
   }
-  window.setRF=function(f){curFilter=f;renderReview();};
-  window.toggleReview=function(i){var b=document.getElementById('rb'+i);if(b)b.classList.toggle('open');};
   renderReview();
 }
+
 function startRound(){clearTimer();gCount++;round=pickWords();qIdx=0;score=0;rs={correct:0,wrong:0,bonus:0,nm:0};roundResults=[];show('gameScreen');showQ();}
 function showQ(){
   if(qIdx>=round.length){endRound();return;}
@@ -695,7 +701,7 @@ function renderQ(word,type){
     var sa=document.getElementById('sa');if(sa)sa.innerHTML=sents.map(function(s){return '<div class="sentence-item">'+s.replace(/___/g,'<span class="blank"></span>')+'</div>';}).join('');
     var wc=document.getElementById('wc');
     if(wc){wc.style.opacity='1';wc.style.pointerEvents='';wc.innerHTML=choices.map(function(w2){return '<button class="word-chip" data-w="'+w2.word+'">'+w2.word+'</button>';}).join('');wc.addEventListener('click',function(e){var ch=e.target.closest('.word-chip');if(!ch||answering)return;doSent(word,ch.dataset.w,bonus,sents);});}
-  })());
+  })();
   }
 }
 
