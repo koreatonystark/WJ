@@ -1061,8 +1061,9 @@ function toggleIPACard(cardId, mp3, wordCsv) {
     window.speechSynthesis.speak(utt);
   }
 
-  // Move only the WORD CONTENTS one slot to the left.
-  // The card/stage/row themselves never receive a transform.
+  // Move the visible WORDS themselves one slot to the left.
+  // Slot frames never move. Small words keep the same size while moving;
+  // only the word entering the large slot grows continuously during travel.
   function animateOneSlot(stage, done) {
     var row = stage.querySelector('.ipa-slots');
     if (!row) { done(); return; }
@@ -1070,52 +1071,72 @@ function toggleIPACard(cardId, mp3, wordCsv) {
     if (slots.length < 2) { done(); return; }
 
     var stageRect = stage.getBoundingClientRect();
-    var rects = slots.map(function(el){ return el.getBoundingClientRect(); });
-    var ghosts = [];
+    var wordEls = slots.map(function(slot){ return slot.querySelector('.ipa-slot-word'); });
+    var wordRects = wordEls.map(function(el){ return el.getBoundingClientRect(); });
+    var slotRects = slots.map(function(el){ return el.getBoundingClientRect(); });
+    var movers = [];
 
-    slots.forEach(function(slot, i) {
-      var r = rects[i];
-      var ghost = slot.cloneNode(true);
-      ghost.classList.add('ipa-slide-ghost');
-      ghost.style.left = (r.left - stageRect.left) + 'px';
-      ghost.style.top = (r.top - stageRect.top) + 'px';
-      ghost.style.width = r.width + 'px';
-      ghost.style.height = r.height + 'px';
-      ghost.style.transition = 'transform .38s cubic-bezier(.4,0,.2,1), opacity .38s ease';
-      stage.appendChild(ghost);
-      ghosts.push(ghost);
-      slot.style.visibility = 'hidden';
+    // Hide only the real word text during animation. The slot layout stays fixed.
+    wordEls.forEach(function(el){ if (el) el.style.visibility = 'hidden'; });
+    var activePron = slots[0].querySelector('.ipa-slot-pron');
+    if (activePron) activePron.style.visibility = 'hidden';
+
+    wordEls.forEach(function(el, i) {
+      if (!el) return;
+      var r = wordRects[i];
+      var mover = document.createElement('span');
+      mover.className = 'ipa-word-mover';
+      mover.textContent = el.textContent;
+      mover.style.position = 'absolute';
+      mover.style.left = (r.left - stageRect.left) + 'px';
+      mover.style.top = (r.top - stageRect.top) + 'px';
+      mover.style.margin = '0';
+      mover.style.padding = '0';
+      mover.style.whiteSpace = 'nowrap';
+      mover.style.pointerEvents = 'none';
+      mover.style.zIndex = '5';
+      mover.style.lineHeight = getComputedStyle(el).lineHeight;
+      mover.style.fontFamily = getComputedStyle(el).fontFamily;
+      mover.style.fontSize = getComputedStyle(el).fontSize;
+      mover.style.fontWeight = getComputedStyle(el).fontWeight;
+      mover.style.color = getComputedStyle(el).color;
+      mover.style.transformOrigin = 'left center';
+      mover.style.transition = 'transform .48s cubic-bezier(.22,.61,.36,1), font-size .48s cubic-bezier(.22,.61,.36,1), color .48s ease, font-weight .48s ease, opacity .48s ease';
+      stage.appendChild(mover);
+      movers.push({el:mover, index:i});
     });
 
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
-        ghosts.forEach(function(ghost, i){
-          var dx;
+        movers.forEach(function(m){
+          var i = m.index;
+          var targetLeft;
           if (i === 0) {
-            // Active word exits to the left, but the fixed slot frame stays put.
-            dx = -(rects[0].width + 20);
-            ghost.style.opacity = '0';
+            // Current large word exits left without shrinking.
+            targetLeft = slotRects[0].left - stageRect.left - Math.max(110, wordRects[0].width + 28);
+            m.el.style.opacity = '0';
           } else {
-            dx = rects[i - 1].left - rects[i].left;
+            // Move to the exact left edge of the previous slot.
+            targetLeft = slotRects[i - 1].left - stageRect.left;
             if (i === 1) {
-              var gw = ghost.querySelector('.ipa-slot-word');
-              if (gw) {
-                gw.style.transition = 'font-size .38s ease, color .38s ease, font-weight .38s ease';
-                gw.style.fontSize = '1.85rem';
-                gw.style.fontWeight = '800';
-                gw.style.color = 'var(--accent2)';
-              }
+              // Same word, same continuous motion; font size grows only as it enters BIG slot.
+              m.el.style.fontSize = '1.85rem';
+              m.el.style.fontWeight = '800';
+              m.el.style.color = 'var(--accent2)';
+              m.el.style.fontFamily = "'Space Grotesk', sans-serif";
             }
           }
-          ghost.style.transform = 'translateX(' + dx + 'px)';
+          var currentLeft = wordRects[i].left - stageRect.left;
+          m.el.style.transform = 'translateX(' + (targetLeft - currentLeft) + 'px)';
         });
 
         setTimeout(function(){
           if (!isActive()) return;
+          movers.forEach(function(m){ if (m.el.parentNode) m.el.remove(); });
           cur = (cur + 1) % words.length;
           renderStatic(stage);
           done();
-        }, 400);
+        }, 500);
       });
     });
   }
@@ -1170,7 +1191,10 @@ function stopCardAnim() {
   _cardSeqId++;
   if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
-  document.querySelectorAll('.ipa-word-stage').forEach(function(s) { s.innerHTML = ''; });
+  // Never blank the sample words. Remove only temporary animation layers
+  // and reveal the fixed slot contents again.
+  document.querySelectorAll('.ipa-word-mover,.ipa-slide-ghost').forEach(function(el){ el.remove(); });
+  document.querySelectorAll('.ipa-slot-word,.ipa-slot-pron').forEach(function(el){ el.style.visibility = ''; });
   document.querySelectorAll('.ipa-playing').forEach(function(b) { b.classList.remove('ipa-playing'); });
   _activeCard = null;
 }
