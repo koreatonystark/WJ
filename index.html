@@ -11,26 +11,24 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 .bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(108,99,255,.12) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(255,101,132,.08) 0%,transparent 60%);}
-.screen{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:28px 5%;gap:18px;}
+.screen{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
 .screen.hidden{display:none!important;}
 .logo{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.2rem,7vw,4rem);font-weight:700;letter-spacing:-2px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
 .tagline{color:var(--muted);font-size:1rem;margin-bottom:22px;text-align:center;max-width:450px;line-height:1.5;}
-.stats-strip{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:720px;}
+.stats-strip{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;justify-content:center;}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:10px 15px;text-align:center;min-width:82px;}
 .stat-num{font-size:1.45rem;font-weight:800;color:var(--accent);}
 .stat-label{font-size:.68rem;color:var(--muted);margin-top:1px;}
-.filter-section{width:100%;max-width:720px;}
+.filter-section{width:100%;max-width:580px;margin-bottom:18px;}
 .filter-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
-.filter-row{display:flex;gap:7px;flex-wrap:wrap;width:100%;}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;}
 .filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:30px;padding:6px 14px;font-size:.79rem;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 .filter-btn.warn{background:rgba(255,101,132,.12);border-color:var(--accent2);color:var(--accent2);}
-.filter-btn.g4btn{border-color:#ffb700;color:#ffb700;}
-.filter-btn.g4btn.active{background:linear-gradient(135deg,#ffb700,#ff8c00);color:#1a1a2e;border-color:#ffb700;}
 .filter-btn.warn.active{background:var(--accent2);border-color:var(--accent2);color:#fff;}
-.start-btn{width:100%;max-width:720px;background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;border:none;border-radius:50px;padding:14px 50px;font-size:1.08rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 8px 26px rgba(108,99,255,.4);transition:transform .15s,box-shadow .15s;margin-bottom:7px;}
+.start-btn{background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;border:none;border-radius:50px;padding:14px 50px;font-size:1.08rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 8px 26px rgba(108,99,255,.4);transition:transform .15s,box-shadow .15s;margin-bottom:7px;}
 .start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(108,99,255,.5);}
-.records-section{width:100%;max-width:720px;}
+.records-section{margin-top:22px;width:100%;max-width:500px;}
 .section-title{font-weight:700;color:var(--muted);font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
 .record-row{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:6px;}
 .record-score{font-weight:800;color:var(--gold);font-size:.98rem;}
@@ -71,7 +69,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .type-input:focus{border-color:var(--accent);}
 .type-input.correct-input{border-color:var(--accent3)!important;}
 .type-input.wrong-input{border-color:var(--accent2)!important;}
-.submit-btn{margin-top:12px;width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;transition:opacity .2s;}
+.submit-btn{margin-top:8px;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;transition:opacity .2s;}
 .submit-btn:hover{opacity:.85;}
 .timer-container{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
 .timer-ring{transform:rotate(-90deg);}
@@ -121,22 +119,22 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .shimmer{background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:6px;height:16px;margin-bottom:5px;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 @keyframes blink{0%,100%{opacity:0;}50%{opacity:1;}}
-.home-boxes{display:flex;gap:10px;width:100%;max-width:720px;}
+.home-boxes{display:flex;gap:10px;width:100%;max-width:440px;margin-top:8px;}
 .home-box-btn{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .home-box-btn:hover{border-color:var(--accent);background:rgba(108,99,255,.08);}
 .home-box-icon{font-size:1.5rem;line-height:1;}
 .home-box-label{font-size:.9rem;font-weight:700;color:var(--text);}
 .home-box-sub{font-size:.72rem;color:var(--muted);}
-.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px 28px 24px;margin-bottom:0;}
-.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:0;}
+.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:14px;}
+.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:14px;}
 .iq-badge-1{background:rgba(108,99,255,.2);color:var(--accent);}
 .iq-badge-2{background:rgba(247,151,30,.2);color:var(--accent4);}
 .iq-badge-3{background:rgba(67,233,123,.2);color:var(--accent3);}
-
+.iq-question{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:6px;}
 .iq-question .iq-sym{font-size:1.6rem;color:var(--accent);font-family:'Courier New',monospace;margin-right:8px;}
 .iq-question .iq-sound{color:var(--accent3);font-weight:800;}
-.iq-hint{font-size:.88rem;color:var(--muted);line-height:1.5;}
-.iq-options{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+.iq-hint{font-size:.82rem;color:var(--muted);margin-bottom:18px;}
+.iq-options{display:flex;flex-wrap:wrap;gap:9px;}
 .iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
 .iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
@@ -144,19 +142,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-opt.wrong{border-color:var(--accent2)!important;background:rgba(255,101,132,.15)!important;color:var(--accent2)!important;}
 .iq-opt.missed{border-color:var(--accent3)!important;background:rgba(67,233,123,.08)!important;color:var(--accent3)!important;opacity:.7;}
 .iq-opt:disabled{cursor:default;}
-
+.iq-sym-opt{min-width:52px;text-align:center;font-family:'Courier New',monospace;font-size:1.1rem;}
 .iq-feedback{margin-top:14px;border-radius:12px;padding:12px 16px;font-size:.88rem;line-height:1.5;}
 .iq-feedback.correct{background:rgba(67,233,123,.1);border:1px solid rgba(67,233,123,.3);color:var(--accent3);}
 .iq-feedback.wrong{background:rgba(255,101,132,.1);border:1px solid rgba(255,101,132,.3);color:var(--accent2);}
 .iq-next-btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;border:none;border-radius:11px;padding:13px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
-.iq-opt
+.iq-opt.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.25)!important;color:#1a9e5c!important;transform:scale(1.12);transition:all .15s;}
 .iq-all-syms-panel{background:var(--surface2);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
 .iq-syms-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-bottom:8px;}
 .iq-sym-grid{display:flex;flex-wrap:wrap;gap:7px;}
 .iq-sym-grid-btn{background:var(--surface);border:2px solid var(--border);border-radius:9px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:400;font-family:'Nunito',sans-serif;cursor:pointer;color:var(--text);transition:all .15s;}
 .iq-sym-grid-btn:hover{border-color:var(--accent);color:var(--accent);}
 .iq-sym-grid-btn.iq-sym-answer{border-color:var(--accent3)!important;color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;font-weight:800;}
-.iq-sym-grid-btn
+.iq-sym-grid-btn.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.3)!important;color:#1a9e5c!important;transform:scale(1.18);box-shadow:0 0 12px rgba(26,158,92,.4);}
 .iq-opt.iq-word-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.2)!important;color:#1a9e5c!important;transform:scale(1.1);box-shadow:0 0 10px rgba(26,158,92,.3);transition:all .15s;}
 .iq-score-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px;font-size:.85rem;}
 .iq-score-num{font-weight:800;color:var(--gold);}
@@ -213,22 +211,22 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .ipa-word-pron{color:var(--muted);font-family:'Courier New',monospace;font-size:.8rem;}
 .ipa-word-pron .ipa-bold{color:var(--accent);font-weight:800;font-family:'Courier New',monospace;}
 @keyframes blink{0%,100%{opacity:0;}50%{opacity:1;}}
-.home-boxes{display:flex;gap:10px;width:100%;max-width:720px;}
+.home-boxes{display:flex;gap:10px;width:100%;max-width:440px;margin-top:8px;}
 .home-box-btn{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .home-box-btn:hover{border-color:var(--accent);background:rgba(108,99,255,.08);}
 .home-box-icon{font-size:1.5rem;line-height:1;}
 .home-box-label{font-size:.9rem;font-weight:700;color:var(--text);}
 .home-box-sub{font-size:.72rem;color:var(--muted);}
-.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px 28px 24px;margin-bottom:0;}
-.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:0;}
+.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:14px;}
+.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:14px;}
 .iq-badge-1{background:rgba(108,99,255,.2);color:var(--accent);}
 .iq-badge-2{background:rgba(247,151,30,.2);color:var(--accent4);}
 .iq-badge-3{background:rgba(67,233,123,.2);color:var(--accent3);}
-
+.iq-question{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:6px;}
 .iq-question .iq-sym{font-size:1.6rem;color:var(--accent);font-family:'Courier New',monospace;margin-right:8px;}
 .iq-question .iq-sound{color:var(--accent3);font-weight:800;}
-.iq-hint{font-size:.88rem;color:var(--muted);line-height:1.5;}
-.iq-options{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+.iq-hint{font-size:.82rem;color:var(--muted);margin-bottom:18px;}
+.iq-options{display:flex;flex-wrap:wrap;gap:9px;}
 .iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
 .iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
@@ -236,12 +234,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-opt.wrong{border-color:var(--accent2)!important;background:rgba(255,101,132,.15)!important;color:var(--accent2)!important;}
 .iq-opt.missed{border-color:var(--accent3)!important;background:rgba(67,233,123,.08)!important;color:var(--accent3)!important;opacity:.7;}
 .iq-opt:disabled{cursor:default;}
-
+.iq-sym-opt{min-width:52px;text-align:center;font-family:'Courier New',monospace;font-size:1.1rem;}
 .iq-feedback{margin-top:14px;border-radius:12px;padding:12px 16px;font-size:.88rem;line-height:1.5;}
 .iq-feedback.correct{background:rgba(67,233,123,.1);border:1px solid rgba(67,233,123,.3);color:var(--accent3);}
 .iq-feedback.wrong{background:rgba(255,101,132,.1);border:1px solid rgba(255,101,132,.3);color:var(--accent2);}
 .iq-next-btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;border:none;border-radius:11px;padding:13px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
-.iq-opt
+.iq-opt.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.25)!important;color:#1a9e5c!important;transform:scale(1.12);transition:all .15s;}
 .iq-all-syms-panel{background:var(--surface2);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
 .iq-syms-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-bottom:8px;}
 .iq-sym-grid{display:flex;flex-wrap:wrap;gap:7px;}
@@ -255,243 +253,40 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .tw-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .6s step-end infinite;margin-left:1px;}
 
 
-/* Grade 4 Wrong Panel */
-.wp-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);}
-.wp-word-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
-.wp-meta-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-.wp-tier{font-size:.68rem;color:var(--muted);}
-.g4-badge{font-size:.63rem;font-weight:800;padding:2px 8px;border-radius:20px;background:rgba(255,183,0,.18);color:#ffb700;border:1px solid rgba(255,183,0,.3);white-space:nowrap;}
-.g4-badge.high{background:rgba(108,99,255,.15);color:var(--accent);border-color:rgba(108,99,255,.3);}
-.afc-tag{font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(67,233,123,.1);color:var(--accent3);border:1px solid rgba(67,233,123,.25);}
-.wp-section{padding:12px 18px;border-bottom:1px solid var(--border);}
-.wp-section:last-of-type{border-bottom:none;}
-.wp-slabel{font-size:.62rem;font-weight:800;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
-.wp-def{font-size:.95rem;font-weight:600;line-height:1.65;color:var(--text);min-height:24px;}
-.wp-kid{font-size:.85rem;color:var(--accent3);line-height:1.55;padding:8px 12px;background:rgba(67,233,123,.06);border-radius:8px;border-left:3px solid var(--accent3);transition:opacity .5s;}
-.wp-logic{font-size:.82rem;color:var(--accent);line-height:1.5;padding:7px 12px;background:rgba(108,99,255,.07);border-radius:8px;border-left:3px solid var(--accent);}
-.wp-nuance{font-size:.82rem;color:var(--muted);line-height:1.5;padding:7px 12px;background:var(--surface2);border-radius:8px;}
-.ex-rows{display:flex;flex-direction:column;}
-.ex-row{display:flex;gap:11px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(42,44,69,.6);}
-.ex-row:last-child{border-bottom:none;}
-.ex-icon{font-size:1.1rem;flex-shrink:0;width:24px;text-align:center;}
-.ex-col{flex:1;}
-.ex-type{font-size:.6rem;font-weight:800;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;}
-.ex-text{font-size:.87rem;line-height:1.6;color:var(--text);}
-.ex-text .hw,.hw{color:var(--accent);font-weight:800;}
-.wp-test{padding:12px 18px;background:rgba(255,101,132,.04);border-top:1px solid var(--border);}
-.wp-test-lbl{font-size:.62rem;font-weight:800;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
-.wp-test-q{font-size:.88rem;font-style:italic;line-height:1.65;color:var(--text);margin-bottom:8px;}
-.wp-test-ans{font-size:.8rem;color:var(--accent3);padding:6px 10px;background:rgba(67,233,123,.07);border-radius:7px;line-height:1.5;font-weight:600;}
-.shimmer{background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;}
-@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-
-
-
-/* Better spacing for iq-question */
-.iq-question{font-size:1rem;font-weight:600;color:var(--text);line-height:1.65;margin-bottom:0;}
-/* Larger word buttons in multi-select */
-#iqOpts .iq-opt{font-size:.95rem;padding:10px 18px;min-width:64px;}
-.iq-opt.iq-sym-opt{font-family:'Courier New',monospace;font-size:1.3rem;font-weight:400;width:58px;height:58px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:12px;}
-
-/* IPA Quiz — unified focus layout for all types */
-.iq-t0-hint{font-size:.72rem;color:var(--muted);font-weight:500;letter-spacing:.03em;text-transform:uppercase;margin:4px 0 20px;display:block;}
-.iq-t0-desc{font-size:1.2rem;font-weight:700;color:var(--text);line-height:1.65;margin-bottom:32px;}
-.iq-t1-word-block{margin:0 0 32px;}
-.iq-word-big{font-size:2.8rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;display:block;transition:opacity .15s;}
-.iq-word-big:hover{opacity:.75;}
-
-.iq-focus-block{margin:0 0 28px;display:flex;flex-direction:column;gap:18px;}
-
-/* Wrong panel clickable sections */
-.wp-clickable{cursor:pointer;transition:background .15s;}
-.wp-clickable:hover{background:rgba(108,99,255,.06);}
-.wp-clickable:active{background:rgba(108,99,255,.12);}
-
-/* Star rating */
-.star{color:var(--border);font-size:.95rem;}
-.star-on{color:var(--gold)!important;}
-.wp-star-row{display:flex;align-items:center;gap:4px;margin:4px 0 3px;}
-.wp-pri-label{font-size:.65rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-left:4px;}
-.wp-korean{font-size:.78rem;color:var(--muted);margin-left:2px;}
-.wp-speaker{font-size:1rem;opacity:.45;margin-left:4px;}
-.wp-trel{padding:10px 18px;border-bottom:1px solid var(--border);background:rgba(255,183,0,.03);}
-.wp-trel-text{font-size:.82rem;color:var(--muted);line-height:1.5;}
-.wp-origin{font-size:.82rem;color:var(--accent3);line-height:1.5;padding:7px 12px;background:rgba(67,233,123,.06);border-radius:8px;border-left:3px solid var(--accent3);}
-/* Correct feedback stars */
-.fb-word-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.fb-stars{color:var(--gold);font-size:1rem;letter-spacing:1px;}
-
-/* Review Screen */
-.review-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;cursor:pointer;transition:border-color .2s;}
-.review-card:hover{border-color:var(--accent);}
-.review-card.correct-card{border-left:4px solid var(--accent3);}
-.review-card.wrong-card{border-left:4px solid var(--accent2);}
-.review-card-header{display:flex;align-items:center;gap:10px;padding:12px 16px;}
-.review-word{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;}
-.review-ipa{font-size:.78rem;color:var(--muted);font-family:serif;letter-spacing:.04em;}
-.review-result{font-size:.75rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto;}
-.review-result.ok{background:rgba(67,233,123,.15);color:var(--accent3);}
-.review-result.miss{background:rgba(255,101,132,.15);color:var(--accent2);}
-.review-stars{font-size:.85rem;color:var(--gold);letter-spacing:1px;}
-.review-body{padding:0 16px 14px;display:none;}
-.review-body.open{display:block;}
-.review-def{font-size:.88rem;line-height:1.6;color:var(--text);margin-bottom:8px;}
-.review-kid{font-size:.82rem;color:var(--accent3);padding:6px 10px;background:rgba(67,233,123,.06);border-radius:7px;border-left:3px solid var(--accent3);margin-bottom:8px;line-height:1.5;}
-.review-ex{font-size:.82rem;line-height:1.6;color:var(--muted);margin-bottom:4px;}
-.review-ex strong{color:var(--text);}
-.review-ex-label{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
-.review-section{margin-bottom:10px;}
-.review-speak-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:.75rem;color:var(--muted);cursor:pointer;margin-top:6px;font-family:'Nunito',sans-serif;}
-.review-speak-btn:hover{border-color:var(--accent);color:var(--accent);}
-.review-filter-row{display:flex;gap:8px;margin-bottom:14px;}
-.review-filter{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:.78rem;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--muted);transition:all .2s;}
-.review-filter.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
-.review-filter.wrong-filter.active{background:var(--accent2);border-color:var(--accent2);}
-
-.record-row:hover .record-score{color:var(--accent2);}
-
-.iq-sym-speaker-hint{font-size:.85rem;opacity:.4;margin-left:4px;vertical-align:middle;}
-
+/* IPA Guide Conveyor */
 .ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
-.ipa-card:hover{border-color:var(--accent);background:rgba(108,99,255,.04);}
-.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:0;cursor:pointer;font-size:1.6rem;font-weight:400;font-family:'Courier New',monospace;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;}
-.ipa-sym-btn:hover{transform:scale(1.08);box-shadow:0 4px 16px rgba(108,99,255,.25);}
-.ipa-sym-btn.vowel{color:var(--accent3);}
-.ipa-sym-btn.consonant{color:var(--accent);}
-.ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;}
-.ipa-desc-main{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.55;}
-/* Word animation stage */
-.ipa-word-stage{height:56px;display:flex;align-items:center;overflow:hidden;position:relative;}
-.ipa-word-slide{display:flex;align-items:baseline;gap:10px;opacity:0;}
-.ipa-slide-word{font-size:1.8rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;}
-.ipa-slide-pron{font-size:.9rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.04em;}
-.ipa-slide-pron .ipa-bold{color:var(--accent3);font-weight:800;}
-@keyframes ipaSlideIn{
-  0%{opacity:0;transform:translateX(60px) scale(.85);}
-  60%{opacity:1;transform:translateX(-4px) scale(1.05);}
-  80%{transform:translateX(2px) scale(.98);}
-  100%{opacity:1;transform:translateX(0) scale(1);}
-}
-
-@keyframes ipaSlideIn{
-  0%{opacity:0;transform:translateX(70px) scale(.8);}
-  55%{opacity:1;transform:translateX(-6px) scale(1.08);}
-  75%{transform:translateX(3px) scale(.97);}
-  100%{opacity:1;transform:translateX(0) scale(1);}
-}
-.ipa-playing{box-shadow:0 0 0 3px var(--accent),0 0 20px rgba(108,99,255,.4)!important;animation:ipaPulse 1.2s ease-in-out infinite;}
-@keyframes ipaPulse{0%,100%{box-shadow:0 0 0 3px var(--accent),0 0 12px rgba(108,99,255,.3);}50%{box-shadow:0 0 0 3px var(--accent),0 0 24px rgba(108,99,255,.6);}}
-.ipa-word-stage{height:60px;display:flex;align-items:center;overflow:hidden;position:relative;border-top:1px solid var(--border);margin-top:4px;padding-top:6px;}
-.ipa-word-slide{display:flex;align-items:baseline;gap:12px;opacity:0;white-space:nowrap;}
-.ipa-slide-word{font-size:2rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;}
-.ipa-slide-pron{font-size:.95rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.04em;}
-.ipa-slide-pron .ipa-bold{color:var(--accent3);font-weight:800;font-size:1.05rem;}
-
-
-/* IPA card animation */
-.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s;}
-.ipa-card:hover{border-color:var(--accent);}
-.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:0;cursor:pointer;font-size:1.6rem;font-family:'Courier New',monospace;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;}
-.ipa-sym-btn.vowel{color:var(--accent3);}
-.ipa-sym-btn.consonant{color:var(--accent);}
-.ipa-sym-btn:hover{transform:scale(1.08);}
-.ipa-playing{animation:ipaPulse 1.1s ease-in-out infinite!important;box-shadow:0 0 0 3px var(--accent2)!important;}
-@keyframes ipaPulse{0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 10px rgba(255,101,132,.3);}50%{box-shadow:0 0 0 3px var(--accent2),0 0 22px rgba(255,101,132,.6);}}
-.ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
-.ipa-desc-main{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.55;}
-.ipa-word-stage{min-height:72px;overflow:hidden;border-top:1px solid var(--border);padding-top:8px;margin-top:2px;}
-.ipa-word-slide{opacity:0;}
-.ipa-slide-big{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
-.ipa-slide-word{font-size:2rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1.1;}
-.ipa-slide-pron{font-size:.88rem;color:var(--muted);font-family:'Courier New',monospace;}
-.ipa-slide-pron .ipa-bold{color:var(--accent3);font-weight:700;}
-.ipa-slide-smalls{display:flex;gap:16px;flex-wrap:wrap;}
-.ipa-slide-sm-word{font-size:.88rem;font-weight:600;color:var(--muted);cursor:pointer;display:flex;align-items:baseline;gap:5px;}
-.ipa-slide-sm-word:hover{color:var(--text);}
-.ipa-slide-sm-pron{font-size:.75rem;color:var(--border);font-family:'Courier New',monospace;}
-.ipa-slide-sm-pron .ipa-bold{color:var(--accent3);}
-@keyframes ipaSlideIn{
-  0%  {opacity:0;transform:translateX(60px) scale(.85);}
-  55% {opacity:1;transform:translateX(-5px) scale(1.06);}
-  78% {transform:translateX(2px) scale(.98);}
-  100%{opacity:1;transform:translateX(0) scale(1);}
-}
-.ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
-
-/* Small chips (background words) */
-.ipa-chip-sm{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  opacity:0.45;
-  flex-shrink:0;
-  transition:opacity .3s;
-}
-.ipa-chip-sm .ipa-chip-word{
-  font-size:.88rem;
-  font-weight:500;
-  color:var(--text);
-  font-family:'Nunito',sans-serif;
-}
-/* Big chip (current word) */
-.ipa-chip-big{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  flex-shrink:0;
-  min-width:120px;
-}
-.ipa-chip-big .ipa-chip-word{
-  font-size:1.9rem;
-  font-weight:800;
-  color:var(--accent2);
-  font-family:'Space Grotesk',sans-serif;
-  line-height:1.1;
-}
-.ipa-chip-pron{
-  font-size:.85rem;
-  color:var(--muted);
-  font-family:'Courier New',monospace;
-  letter-spacing:.04em;
-  margin-top:2px;
-}
-.ipa-chip-pron .ipa-bold{
-  color:var(--accent3);
-  font-weight:700;
-}
-/* Button playing state */
-.ipa-playing{
-  animation:ipaPulse 1.1s ease-in-out infinite!important;
-  box-shadow:0 0 0 3px var(--accent2)!important;
-}
-@keyframes ipaPulse{
-  0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 8px rgba(255,101,132,.3);}
-  50%{box-shadow:0 0 0 3px var(--accent2),0 0 20px rgba(255,101,132,.6);}
-}
-
-/* IPA Guide */
-.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
-.ipa-card:hover{border-color:rgba(108,99,255,.4);}
-.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:0;cursor:pointer;font-size:1.6rem;font-family:'Courier New',monospace;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;}
-.ipa-sym-btn.vowel{color:var(--accent3);}
-.ipa-sym-btn.consonant{color:var(--accent);}
+.ipa-card:hover{border-color:rgba(108,99,255,.3);}
+.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:0;cursor:pointer;font-size:1.6rem;font-family:'Courier New',monospace;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.ipa-sym-btn.vowel{color:var(--accent3);}.ipa-sym-btn.consonant{color:var(--accent);}
 .ipa-sym-btn:hover{transform:scale(1.07);}
 .ipa-playing{animation:ipaPulse 1.1s ease-in-out infinite!important;box-shadow:0 0 0 3px var(--accent2)!important;}
 @keyframes ipaPulse{0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 8px rgba(255,101,132,.3);}50%{box-shadow:0 0 0 3px var(--accent2),0 0 20px rgba(255,101,132,.6);}}
 .ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
 .ipa-desc-main{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.55;}
-/* Conveyor stage */
-.ipa-word-stage{height:54px;overflow:hidden;border-top:1px solid var(--border);margin-top:8px;padding-top:8px;position:relative;}
-.ipa-conveyor-row{display:flex;align-items:center;gap:20px;height:100%;will-change:transform;}
-/* Big word (leftmost, current) */
-.ipa-chip-big{display:flex;align-items:baseline;gap:8px;flex-shrink:0;}
+.ipa-word-stage{height:50px;overflow:hidden;border-top:1px solid var(--border);margin-top:8px;padding-top:6px;}
+.ipa-strip{display:flex;align-items:center;gap:20px;will-change:transform;}
+.ipa-chip{display:inline-flex;align-items:baseline;gap:8px;flex-shrink:0;}
 .ipa-chip-big .ipa-chip-word{font-size:1.85rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;white-space:nowrap;}
-.ipa-chip-pron{font-size:.82rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.04em;white-space:nowrap;}
+.ipa-chip-pron{font-size:.82rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;}
 .ipa-chip-pron .ipa-bold{color:var(--accent3);font-weight:700;}
-/* Small words */
-.ipa-chip-sm{flex-shrink:0;opacity:.45;}
-.ipa-chip-sm .ipa-chip-word{font-size:.9rem;font-weight:500;color:var(--text);white-space:nowrap;}
+.ipa-chip-sm .ipa-chip-word{font-size:.92rem;font-weight:500;color:var(--muted);white-space:nowrap;}
 .ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
+.star{color:var(--border);font-size:.95rem;}.star-on{color:var(--gold)!important;}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;cursor:pointer;}
+.review-card.correct-card{border-left:4px solid var(--accent3);}.review-card.wrong-card{border-left:4px solid var(--accent2);}
+.review-card-header{display:flex;align-items:center;gap:10px;padding:12px 16px;}
+.review-word{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;}
+.review-result{font-size:.75rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto;}
+.review-result.ok{background:rgba(67,233,123,.15);color:var(--accent3);}.review-result.miss{background:rgba(255,101,132,.15);color:var(--accent2);}
+.review-stars{font-size:.85rem;color:var(--gold);}.review-body{padding:0 16px 14px;display:none;}.review-body.open{display:block;}
+.review-def{font-size:.88rem;line-height:1.6;color:var(--text);margin-bottom:8px;}
+.review-kid{font-size:.82rem;color:var(--accent3);padding:6px 10px;background:rgba(67,233,123,.06);border-radius:7px;border-left:3px solid var(--accent3);margin-bottom:8px;line-height:1.5;}
+.review-ex{font-size:.82rem;line-height:1.6;color:var(--muted);margin-bottom:4px;}
+.review-ex-label{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.review-filter-row{display:flex;gap:8px;margin-bottom:14px;}
+.review-filter{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:.78rem;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--muted);}
+.review-filter.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
+.review-filter.wrong-filter.active{background:var(--accent2);border-color:var(--accent2);}
 </style>
 </head>
 <body>
@@ -509,6 +304,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="stat-card"><div class="stat-num" id="statBest">-</div><div class="stat-label">Best Score</div></div>
     <div class="stat-card"><div class="stat-num" id="statMastered">0</div><div class="stat-label">Mastered</div></div>
   </div>
+  <div class="filter-section">
+    <div class="filter-label">Word Set</div>
+    <div class="filter-row" id="filterTier">
+      <button class="filter-btn active" data-tier="all">All Tiers</button>
+      <button class="filter-btn" data-tier="Tier 1">Tier 1</button>
+      <button class="filter-btn" data-tier="Tier 2">Tier 2</button>
+      <button class="filter-btn" data-tier="Tier 3">Tier 3</button>
+      <button class="filter-btn" data-tier="Tier 4">Tier 4</button>
+      <button class="filter-btn warn" data-tier="wrong">&#9889; Missed Words</button>
+    </div>
+  </div>
+  <button class="start-btn" id="startBtn">Start 10 Questions &#9654;</button>
+  <button class="btn-w" id="masteredBtn" style="margin-top:7px;padding:7px 18px;font-size:.8rem;">&#11088; View Mastered Words</button>
   <div class="home-boxes">
     <button class="home-box-btn" id="ipaBtn">
       <div class="home-box-icon">&#128362;</div>
@@ -521,23 +329,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="home-box-sub">Test your sound knowledge</div>
     </button>
   </div>
-  <div class="filter-section">
-    <div class="filter-label">Word Set</div>
-    <div class="filter-row" id="filterTier">
-      <button class="filter-btn active" data-tier="all">All</button>
-      <button class="filter-btn" data-tier="Tier 1">Tier 1</button>
-      <button class="filter-btn" data-tier="Tier 2">Tier 2</button>
-      <button class="filter-btn" data-tier="Tier 3">Tier 3</button>
-      <button class="filter-btn" data-tier="Tier 4">Tier 4</button>
-      <button class="filter-btn g4btn" data-tier="g4essential">&#9733; G4</button>
-      <button class="filter-btn warn" data-tier="wrong">&#9889; Missed</button>
-    </div>
-  </div>
-  <button class="start-btn" id="startBtn">Start 10 Questions &#9654;</button>
-  <button class="btn-w" id="masteredBtn" style="margin-top:7px;padding:10px 18px;font-size:.88rem;width:100%;border-radius:50px;">&#11088; View Mastered Words</button>
   <div class="records-section">
     <div class="section-title">Recent Scores</div>
     <div id="recordsList"></div>
+  </div>
+</div>
+<div id="masteredScreen" class="screen hidden">
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:700;margin-bottom:4px;">&#11088; Mastered Words</div>
+  <div style="color:var(--muted);font-size:.86rem;margin-bottom:9px;" id="masteredCount">Words answered correctly 5+ times</div>
+  <div class="mastered-grid" id="masteredGrid"></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:7px;">
+    <button class="restore-all-btn" id="restoreAllBtn">Restore All to Active</button>
+    <button class="btn-s" id="masteredBackBtn">Back</button>
   </div>
 </div>
 <div id="gameScreen" class="screen hidden" style="padding:0;">
@@ -561,19 +364,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <button class="btn-s" id="homeBtn">Home</button>
   </div>
 </div>
-
-<div id="masteredScreen" class="screen hidden">
-  <div style="font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:700;margin-bottom:4px;">&#11088; Mastered Words</div>
-  <div style="color:var(--muted);font-size:.86rem;margin-bottom:9px;" id="masteredCount">Words answered correctly 5+ times</div>
-  <div class="mastered-grid" id="masteredGrid"></div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:7px;">
-    <button class="restore-all-btn" id="restoreAllBtn">Restore All to Active</button>
-    <button class="btn-s" id="masteredBackBtn">Back</button>
-  </div>
-</div>
 <div id="ipaScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:700px;width:100%;margin:0 auto;">
-    <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
         <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide</div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
@@ -586,12 +379,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 <script type="application/json" id="wordData">[]</script>
 <script>
-// word data loaded from CSV
+var WD=JSON.parse(document.getElementById('wordData').textContent);
 var WORD_DB={};
 var IPA_MAP={};
-
-var PRO_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1930488780&single=true&output=csv';
+var WD=JSON.parse(document.getElementById('wordData').textContent);
+var IPA_MAP={"be":"bi","have":"hæv","do":"du","say":"seɪ","go":"goʊ","get":"gɪt","make":"meɪk","know":"noʊ","think":"θɪŋk","take":"teɪk","see":"si","come":"kəm","want":"wɔnt","look":"lʊk","use":"juz","find":"faɪnd","give":"gɪv","tell":"tɛl","work":"wərk","call":"kɔl","try":"traɪ","ask":"æsk","need":"nid","feel":"fil","become":"bɪˈkəm","leave":"liv","put":"pʊt","mean":"min","keep":"kip","let":"lɛt","begin":"bɪˈgɪn","seem":"sim","help":"hɛlp","talk":"tɔk","turn":"tərn","start":"stɑrt","show":"ʃoʊ","hear":"hir","play":"pleɪ","run":"rən","move":"muv","live":"lɪv","believe":"bɪˈliv","bring":"brɪŋ","happen":"ˈhæpən","write":"raɪt","sit":"sɪt","stand":"stænd","lose":"luz","pay":"peɪ","meet":"mit","include":"ˌɪnˈklud","continue":"kənˈtɪnju","set":"sɛt","learn":"lərn","change":"ʧeɪnʤ","lead":"lɛd","understand":"ˌəndərˈstænd","watch":"wɔʧ","follow":"ˈfɑloʊ","stop":"stɑp","create":"kriˈeɪt","speak":"spik","read":"rɛd","allow":"əˈlaʊ","add":"æd","spend":"spɛnd","grow":"groʊ","open":"ˈoʊpən","walk":"wɔk","win":"wɪn","offer":"ˈɔfər","remember":"rɪˈmɛmbər","love":"ləv","consider":"kənˈsɪdər","appear":"əˈpɪr","buy":"baɪ","wait":"weɪt","serve":"sərv","die":"daɪ","send":"sɛnd","expect":"ɪkˈspɛkt","build":"bɪld","stay":"steɪ","fall":"fɔl","cut":"kət","reach":"riʧ","remain":"rɪˈmeɪn","suggest":"səˈʤɛst","raise":"reɪz","pass":"pæs","sell":"sɛl","require":"ˌrikˈwaɪər","report":"rɪˈpɔrt","decide":"ˌdɪˈsaɪd","pull":"pʊl","return":"rɪˈtərn","explain":"ɪkˈspleɪn","hope":"hoʊp","carry":"ˈkɛri","person":"ˈpərsən","people":"ˈpipəl","man":"mæn","woman":"ˈwʊmən","boy":"bɔɪ","girl":"gərl","child":"ʧaɪld","children":"ˈʧɪldrən","friend":"frɛnd","family":"ˈfæməli","mother":"ˈməðər","father":"ˈfɑðər","mom":"mɑm","dad":"dæd","parent":"ˈpɛrənt","brother":"ˈbrəðər","sister":"ˈsɪstər","baby":"ˈbeɪbi","adult":"ˈædəlt","neighbor":"ˈneɪbər","name":"neɪm","age":"eɪʤ","home":"hoʊm","house":"haʊs","room":"rum","bedroom":"ˈbɛˌdrum","bathroom":"ˈbæθˌrum","kitchen":"ˈkɪʧən","floor":"flɔr","wall":"wɔl","door":"dɔr","window":"ˈwɪndoʊ","roof":"rʊf","stairs":"stɛrz","table":"ˈteɪbəl","chair":"ʧɛr","bed":"bɛd","desk":"dɛsk","sofa":"ˈsoʊfə","lamp":"læmp","light":"laɪt","key":"ki","box":"bɑks","bag":"bæg","bottle":"ˈbɑtəl","cup":"kəp","plate":"pleɪt","bowl":"boʊl","spoon":"spun","fork":"fɔrk","knife":"naɪf","towel":"taʊəl","soap":"soʊp","brush":"brəʃ","clock":"klɑk","picture":"ˈpɪkʧər","photo":"ˈfoʊˌtoʊ","toy":"tɔɪ","game":"geɪm","book":"bʊk","paper":"ˈpeɪpər","pen":"pɛn","pencil":"ˈpɛnsəl","phone":"foʊn","computer":"kəmˈpjutər","screen":"skrin","TV":"ˌtɛləˈvɪʒən","music":"mˈjuzɪk","sound":"saʊnd","voice":"vɔɪs","water":"ˈwɔtər","air":"ɛr","fire":"faɪər","clean":"klin","dirty":"ˈdərti","full":"fʊl","empty":"ˈɛmti","safe":"seɪf","dangerous":"ˈdeɪnʤərəs","inside":"ˌɪnˈsaɪd","outside":"ˈaʊtˈsaɪd","upstairs":"əpˈstɛrz","downstairs":"ˈdaʊnˈstɛrz","front":"frənt","back":"bæk","side":"saɪd","middle":"ˈmɪdəl","top":"tɔp","bottom":"ˈbɑtəm","near":"nɪr","far":"fɑr","alone":"əˈloʊn","together":"təˈgɛðər","own":"oʊn","other":"ˈəðər","another":"əˈnəðər","same":"seɪm","kind":"kaɪnd","place":"pleɪs","thing":"θɪŋ","school":"skul","class":"klæs","classroom":"ˈklæsˌrum","teacher":"ˈtiʧər","student":"ˈstudənt","principal":"ˈprɪnsəpəl","lesson":"ˈlɛsən","subject":"ˈsəbʤɪkt","English":"ˈɪŋlɪʃ","math":"mæθ","science":"saɪəns","history":"ˈhɪstəri","art":"ɑrt","reading":"ˈrɛdɪŋ","writing":"ˈraɪtɪŋ","spelling":"ˈspɛlɪŋ","word":"wərd","sentence":"ˈsɛntəns","question":"kˈwɛʃən","answer":"ˈænsər","problem":"ˈprɑbləm","example":"ɪgˈzæmpəl","idea":"aɪˈdiə","story":"ˈstɔri","page":"peɪʤ","chapter":"ˈʧæptər","line":"laɪn","paragraph":"ˈpɛrəˌgræf","title":"ˈtaɪtəl","topic":"ˈtɑpɪk","test":"tɛst","quiz":"kwɪz","grade":"greɪd","score":"skɔr","homework":"ˈhoʊmˌwərk","project":"ˈprɑʤɛkt","practice":"ˈpræktɪs","activity":"ækˈtɪvɪti","rule":"rul","direction":"dɪˈrɛkʃɪn","instruction":"ˌɪnˈstrəkʃən","choice":"ʧɔɪs","list":"lɪst","note":"noʊt","board":"bɔrd","marker":"ˈmɑrkər","eraser":"ɪˈreɪsər","folder":"ˈfoʊldər","notebook":"ˈnoʊtˌbʊk","backpack":"ˈbækˌpæk","library":"ˈlaɪbrɛˌri","lunch":"lənʧ","recess":"ˈrisɛs","team":"tim","group":"grup","partner":"ˈpɑrtnər","share":"ʃɛr","check":"ʧɛk","correct":"kərˈɛkt","wrong":"rɔŋ","right":"raɪt","finish":"ˈfɪnɪʃ","complete":"kəmˈplit","copy":"ˈkɑpi","draw":"drɔ","color":"ˈkələr","circle":"ˈsərkəl","underline":"ˈəndərˌlaɪn","match":"mæʧ","choose":"ʧuz","pick":"pɪk","repeat":"rɪˈpit","spell":"spɛl","count":"kaʊnt","solve":"sɑlv","study":"ˈstədi","review":"ˌrivˈju","prepare":"priˈpɛr","listen":"ˈlɪsən","quiet":"kwaɪət","loud":"laʊd","ready":"ˈrɛdi","careful":"ˈkɛrfəl","important":"ˌɪmˈpɔrtənt","easy":"ˈizi","hard":"hɑrd","busy":"ˈbɪzi","free":"fri","early":"ˈərli","late":"leɪt","present":"ˈprɛzənt","absent":"ˈæbsənt","break":"breɪk","schedule":"ˈskɛʤʊl","calendar":"ˈkæləndər","date":"deɪt","level":"ˈlɛvəl","skill":"skɪl","goal":"goʊl","accept":"əkˈsɛpt","time":"taɪm","day":"deɪ","week":"wik","month":"mənθ","year":"jɪr","today":"təˈdeɪ","tomorrow":"təˈmɑˌroʊ","yesterday":"ˈjɛstərˌdeɪ","morning":"ˈmɔrnɪŋ","afternoon":"ˌæftərˈnun","evening":"ˈivnɪŋ","night":"naɪt","hour":"aʊər","minute":"ˈmɪnət","second":"ˈsɛkənd","now":"naʊ","then":"ðɛn","before":"ˌbiˈfɔr","after":"ˈæftər","first":"fərst","last":"læst","next":"nɛkst","soon":"sun","later":"ˈleɪtər","always":"ˈɔlˌweɪz","usually":"ˈjuʒəwəli","often":"ˈɔfən","sometimes":"ˈsəmˌtaɪmz","never":"ˈnɛvər","again":"əˈgɛn","once":"wəns","twice":"twaɪs","past":"pæst","future":"fˈjuʧər","beginning":"bɪˈgɪnɪŋ","end":"ɛnd","city":"ˈsɪti","town":"taʊn","street":"strit","road":"roʊd","avenue":"ˈævəˌnu","park":"pɑrk","store":"stɔr","shop":"ʃɑp","market":"ˈmɑrkɪt","restaurant":"ˈrɛˌstrɑnt","hospital":"ˈhɑˌspɪtəl","station":"ˈsteɪʃən","bus":"bəs","train":"treɪn","car":"kɑr","bike":"baɪk","plane":"pleɪn","trip":"trɪp","travel":"ˈtrævəl","map":"mæp","area":"ˈɛriə","country":"ˈkəntri","state":"steɪt","world":"wərld","north":"nɔrθ","south":"saʊθ","east":"ist","west":"wɛst","left":"lɛft","straight":"streɪt","across":"əˈkrɔs","along":"əˈlɔŋ","around":"əraʊnd","through":"θru","toward":"təˈwɔrd","away":"əˈweɪ","here":"hir","there":"ðɛr","where":"wɛr","anywhere":"ˈɛniˌwɛr","somewhere":"ˈsəmˌwɛr","nowhere":"ˈnoʊˌwɛr","entrance":"ˈɛntrəns","exit":"ˈɛksət","corner":"ˈkɔrnər","center":"ˈsɛnər","between":"bɪtˈwin","behind":"bɪˈhaɪnd","beside":"ˌbiˈsaɪd","above":"əˈbəv","below":"bɪˈloʊ","under":"ˈəndər","over":"ˈoʊvər","onto":"ˈɔntu","into":"ˈɪntu","out":"aʊt","forward":"ˈfɔrwərd","backward":"ˈbækwərd","arrive":"əraɪv","enter":"ˈɛnər","cross":"krɔs","ride":"raɪd","drive":"draɪv","fly":"flaɪ","body":"ˈbɑdi","head":"hɛd","face":"feɪs","hair":"hɛr","eye":"aɪ","ear":"ɪr","nose":"noʊz","mouth":"maʊθ","tooth":"tuθ","teeth":"tiθ","tongue":"təŋ","neck":"nɛk","shoulder":"ˈʃoʊldər","arm":"ɑrm","hand":"hænd","finger":"ˈfɪŋgər","chest":"ʧɛst","stomach":"ˈstəmək","leg":"lɛg","knee":"ni","foot":"fʊt","feet":"fit","toe":"toʊ","skin":"skɪn","heart":"hɑrt","blood":"bləd","brain":"breɪn","bone":"boʊn","muscle":"ˈməsəl","health":"hɛlθ","healthy":"ˈhɛlθi","sick":"sɪk","ill":"ɪl","hurt":"hərt","pain":"peɪn","fever":"ˈfivər","cold":"koʊld","cough":"kɔf","medicine":"ˈmɛdəsən","doctor":"ˈdɔktər","nurse":"nərs","rest":"rɛst","sleep":"slip","wake":"weɪk","breathe":"brið","hungry":"ˈhəŋgri","thirsty":"ˈθərsti","tired":"taɪərd","strong":"strɔŋ","weak":"wik","happy":"ˈhæpi","sad":"sæd","angry":"ˈæŋgri","afraid":"əˈfreɪd","scared":"skɛrd","worried":"ˈwərid","nervous":"ˈnərvəs","excited":"ɪkˈsaɪtɪd","surprised":"səˈpraɪzd","bored":"bɔrd","interested":"ˈɪntəˌrɛstɪd","proud":"praʊd","shy":"ʃaɪ","calm":"kɑm","nice":"nis","friendly":"ˈfrɛndli","helpful":"ˈhɛlpfəl","honest":"ˈɑnəst","brave":"breɪv","smart":"smɑrt","funny":"ˈfəni","serious":"ˈsɪriəs","careless":"ˈkɛrlɛs","patient":"ˈpeɪʃənt","polite":"pəˈlaɪt","rude":"rud","active":"ˈæktɪv","lazy":"ˈleɪzi","comfortable":"ˈkəmfərtəbəl","uncomfortable":"ənˈkəmfərtəbəl","better":"ˈbɛtər","worse":"wərs","well":"wɛl","bad":"bæd","good":"gʊd","fine":"faɪn","okay":"ˌoʊˈkeɪ","smile":"smaɪl","laugh":"læf","cry":"kraɪ","worry":"ˈwəri","relax":"rɪˈlæks","care":"kɛr","trust":"trəst","respect":"rɪˈspɛkt","act":"ækt","advise":"ədˈvaɪz","arrange":"əreɪnʤ","borrow":"ˈbɑˌroʊ","cancel":"ˈkænsəl","food":"fud","meal":"mil","breakfast":"ˈbrɛkfəst","dinner":"ˈdɪnər","snack":"snæk","bread":"brɛd","rice":"raɪs","meat":"mit","beef":"bif","pork":"pɔrk","chicken":"ˈʧɪkən","fish":"fɪʃ","egg":"ɛg","milk":"mɪlk","cheese":"ʧiz","fruit":"frut","apple":"ˈæpəl","banana":"bəˈnænə","orange":"ˈɔrɪnʤ","berry":"ˈbɛri","vegetable":"ˈvɛʤtəbəl","potato":"pəˈteɪˌtoʊ","tomato":"təˈmɑˌtoʊ","onion":"ˈənjən","salad":"ˈsæləd","soup":"sup","sandwich":"ˈsænwɪʧ","sugar":"ˈʃʊgər","salt":"sɔlt","pepper":"ˈpɛpər","juice":"ʤus","drink":"drɪŋk","cook":"kʊk","eat":"it","taste":"teɪst","sweet":"swit","sour":"saʊər","hot":"hɑt","fresh":"frɛʃ","clothes":"kloʊðz","shirt":"ʃərt","pants":"pænts","jeans":"ʤinz","shorts":"ʃɔrts","dress":"drɛs","skirt":"skərt","coat":"koʊt","jacket":"ˈʤækɪt","sweater":"sˈwɛtər","sock":"sɑk","shoe":"ʃu","hat":"hæt","glove":"gləv","belt":"bɛlt","size":"saɪz","small":"smɔl","medium":"ˈmidiəm","large":"lɑrʤ","wear":"wɛr","fit":"fɪt","shopping":"ˈʃɑpɪŋ","money":"ˈməni","price":"praɪs","cost":"kɔst","dollar":"ˈdɔlər","cent":"sɛnt","cash":"kæʃ","card":"kɑrd","sale":"seɪl","cheap":"ʧip","expensive":"ɪkˈspɛnsɪv","customer":"ˈkəstəmər","clerk":"klərk","receipt":"rɪˈsit","order":"ˈɔrdər","menu":"ˈmɛnju","mall":"mɔl","counter":"ˈkaʊntər","closed":"kloʊzd","enough":"ɪˈnəf","more":"mɔr","less":"lɛs","most":"moʊst","few":"fju","many":"ˈmɛni","much":"məʧ","some":"səm","any":"ˈɛni","all":"ɔl","catch":"kæʧ","chance":"ʧæns","collect":"kəˈlɛkt","compare":"kəmˈpɛr","complain":"kəmˈpleɪn","connect":"kəˈnɛkt","cover":"ˈkəvər","dance":"dæns","deliver":"dɪˈlɪvər","drop":"drɔp","earn":"ərn","nature":"ˈneɪʧər","weather":"ˈwɛðər","sun":"sən","moon":"mun","star":"stɑr","sky":"skaɪ","cloud":"klaʊd","rain":"reɪn","snow":"snoʊ","wind":"wɪnd","storm":"stɔrm","thunder":"ˈθəndər","lightning":"ˈlaɪtnɪŋ","ice":"aɪs","season":"ˈsizən","spring":"spərɪŋ","summer":"ˈsəmər","winter":"ˈwɪntər","warm":"wɔrm","cool":"kul","wet":"wɛt","dry":"draɪ","bright":"braɪt","dark":"dɑrk","temperature":"ˈtɛmpərəʧər","tree":"tri","plant":"plænt","flower":"flaʊər","grass":"græs","leaf":"lif","root":"rut","seed":"sid","forest":"ˈfɔrɪst","field":"fild","farm":"fɑrm","garden":"ˈgɑrdən","river":"ˈrɪvər","lake":"leɪk","ocean":"ˈoʊʃən","sea":"si","beach":"biʧ","mountain":"ˈmaʊntən","hill":"hɪl","land":"lænd","rock":"rɑk","sand":"sænd","earth":"ərθ","animal":"ˈænəməl","pet":"pɛt","dog":"dɔg","cat":"kæt","bird":"bərd","horse":"hɔrs","cow":"kaʊ","pig":"pɪg","sheep":"ʃip","rabbit":"ˈræbɪt","mouse":"maʊs","bear":"bɛr","lion":"laɪən","tiger":"ˈtaɪgər","elephant":"ˈɛləfənt","monkey":"ˈməŋki","snake":"sneɪk","frog":"frɑg","insect":"ˈɪnˌsɛkt","bee":"bi","ant":"ænt","butterfly":"ˈbətərˌflaɪ","wing":"wɪŋ","tail":"teɪl","fur":"fər","wild":"waɪld","feed":"fid","hunt":"hənt","hide":"haɪd","climb":"klaɪm","swim":"swɪm","jump":"ʤəmp","crawl":"krɔl","alive":"əˈlaɪv","dead":"dɛd","natural":"ˈnæʧərəl","warmth":"wɔrmθ","shade":"ʃeɪd","shadow":"ˈʃæˌdoʊ","ground":"graʊnd","space":"speɪs","environment":"ɪnˈvaɪrənmənt","pollution":"pəˈluʃən","trash":"træʃ","recycle":"riˈsaɪkəl","save":"seɪv","protect":"prəˈtɛkt","energy":"ˈɛnərʤi","weathering":"ˈwɛðərɪŋ","exercise":"ˈɛksərˌsaɪz","fill":"fɪl","hurry":"ˈhəri","invite":"ˌɪnˈvaɪt","forget":"fərˈgɛt","guess":"gɛs","wonder":"ˈwəndər","agree":"əˈgri","disagree":"dɪsəˈgri","like":"laɪk","dislike":"dɪsˈlaɪk","prefer":"prɪˈfər","wish":"wɪʃ","plan":"plæn","reason":"ˈrizən","fact":"fækt","truth":"truθ","lie":"laɪ","message":"ˈmɛsɪʤ","email":"iˈmeɪl","letter":"ˈlɛtər","news":"nuz","conversation":"ˌkɑnvərˈseɪʃən","language":"ˈlæŋgwɪʤ","meaning":"ˈminɪŋ","reply":"rɪˈplaɪ","text":"tɛkst","point":"pɔɪnt","describe":"dɪˈskraɪb","soft":"sɔft","clear":"klɪr","simple":"ˈsɪmpəl","difficult":"ˈdɪfəkəlt","new":"nu","old":"oʊld","young":"jəŋ","big":"bɪg","tiny":"ˈtaɪni","long":"lɔŋ","short":"ʃɔrt","tall":"tɔl","low":"loʊ","high":"haɪ","wide":"waɪd","narrow":"ˈnɛroʊ","thick":"θɪk","thin":"θɪn","heavy":"ˈhɛvi","fast":"fæst","slow":"sloʊ","beautiful":"ˈbjutəfəl","pretty":"ˈprɪti","ugly":"ˈəgli","rich":"rɪʧ","poor":"pur","True":"tru","real":"ril","special":"ˈspɛʃəl","different":"ˈdɪfərənt","possible":"ˈpɑsəbəl","sure":"ʃʊr","maybe":"ˈmeɪbi","probably":"ˈprɑbəˌbli","really":"ˈrɪli","very":"ˈvɛri","quite":"kwaɪt","almost":"ˈɔlˌmoʊst","only":"ˈoʊnli","also":"ˈɔlsoʊ","join":"ʤɔɪn","lend":"lɛnd","miss":"mɪs","notice":"ˈnoʊtɪs","pack":"pæk","paint":"peɪnt","promise":"ˈprɑməs","receive":"rɪˈsiv","repair":"rɪˈpɛr","ring":"rɪŋ","roll":"roʊl","sing":"sɪŋ","smell":"smɛl","teach":"tiʧ","throw":"θroʊ","touch":"təʧ","wash":"wɑʃ","wave":"weɪv","welcome":"ˈwɛlkəm","ahead":"əˈhɛd","besides":"ˌbiˈsaɪdz","nearby":"ˈnɪrˈbaɪ","up":"əp","down":"daʊn","third":"θərd","fourth":"fɔrθ","half":"hæf","quarter":"kˈwɔrtər","pair":"pɛr","single":"ˈsɪŋgəl","double":"ˈdəbəl","extra":"ˈɛkstrə","favorite":"ˈfeɪvərɪt","normal":"ˈnɔrməl","community":"kəmˈjunɪti","neighborhood":"ˈneɪbərˌhʊd","building":"ˈbɪldɪŋ","apartment":"əˈpɑrtmənt","office":"ˈɔfəs","bank":"bæŋk","post":"poʊst","mail":"meɪl","police":"pəˈlis","firefighter":"ˈfaɪrˌfaɪtər","museum":"mˈjuziəm","zoo":"zu","playground":"ˈpleɪˌgraʊnd","church":"ʧərʧ","service":"ˈsərvɪs","worker":"ˈwərkər","job":"ʤɑb","boss":"bɔs","company":"ˈkəmpəˌni","business":"ˈbɪznɪs","hotel":"hoʊˈtɛl","airport":"ˈɛrˌpɔrt","ticket":"ˈtɪkɪt","seat":"sit","passenger":"ˈpæsənʤər","driver":"ˈdraɪvər","traffic":"ˈtræfɪk","sign":"saɪn","address":"ˈæˌdrɛs","number":"ˈnəmbər","emergency":"ˈimərʤənsi","internet":"ˈɪntərˌnɛt","website":"ˈwɛbˌsaɪt","app":"æp","password":"ˈpæsˌwərd","account":"əˈkaʊnt","file":"faɪl","document":"ˈdɑkjəmɛnt","video":"ˈvɪdioʊ","camera":"ˈkæmərə","keyboard":"ˈkiˌbɔrd","button":"ˈbətən","click":"klɪk","type":"taɪp","print":"prɪnt","search":"sərʧ","download":"ˈdaʊnˌloʊd","upload":"ˈəˌploʊd","online":"ˈɔnˌlaɪn","offline":"ˈɔˌflaɪn","link":"lɪŋk","signal":"ˈsɪgnəl","battery":"ˈbætəri","charge":"ʧɑrʤ","power":"paʊər","machine":"məˈʃin","tool":"tul","fix":"fɪks","broken":"ˈbroʊkən","close":"kloʊz","lock":"lɑk","unlock":"ənˈlɑk","push":"pʊʃ","press":"prɛs","hold":"hoʊld","form":"fɔrm","information":"ˌɪnˌfɔrˈmeɪʃən","appointment":"əˈpɔɪntmənt","visit":"ˈvɪzɪt","solution":"səˈluʃən","lost":"lɔst","found":"faʊnd","available":"əˈveɪləbəl","public":"ˈpəblɪk","private":"ˈpraɪvət","local":"ˈloʊkəl","strange":"streɪnʤ","perfect":"ˈpərˌfɪkt","useful":"ˈjusfəl","useless":"ˈjusləs","lucky":"ˈləki","unlucky":"ənˈləki","popular":"ˈpɑpjələr","famous":"ˈfeɪməs","quietly":"kˈwaɪətli","loudly":"ˈlaʊdli","ago":"əˈgoʊ","everywhere":"ˈɛvriˌwɛr","someone":"ˈsəmˌwən","anyone":"ˈɛniˌwən","nobody":"ˈnoʊˌbɑˌdi","something":"ˈsəmθɪŋ","anything":"ˈɛniˌθɪŋ","nothing":"ˈnəθɪŋ","myself":"ˌmaɪˈsɛlf","yourself":"ˈjɔrsɛlf","himself":"hɪmˈsɛlf","herself":"hərˈsɛlf","ourselves":"ɑrˈsɛlvz","themselves":"ðɛmˈsɛlvz","necessary":"ˈnɛsəˌsɛri","common":"ˈkɑmən","similar":"ˈsɪmələr","general":"ˈʤɛnərəl","main":"meɪn","whole":"hoʊl","part":"pɑrt","piece":"pis","way":"weɪ","result":"rɪˈzəlt","cause":"kɔz","effect":"ˈifɛkt","amount":"əˈmaʊnt","several":"ˈsɛvərəl","each":"iʧ","every":"ˈɛvəri","either":"ˈiðər","both":"boʊθ","during":"ˈdʊrɪŋ","while":"waɪl","because":"bɪˈkəz","since":"sɪns","so":"soʊ","if":"ɪf","unless":"ənˈlɛs","although":"ˌɔlˈðoʊ","but":"bət","however":"ˌhaʊˈɛvər","and":"ənd","or":"ər","than":"ðən","as":"ɛz","about":"əˈbaʊt","against":"əˈgɛnst","without":"wɪˈθaʊt","with":"wɪθ","from":"frəm","to":"tɪ","for":"fər","by":"baɪ","of":"əv","at":"æt","on":"ɔn","in":"ɪn","among":"əˈməŋ","usual":"ˈjuʒəwəl","normally":"ˈnɔrməli","perhaps":"pərˈhæps","already":"ɔˈrɛdi","still":"stɪl","just":"ʤɪst","even":"ˈivɪn","instead":"ˌɪnˈstɛd","certainly":"ˈsərtənli","finally":"ˈfaɪnəli","suddenly":"ˈsədənli","quickly":"kˈwɪkli","slowly":"sˈloʊli","carefully":"ˈkɛrfəli","easily":"ˈizəli","clearly":"ˈklɪrli","take care":"teɪk kɛr","find out":"faɪnd aʊt","get up":"gɪt əp","sit down":"sɪt daʊn","stand up":"stænd əp","come back":"kəm bæk","go back":"goʊ bæk","come in":"kəm ɪn","go out":"goʊ aʊt","pick up":"pɪk əp","put down":"pʊt daʊn","turn on":"tərn ɔn","turn off":"tərn ɔf","look for":"lʊk fər","look at":"lʊk æt","wait for":"weɪt fər","talk about":"tɔk əˈbaʊt","think about":"θɪŋk əˈbaʊt","ask for":"æsk fər","listen to":"ˈlɪsən tɪ","work on":"wərk ɔn","write down":"raɪt daʊn","read aloud":"rɛd əˈlaʊd","line up":"laɪn əp","clean up":"klin əp","hurry up":"ˈhəri əp","slow down":"sloʊ daʊn","come from":"kəm frəm","belong to":"bɪˈlɔŋ tɪ","be ready":"bi ˈrɛdi","be careful":"bi ˈkɛrfəl","be late":"bi leɪt","be absent":"bi ˈæbsənt","be quiet":"bi kwaɪət","be sure":"bi ʃʊr","at home":"æt hoʊm","at school":"æt skul","on time":"ɔn taɪm","right now":"raɪt naʊ","identify":"aɪˈdɛntəˌfaɪ","determine":"dɪˈtərmən","analyze":"ˈænəˌlaɪz","examine":"ɪgˈzæmɪn","interpret":"ˌɪnˈtərprət","infer":"ˌɪnˈfər","conclude":"kənˈklud","predict":"prɪˈdɪkt","evaluate":"ɪˈvæljuˌeɪt","assess":"əˈsɛs","recognize":"ˈrɛkəgˌnaɪz","distinguish":"dɪˈstɪŋgwɪʃ","investigate":"ˌɪnˈvɛstəˌgeɪt","observe":"əbˈzərv","discover":"dɪˈskəvər","explore":"ɪkˈsplɔr","focus":"ˈfoʊkɪs","select":"səˈlɛkt","classify":"ˈklæsəˌfaɪ","organize":"ˈɔrgəˌnaɪz","apply":"əˈplaɪ","estimate":"ˈɛstəˌmeɪt","calculate":"ˈkælkjəˌleɪt","measure":"ˈmɛʒər","approach":"əˈproʊʧ","reflect":"rɪˈflɛkt","assume":"əˈsum","derive":"dəraɪv","formulate":"ˈfɔrmjəˌleɪt","perceive":"pərˈsiv","comprehend":"ˌkɑmpriˈhɛnd","anticipate":"ænˈtɪsəˌpeɪt","verify":"ˈvɛrəˌfaɪ","contrast":"ˈkɑntræst","relate":"rɪˈleɪt","trace":"treɪs","inspect":"ˌɪnˈspɛkt","monitor":"ˈmɑnətər","judge":"ʤəʤ","evidence":"ˈɛvədəns","detail":"ˈditeɪl","opinion":"əˈpɪnjən","statement":"ˈsteɪtmənt","claim":"kleɪm","argument":"ˈɑrgjəmənt","conclusion":"kənˈkluʒən","purpose":"ˈpərpəs","context":"ˈkɑntɛkst","source":"sɔrs","reference":"ˈrɛfərəns","relevant":"ˈrɛləvənt","accurate":"ˈækjərət","specific":"spɪˈsɪfɪk","support":"səˈpɔrt","summary":"ˈsəməri","theme":"θim","passage":"ˈpæsɪʤ","phrase":"freɪz","term":"tərm","definition":"ˌdɛfəˈnɪʃən","description":"dɪˈskrɪpʃən","explanation":"ˌɛkspləˈneɪʃən","central":"ˈsɛntrəl","textual":"ˈtɛksˌʧuəl","literal":"ˈlɪtərəl","figurative":"ˈfɪgjərətɪv","implicit":"ˌɪmˈplɪsət","explicit":"ɪkˈsplɪsət","direct":"dɪˈrɛkt","indirect":"ˌɪndərˈɛkt","clue":"klu","quote":"kwoʊt","cite":"saɪt","refer":"rɪˈfər","mention":"ˈmɛnʃən","highlight":"ˈhaɪˌlaɪt","emphasize":"ˈɛmfəˌsaɪz","summarize":"ˈsəmərˌaɪz","express":"ɪkˈsprɛs","indicate":"ˈɪndəˌkeɪt","reveal":"rɪˈvil","represent":"ˌrɛprɪˈzɛnt","demonstrate":"ˈdɛmənˌstreɪt","illustrate":"ˈɪləˌstreɪt","clarify":"ˈklɛrəˌfaɪ","define":"dɪˈfaɪn","introduce":"ˌɪntrəˈdus","provide":"prəˈvaɪd","contain":"kənˈteɪn","communicate":"kəmˈjunəˌkeɪt","convey":"kənˈveɪ","respond":"rɪˈspɑnd","discuss":"dɪˈskəs","inform":"ˌɪnˈfɔrm","announce":"əˈnaʊns","outline":"ˈaʊˌtlaɪn","elaborate":"ɪˈlæbərˌeɪt","paraphrase":"ˈpɛrəˌfreɪz","retell":"riˈtɛl","argue":"ˈɑrgju","persuade":"pərsˈweɪd","convince":"kənˈvɪns","assert":"əˈsərt","propose":"prəˈpoʊz","advocate":"ˈædvəˌkeɪt","defend":"dɪˈfɛnd","oppose":"əˈpoʊz","debate":"dəˈbeɪt","justify":"ˈʤəstəˌfaɪ","questioning":"kˈwɛsʧənɪŋ","discussion":"dɪˈskəʃən","response":"rɪˈspɑns","communication":"kəmˌjunəˈkeɪʃən","presentation":"ˌprɛzənˈteɪʃən","expression":"ɪkˈsprɛʃən","feedback":"ˈfidˌbæk","comment":"ˈkɑmɛnt","affect":"əˈfɛkt","influence":"ˈɪnfluəns","contribute":"kənˈtrɪbjut","occur":"əˈkər","develop":"dɪˈvɛləp","increase":"ˌɪnˈkris","decrease":"ˈdiˌkris","improve":"ˌɪmˈpruv","reduce":"rɪˈdus","prevent":"prɪˈvɛnt","depend":"dɪˈpɛnd","react":"riækt","process":"ˈprɔˌsɛs","progress":"ˈprɑˌgrɛs","transform":"ˈtrænsfɔrm","alter":"ˈɔltər","modify":"ˈmɑdəˌfaɪ","adjust":"əˈʤəst","adapt":"əˈdæpt","expand":"ɪkˈspænd","decline":"dɪˈklaɪn","diminish":"dɪˈmɪnɪʃ","enhance":"ɛnˈhæns","maintain":"meɪnˈteɪn","preserve":"prɪˈzərv","replace":"ˌriˈpleɪs","restore":"rɪˈstɔr","emerge":"ˈimərʤ","evolve":"ɪˈvɑlv","shift":"ʃɪft","transition":"trænˈzɪʃən","fluctuate":"ˈfləkʧəˌweɪt","stabilize":"ˈsteɪbəˌlaɪz","generate":"ˈʤɛnərˌeɪt","produce":"ˈproʊdus","establish":"ɪˈstæblɪʃ","initiate":"ˌɪˈnɪʃiˌeɪt","achieve":"əˈʧiv","accomplish":"əˈkɑmplɪʃ","difference":"ˈdɪfərəns","similarity":"ˌsɪməˈlɛrəti","unlike":"ənˈlaɪk","relationship":"riˈleɪʃənˌʃɪp","connection":"kəˈnɛkʃən","related":"rɪˈleɪtɪd","separate":"ˈsɛpərˌeɪt","individual":"ˌɪndəˈvɪʤəwəl","particular":"ˌpɑˈtɪkjələr","various":"ˈvɛriəs","certain":"ˈsərtən","entire":"ɪnˈtaɪər","major":"ˈmeɪʤər","minor":"ˈmaɪnər","equal":"ˈikwəl","opposite":"ˈɑpəzɪt","associate":"əˈsoʊʃiˌeɪt","correspond":"ˌkɔrəˈspɑnd","interact":"ˌɪnərˈækt","vary":"ˈvɛri","differentiate":"ˌdɪfərˈɛnʧiˌeɪt","equivalent":"ɪkˈwɪvələnt","consistent":"kənˈsɪstənt","inconsistent":"ˌɪnkənˈsɪstənt","compatible":"kəmˈpætəbəl","independent":"ˌɪndɪˈpɛndənt","dependent":"dɪˈpɛndənt","mutual":"mˈjuʧuəl","parallel":"ˈpɛrəˌlɛl","relative":"ˈrɛlətɪv","proportion":"prəˈpɔrʃən","pattern":"ˈpætərn","structure":"ˈstrəkʧər","category":"ˈkætəˌgɔri","combine":"ˈkɑmbaɪn","divide":"dɪˈvaɪd","inferential":"ˌɪnfərˈɛnʃəl","balance":"ˈbæləns","coordinate":"koʊˈɔrdəˌneɪt","interconnect":"ˌɪntərkəˈnɛkt","overlap":"ˈoʊvərˌlæp","contrastive":"contrastive","significant":"sɪgˈnɪfɪkənt","likely":"ˈlaɪkli","unlikely":"ənˈlaɪkli","appropriate":"əˈproʊpriˌeɪt","effective":"ˈifɛktɪv","successful":"səkˈsɛsfəl","complex":"ˈkɑmplɛks","obvious":"ˈɑbviəs","sufficient":"səˈfɪʃənt","typical":"ˈtɪpɪkəl","unusual":"ənˈjuˌʒuəl","essential":"ɛˈsɛnʃəl","valuable":"ˈvæljəbəl","adequate":"ˈædəkˌweɪt","beneficial":"ˌbɛnəˈfɪʃəl","considerable":"kənˈsɪdərəbəl","efficient":"ɪˈfɪʃənt","exceptional":"ɪkˈsɛpʃənəl","favorable":"ˈfeɪvərəbəl","fundamental":"ˌfəndəˈmɛnəl","meaningful":"ˈminɪŋfəl","notable":"ˈnoʊtəbəl","practical":"ˈpræktɪkəl","primary":"ˈpraɪˌmɛri","reasonable":"ˈrizənəbəl","substantial":"səbˈstænʃəl","suitable":"ˈsutəbəl","valid":"ˈvælɪd","reliable":"rɪˈlaɪəbəl","precise":"prɪˈsaɪs","objective":"əˈbʤɛktɪv","subjective":"səˈbʤɛktɪv","logical":"ˈlɑʤɪkəl","noteworthy":"ˈnoʊtˌwərði","critical":"ˈkrɪtɪkəl","crucial":"ˈkruʃəl","apparent":"əˈpɛrənt","evident":"ˈɛvədənt","potential":"pəˈtɛnʃəl","widespread":"ˈwaɪdˈsprɛd","predominant":"prɪˈdɑmənənt","sequence":"ˈsikwəns","stage":"steɪʤ","period":"ˈpɪriəd","previous":"ˈpriviəs","following":"ˈfɑloʊɪŋ","initial":"ˌɪˈnɪʃəl","final":"ˈfaɪnəl","eventually":"ɪˈvɛnʧəwəli","gradually":"ˈgræʤuəli","immediately":"ˌɪˈmiˌdiətli","recently":"ˈrisəntli","currently":"ˈkərəntli","frequently":"ˈfrikwɛntli","rarely":"ˈrɛrli","temporary":"ˈtɛmpərˌɛri","permanent":"ˈpərmɑˌnɛnt","prior":"praɪər","subsequent":"ˈsəbsəkwənt","simultaneous":"ˌsaɪməlˈteɪniəs","formerly":"ˈfɔrmərli","ultimately":"ˈəltəmətli","initially":"ˌɪˈnɪʃəli","previously":"ˈpriviəsli","afterward":"ˈæftərwərd","meanwhile":"ˈminˌwaɪl","occasionally":"ɔˈkeɪʒənəˌli","regularly":"ˈrɛgjələrli","constantly":"ˈkɑnstəntli","annually":"ˈænjuəli","daily":"ˈdeɪli","duration":"ˈdʊˈreɪʃən","interval":"ˈɪntərvəl","phase":"feɪz","cycle":"ˈsaɪkəl","trend":"trɛnd","precede":"prɪˈsid","delay":"dɪˈleɪ","plausible":"ˈplɔzəbəl","pause":"pɔz","resume":"ˈrɛzəˌmeɪ","coherent":"koʊˈhɪrənt","timely":"ˈtaɪmli","ongoing":"ˈɔnˌgoʊɪŋ","consecutive":"kənˈsɛkjətɪv","issue":"ˈɪʃu","challenge":"ˈʧælənʤ","difficulty":"ˈdɪfɪˌkəlti","consequence":"ˈkɑnsəkwəns","impact":"ˌɪmˈpækt","benefit":"ˈbɛnəfɪt","advantage":"ædˈvæntɪʤ","disadvantage":"ˌdɪsədˈvænɪʤ","risk":"rɪsk","conflict":"ˈkɑnflɪkt","resolve":"riˈzɑlv","overcome":"ˈoʊvərˌkəm","avoid":"əˈvɔɪd","manage":"ˈmænɪʤ","concise":"kənˈsaɪs","recover":"rɪˈkəvər","handle":"ˈhændəl","strategy":"ˈstrætəʤi","method":"ˈmɛθəd","procedure":"prəˈsiʤər","technique":"tɛkˈnik","option":"ˈɔpʃən","alternative":"ɔlˈtərnətɪv","decision":"dɪˈsɪʒən","action":"ˈækʃən","attempt":"əˈtɛmpt","effort":"ˈɛfərt","target":"ˈtərgət","implement":"ˈɪmpləmənt","perform":"pərˈfɔrm","comprehensive":"ˌkɑmpriˈhɛnsɪv","obtain":"əbˈteɪn","conventional":"kənˈvɛnʃənəl","pursue":"pərˈsu","undertake":"ˈəndərˌteɪk","facilitate":"fəˈsɪləˌteɪt","enable":"ɪˈneɪbəl","assist":"əˈsɪst","participate":"pɑrˈtɪsəˌpeɪt","cooperate":"kˈwɑpərˌeɪt","controversial":"ˌkɑntrəˈvərʃəl","control":"kənˈtroʊl","cumulative":"ˈkjumjələtɪv","deliberate":"dɪˈlɪbərˌeɪt","attitude":"ˈætəˌtud","behavior":"bɪˈheɪvjər","motivation":"ˌmoʊtəˈveɪʃən","intention":"ˌɪnˈtɛnʧən","reaction":"riˈækʃən","emotion":"ˈiˌmoʊʃən","perspective":"pərˈspɛktɪv","experience":"ɪkˈspɪriəns","struggle":"ˈstrəgəl","dynamic":"daɪˈnæmɪk","responsibility":"riˌspɑnsəˈbɪləti","determination":"dɪˌtərməˈneɪʃən","courage":"kərɪʤ","confidence":"ˈkɑnfədɛns","concern":"kənˈsərn","desire":"dɪˈzaɪər","disappointment":"ˌdɪsəˈpɔɪntmənt","frustration":"frəˈstreɪʃən","hesitation":"ˌhɛzəˈteɪʃən","curiosity":"ˌkjʊriˈɑsəti","sympathy":"ˈsɪmpəθi","generosity":"ˌʤɛnərˈɑsəti","independence":"ˌɪndɪˈpɛndəns","loyalty":"ˈlɔɪəlti","honesty":"ˈɑnəsti","character":"ˈkɛrɪktər","trait":"treɪt","motive":"ˈmoʊtɪv","belief":"bɪˈlif","value":"ˈvælju","tradition":"trəˈdɪʃən","custom":"ˈkəstəm","society":"soʊˈsaɪɪti","culture":"ˈkəlʧər","identity":"aɪˈdɛntəˌti","role":"roʊl","empirical":"ˌɛmˈpɪrɪkəl","interaction":"ˌɪnərˈækʃən","cooperation":"kˌwɔpərˈeɪʃən","fairness":"ˈfɛrnəs","justice":"ˈʤəstɪs","feasible":"ˈfizəbəl","resolution":"ˌrɛzəˈluʃən","flexible":"ˈflɛksəbəl","growth":"groʊθ","framework":"ˈfreɪmˌwərk","factor":"ˈfæktər","function":"ˈfəŋkʃən","concept":"ˈkɑnsɛpt","principle":"ˈprɪnsəpəl","theory":"ˈθɪri","inherent":"ˌɪnˈhɛrənt","data":"ˈdætə","research":"ˈrisərʧ","variable":"ˈvɛriəbəl","condition":"kənˈdɪʃən","feature":"ˈfiʧər","property":"ˈprɑpərti","element":"ˈɛləmənt","component":"kəmˈpoʊnənt","resource":"ˈrisɔrs","system":"ˈsɪstəm","innovative":"ˈɪnəˌveɪtɪv","integrate":"ˈɪnəˌgreɪt","model":"ˈmɑdəl","region":"ˈriʤən","location":"loʊˈkeɪʃən","population":"ˌpɑpjəˈleɪʃən","distribution":"ˌdɪstrəˈbjuʃən","range":"reɪnʤ","scale":"skeɪl","rate":"reɪt","quantity":"kˈwɑntəti","majority":"məˈʤɔrəti","minority":"məˈnɔrəti","average":"ˈævərɪʤ","approximately":"əˈprɑksəmətli","nearly":"ˈnɪrli","primarily":"praɪˈmɛrəli","generally":"ˈʤɛnərəli","relatively":"ˈrɛlətɪvli","extremely":"ɪkˈstrimli","considerably":"kənˈsɪdərəbli","slightly":"sˈlaɪtli","additional":"əˈdɪʃənəl","overall":"ˈoʊvərˌɔl","mediate":"ˈmidiˌeɪt","neutral":"ˈnutrəl","notion":"ˈnoʊʃən","unique":"juˈnik","precedent":"ˈprɛsɪdənt","basic":"ˈbeɪsɪk","advanced":"ədˈvænst","credible":"ˈkrɛdəbəl","validity":"vəˈlɪdɪti","reasoning":"ˈrizənɪŋ","counterargument":"counterargument","refute":"rɪfˈjut","position":"pəˈzɪʃən","viewpoint":"vˈjuˌpɔɪnt","preliminary":"prɪˈlɪməˌnɛri","bias":"baɪəs","priority":"praɪˈɔrəti","random":"ˈrændəm","reinforcement":"ˌriɪnˈfɔrsmənt","scenario":"sɪˈnɛrioʊ","citation":"saɪˈteɪʃən","scope":"skoʊp","investigation":"ˌɪnˌvɛstəˈgeɪʃən","stable":"ˈsteɪbəl","proof":"pruf","supporting":"səˈpɔrtɪŋ","substitute":"ˈsəbstəˌtut","irrelevant":"ˌɪˈrɛləvənt","tentative":"ˈtɛntətɪv","unreliable":"ˌənrɪˈlaɪəbəl","transfer":"ˈtrænsfər","inaccurate":"ˌɪˈnækjərət","trigger":"ˈtrɪgər","insufficient":"ˌɪnsəˈfɪʃənt","uniform":"ˈjunəˌfɔrm","invalid":"ˌɪnˈvæləd","visible":"ˈvɪzəbəl","assumption":"əˈsəmpʃən","implication":"ˌɪmpləˈkeɪʃən","criterion":"kraɪˈtɪriən","criteria":"kraɪˈtɪriə","basis":"ˈbeɪsɪs","methodology":"ˌmɛθəˈdɑləʤi","finding":"ˈfaɪndɪŋ","viable":"ˈvaɪəbəl","interpretation":"ˌɪnˌtərprɪˈteɪʃən","analysis":"æˈnælɪsɪs","evaluation":"ɪˌvæljuˈeɪʃən","comparison":"kəmˈpɛrəsən","abstract":"ˈæbˌstrækt","synthesis":"ˈsɪnθəsəs","aggregate":"ˈægrəgət","persuasion":"pərsˈweɪʒən","argumentative":"ˌɑrgjəˈmɛntətɪv","informative":"ˌɪnˈfɔrmətɪv","explanatory":"ɪkˈsplænəˌtɔri","acquire":"əkˈwaɪər","allocate":"ˈæləˌkeɪt","attribute":"əˈtrɪˌbjut","construct":"ˈkɑnstrəkt","encounter":"ɪnˈkaʊnər","incorporate":"ˌɪnˈkɔrpərˌeɪt","retain":"rɪˈteɪn","specify":"ˈspɛsəˌfaɪ","sustain":"səˈsteɪn","utilize":"ˈjutəˌlaɪz","acknowledge":"ækˈnɑlɪʤ","criticize":"ˈkrɪtɪˌsaɪz","depict":"dɪˈpɪkt","exemplify":"ɪgˈzɛmpləˌfaɪ","portray":"pɔrˈtreɪ","reinforce":"ˌriɪnˈfɔrs","signify":"ˈsɪgnəˌfaɪ","synthesize":"ˈsɪnθəˌsaɪz","validate":"ˈvælədeɪt","contradict":"ˌkɑntrəˈdɪkt","circumstance":"ˈsərkəmˌstæns","phenomenon":"fəˈnɑməˌnɑn","tendency":"ˈtɛndənsi","variation":"ˌvɛriˈeɪʃən","significance":"sɪgˈnɪfɪkəns","coincide":"ˌkoʊɪnˈsaɪd","compile":"kəmˈpaɪl","concurrent":"kənˈkərənt","discrete":"dɪˈskrit","domain":"doʊˈmeɪn","underlying":"ˌəndərˈlaɪɪŋ","inevitable":"ˌɪˈnɛvətəbəl","distinct":"dɪˈstɪŋkt","diverse":"dɪˈvərs","integral":"ˈɪnəgrəl","parameter":"pərˈæmətər","predominantly":"ˌprɪˈdɑmənənˌtli","abundant":"əˈbəndənt","accessible":"ækˈsɛsəbəl","accompany":"əˈkəmpəni","consequently":"ˈkɑnsəkˌwɛntli","furthermore":"ˈfərðərˌmɔr","nevertheless":"ˌnɛvərðəˈlɛs","therefore":"ˈðɛrˌfɔr","otherwise":"ˈəðərˌwaɪz","similarly":"ˈsɪmələrli","specifically":"spəˈsɪfɪkli","whereas":"wɛˈræz","alternatively":"ɔlˈtərnətɪvli","accordingly":"əˈkɔrdɪŋli","organism":"ˈɔrgəˌnɪzəm","cell":"sɛl","tissue":"ˈtɪʃu","organ":"ˈɔrgən","species":"ˈspiʃiz","ecosystem":"ˈikoʊˌsɪstəm","habitat":"ˈhæbəˌtæt","adaptation":"ˌædəpˈteɪʃən","heredity":"hərˈɛdəti","offspring":"ˈɔfˌsprɪŋ","life cycle":"laɪf ˈsaɪkəl","reproduction":"ˌriprəˈdəkʃən","development":"dɪˈvɛləpmənt","survival":"sərˈvaɪvəl","producer":"prəˈdusər","consumer":"kənˈsumər","decomposer":"decomposer","food chain":"fud ʧeɪn","food web":"fud wɛb","predator":"ˈprɛdətər","prey":"preɪ","competition":"ˌkɑmpəˈtɪʃən","biodiversity":"ˌbaɪoʊdaɪˈvərsəti","matter":"ˈmætər","mass":"mæs","volume":"ˈvɑljum","density":"ˈdɛnsɪti","solid":"ˈsɑləd","liquid":"ˈlɪkwɪd","gas":"gæs","particle":"ˈpɑrtɪkəl","mixture":"ˈmɪksʧər","dissolve":"dɪˈzɑlv","evaporation":"ɪˌvæpərˈeɪʃən","condensation":"ˌkɑndənˈseɪʃən","freezing":"ˈfrizɪŋ","melting":"ˈmɛltɪŋ","heat":"hit","force":"fɔrs","motion":"ˈmoʊʃən","speed":"spid","velocity":"vəˈlɑsəti","gravity":"ˈgrævɪti","friction":"ˈfrɪkʃən","magnet":"ˈmægnət","magnetic":"mægˈnɛtɪk","electricity":"ɪˌlɛkˈtrɪsəti","circuit":"ˈsərkət","current":"ˈkɑrənt","conductor":"kənˈdəktər","insulator":"ˈɪnsəˌleɪtər","reflection":"rɪˈflɛkʃən","refraction":"refraction","vibration":"vaɪˈbreɪʃən","frequency":"ˈfrikwənsi","climate":"ˈklaɪmɪt","atmosphere":"ˈætməsˌfɪr","precipitation":"prɪˌsɪpɪˈteɪʃən","humidity":"hjuˈmɪdəti","forecast":"ˈfɔrˌkæst","water cycle":"ˈwɔtər ˈsaɪkəl","erosion":"ɪˈroʊʒən","deposition":"ˌdɛpəˈzɪʃən","mineral":"ˈmɪnərəl","fossil":"ˈfɑsəl","soil":"sɔɪl","crust":"krəst","mantle":"ˈmæntəl","core":"kɔr","volcano":"vɑlˈkeɪnoʊ","earthquake":"ˈərθkˌweɪk","solar system":"ˈsoʊlər ˈsɪstəm","planet":"ˈplænət","orbit":"ˈɔrbət","rotation":"roʊˈteɪʃən","revolution":"ˌrɛvəˈluʃən","moon phase":"mun feɪz","galaxy":"ˈgæləksi","universe":"ˈjunəˌvərs","gravity field":"ˈgrævɪti fild","citizen":"ˈsɪtɪzən","government":"ˈgəvərnmənt","democracy":"dɪˈmɑkrəsi","republic":"riˈpəblɪk","constitution":"ˌkɑnstəˈtuʃən","law":"lɔ","rights":"raɪts","freedom":"ˈfridəm","election":"ɪˈlɛkʃən","vote":"voʊt","representative":"ˌrɛprɪˈzɛnətɪv","legislature":"ˈlɛʤəsˌleɪʧər","executive":"ɪgˈzɛkjətɪv","judicial":"ʤuˈdɪʃəl","court":"kɔrt","mayor":"meɪər","governor":"ˈgəvərnər","president":"ˈprɛzɪdənt","federal":"ˈfɛdərəl","local government":"ˈloʊkəl ˈgəvərnmənt","policy":"ˈpɑləsi","public service":"ˈpəblɪk ˈsərvɪs","tax":"tæks","budget":"ˈbəʤɪt","civic":"ˈsɪvɪk","amendment":"əˈmɛndmənt","economy":"ɪˈkɑnəmi","goods":"gʊdz","services":"ˈsərvɪsɪz","supply":"səˈplaɪ","demand":"dɪˈmænd","trade":"treɪd","currency":"ˈkərənsi","income":"ˈɪnˌkəm","expense":"ɪkˈspɛns","profit":"ˈprɑfɪt","labor":"ˈleɪbər","industry":"ˈɪndəstri","agriculture":"ˈægrɪˌkəlʧər","manufacturing":"ˌmænjəˈfækʧərɪŋ","technology":"tɛkˈnɑləʤi","scarcity":"ˈskɛrsɪti","continent":"ˈkɑntənənt","nation":"ˈneɪʃən","border":"ˈbɔrdər","capital":"ˈkæpɪtəl","urban":"ˈərbən","rural":"ˈrʊrəl","suburban":"səˈbərbən","latitude":"ˈlætəˌtud","longitude":"ˈlɑnʤəˌtud","equator":"ɪkˈweɪtər","hemisphere":"ˈhɛmɪsˌfɪr","map scale":"mæp skeɪl","legend":"ˈlɛʤənd","compass rose":"ˈkəmpəs roʊz","physical map":"ˈfɪzɪkəl mæp","political map":"pəˈlɪtɪkəl mæp","geography":"ʤiˈɑgrəfi","migration":"maɪˈgreɪʃən","immigration":"ˌɪməˈgreɪʃən","emigration":"ˌɛməˈgreɪʃən","settlement":"ˈsɛtəlmənt","colony":"ˈkɑləni","exploration":"ˌɛksplərˈeɪʃən","expedition":"ˌɛkspəˈdɪʃən","navigation":"ˌnævəˈgeɪʃən","route":"rut","territory":"ˈtɛrɪˌtɔri","religion":"rɪˈlɪʤən","heritage":"ˈhɛrɪtɪʤ","diversity":"dɪˈvərsɪti","civilization":"ˌsɪvəlɪˈzeɪʃən","war":"wɔr","peace":"pis","alliance":"əˈlaɪəns","treaty":"ˈtriti","slavery":"sˈleɪvəri","abolition":"ˌæbəˈlɪʃən","civil rights":"ˈsɪvəl raɪts","digit":"ˈdɪʤɪt","place value":"pleɪs ˈvælju","whole number":"hoʊl ˈnəmbər","integer":"ˈɪntəʤər","decimal":"ˈdɛsəməl","fraction":"ˈfrækʃən","numerator":"numerator","denominator":"dɪˈnɑməˌneɪtər","mixed number":"mɪkst ˈnəmbər","equivalent fraction":"ɪkˈwɪvələnt ˈfrækʃən","multiple":"ˈməltəpəl","prime number":"praɪm ˈnəmbər","composite number":"kəmˈpɑzət ˈnəmbər","product":"ˈprɑdəkt","quotient":"kˈwoʊʃənt","sum":"səm","remainder":"rɪˈmeɪndər","operation":"ˌɑpərˈeɪʃən","equation":"ɪkˈweɪʒən","unknown":"ənˈnoʊn","inequality":"ˌɪnɪkˈwɑləti","greater than":"ˈgreɪtər ðən","less than":"lɛs ðən","order of operations":"ˈɔrdər əv ˌɑpərˈeɪʃənz","ratio":"ˈreɪʃiˌoʊ","unit rate":"ˈjunɪt reɪt","percent":"pərˈsɛnt","scale factor":"skeɪl ˈfæktər","constant":"ˈkɑnstənt","line segment":"laɪn ˌsɛgˈmɛnt","ray":"reɪ","angle":"ˈæŋgəl","acute angle":"əˈkjut ˈæŋgəl","right angle":"raɪt ˈæŋgəl","obtuse angle":"ɑbˈtus ˈæŋgəl","perpendicular":"ˌpərpənˈdɪkjələr","polygon":"ˈpɑlɪˌgɑn","triangle":"ˈtraɪˌæŋgəl","quadrilateral":"quadrilateral","rectangle":"ˈrɛktæŋgəl","square":"skwɛr","rhombus":"rhombus","trapezoid":"trapezoid","radius":"ˈreɪdiəs","diameter":"daɪˈæmətər","perimeter":"pərˈɪmətər","surface area":"ˈsərfəs ˈɛriə","length":"lɛŋθ","width":"wɪdθ","height":"haɪt","distance":"ˈdɪstəns","coordinate plane":"koʊˈɔrdəˌneɪt pleɪn","axis":"ˈæksəs","origin":"ˈɔrəʤən","graph":"græf","survey":"ˈsərˌveɪ","median":"ˈmidiən","mode":"moʊd","probability":"ˌprɑbəˈbɪləˌti","outcome":"ˈaʊtˌkəm","event":"ɪˈvɛnt","sample space":"ˈsæmpəl speɪs","round":"raʊnd","benchmark":"ˈbɛnʧˌmɑrk","approximate":"əˈprɑksəˌmeɪt","measurement":"ˈmɛʒərmənt","unit":"ˈjunɪt","convert":"ˈkɑnvərt","metric system":"ˈmɛtrɪk ˈsɪstəm","inch":"ɪnʧ","yard":"jɑrd","mile":"maɪl","capacity":"kəˈpæsɪti","elapsed time":"ɪˈlæpst taɪm","genre":"ˈʒɑnrə","fiction":"ˈfɪkʃən","nonfiction":"nɑnˈfɪkʃən","poetry":"ˈpoʊətri","drama":"ˈdrɑmə","myth":"mɪθ","folktale":"ˈfoʊkˌteɪl","fable":"ˈfeɪbəl","biography":"baɪˈɑgrəfi","autobiography":"ˌɔtəbaɪˈɑgrəfi","narrative":"ˈnɛrətɪv","informational text":"ˌɪnˈfɔrˌmeɪʃənəl tɛkst","argumentative text":"ˌɑrgjəˈmɛntətɪv tɛkst","persuasive text":"pərsˈweɪsɪv tɛkst","section":"ˈsɛkʃən","heading":"ˈhɛdɪŋ","caption":"ˈkæpʃən","diagram":"ˈdaɪəˌgræm","timeline":"ˈtaɪmlaɪn","text feature":"tɛkst ˈfiʧər","main idea":"meɪn aɪˈdiə","central idea":"ˈsɛntrəl aɪˈdiə","supporting detail":"səˈpɔrtɪŋ ˈditeɪl","protagonist":"proʊˈtægənəst","antagonist":"ænˈtægənəst","setting":"ˈsɛtɪŋ","plot":"plɑt","climax":"ˈklaɪˌmæks","character trait":"ˈkɛrɪktər treɪt","narrator":"ˈnɛreɪtər","speaker":"ˈspikər","point of view":"pɔɪnt əv vju","first person":"fərst ˈpərsən","third person":"θərd ˈpərsən","tone":"toʊn","mood":"mud","dialogue":"ˈdaɪəˌlɔg","inference":"ˈɪnfərəns","credibility":"ˌkrɛdəˈbɪlɪti","context clue":"ˈkɑntɛkst klu","synonym":"ˈsɪnəˌnɪm","antonym":"antonym","homophone":"ˈhoʊmoʊˌfoʊn","prefix":"ˈprifɪks","suffix":"ˈsəfɪks","root word":"rut wərd","figurative language":"ˈfɪgjərətɪv ˈlæŋgwɪʤ","literal meaning":"ˈlɪtərəl ˈminɪŋ","connotation":"ˌkɑnəˈteɪʃən","simile":"simile","metaphor":"ˈmɛtəfɔr","personification":"pərˌsɑnəfəˈkeɪʃən","hyperbole":"haɪˈpərbəˌli","idiom":"ˈɪdiəm","imagery":"ˈɪmɪʤri","symbolism":"ˈsɪmbəˌlɪzəm","alliteration":"əˈlɪtərˌeɪʃən","onomatopoeia":"onomatopoeia","rhyme":"raɪm","stanza":"ˈstænzə","verse":"vərs","rhythm":"ˈrɪðəm","author's purpose":"ˈɔθərz ˈpərpəs","compare and contrast":"kəmˈpɛr ənd ˈkɑntræst","cause and effect":"kɔz ənd ˈifɛkt","problem and solution":"ˈprɑbləm ənd səˈluʃən","chronological order":"ˌkrɑnəˈlɑʤɪkəl ˈɔrdər","text structure":"tɛkst ˈstrəkʧər","topic sentence":"ˈtɑpɪk ˈsɛntəns","concluding sentence":"kənˈkludɪŋ ˈsɛntəns","draft":"dræft","revise":"rɪˈvaɪz","edit":"ˈɛdət","proofread":"ˈpruˌfrid","thesis":"ˈθiˌsɪs","counterclaim":"ˈkaʊntərˌkleɪm","categorize":"ˈkætəgərˌaɪz","conceptualize":"conceptualize","deduce":"dɪˈdus","discern":"dɪˈsərn","hypothesize":"haɪˈpɑθəˌsaɪz","prioritize":"praɪˈɔrəˌtaɪz","scrutinize":"ˈskrutəˌnaɪz","speculate":"ˈspɛkjəˌleɪt","concrete":"ˈkɑnkrit","contradictory":"ˌkɑntrəˈdɪktəri","probable":"ˈprɑbəbəl","hypothesis":"haɪˈpɑθəsəs","insight":"ˈɪnˌsaɪt","dimension":"dɪˈmɛnʃən","mechanism":"ˈmɛkəˌnɪzəm","concede":"kənˈsid","dispute":"dɪˈspjut","prove":"pruv","weigh":"weɪ","corroborate":"kərˈɑbərˌeɪt","qualify":"kˈwɑləˌfaɪ","substantiate":"səbˈstænʧiˌeɪt","biased":"baɪəst","compelling":"kəmˈpɛlɪŋ","convincing":"kənˈvɪnsɪŋ","defensible":"dɪˈfɛnsəbəl","flawed":"flɔd","persuasive":"pərsˈweɪsɪv","balanced":"ˈbælənst","fair":"fɛr","assertion":"əˈsərʃən","fallacy":"ˈfæləsi","justification":"ˌʤəstəfəˈkeɪʃən","premise":"ˈprɛmɪs","rebuttal":"rɪˈbətəl","warrant":"ˈwɔrənt","authority":"əˈθɔrəti","consensus":"kənˈsɛnsəs","controversy":"ˈkɑntrəˌvərsi","judgment":"ˈʤəʤmənt","reliability":"riˌlaɪəˈbɪləti","stance":"stæns","testimony":"ˈtɛstɪˌmoʊni","relevance":"ˈrɛləvəns","accuracy":"ˈækjərəsi","assessment":"əˈsɛsmənt","allusion":"əˈluʒən","analogy":"əˈnæləʤi","anecdote":"ˈænɪkˌdoʊt","characterization":"ˌkɛrɪktərɪˈzeɪʃən","denotation":"denotation","diction":"ˈdɪkʃən","foreshadowing":"fɔrˈʃædoʊɪŋ","irony":"ˈaɪrəni","motif":"moʊˈtif","rhetoric":"ˈrɛtərɪk","flashback":"ˈflæʃˌbæk","prose":"proʊz","characterize":"ˈkɛrɪktərˌaɪz","evoke":"ɪˈvoʊk","imply":"ˌɪmˈplaɪ","rhetorical":"rɪˈtɔrɪkəl","symbolic":"sɪmˈbɑlɪk","thematic":"θiˈmætɪk","dramatic":"drəˈmætɪk","descriptive":"dɪˈskrɪptɪv","reflective":"rɪˈflɛktɪv","satirical":"səˈtɪrɪkəl","ambiguous":"æmˈbɪgjuəs","subtle":"ˈsətəl","vivid":"ˈvɪvɪd","dominant":"ˈdɑmənənt","recurring":"rɪˈkərɪŋ","excerpt":"ˈɛksərpt","subheading":"subheading","annotation":"ˌænəˈteɪʃən","footnote":"ˈfʊtˌnoʊt","quotation":"kwoʊˈteɪʃən","organization":"ˌɔrgənəˈzeɪʃən","access":"ˈækˌsɛs","constraint":"kənˈstreɪnt","equity":"ˈɛkwəti","ethics":"ˈɛθɪks","institution":"ˌɪnstɪˈtuʃən","knowledge":"ˈnɑlɪʤ","leadership":"ˈlidərˌʃɪp","legacy":"ˈlɛgəsi","opportunity":"ˌɑpərˈtunəti","innovation":"ˌɪnəˈveɪʃən","sustainability":"səˌsteɪnəˈbɪlɪti","interdependence":"ˌɪntərdəˈpɛndəns","boundary":"ˈbaʊndəri","continuity":"ˌkɑntəˈnuəti","efficiency":"ɪˈfɪʃənsi","limitation":"ˌlɪmɪˈteɪʃən","reform":"rɪˈfɔrm","stability":"stəˈbɪlɪti","discovery":"ˌdɪˈskəvri","incentive":"ˌɪnˈsɛnɪv","global":"ˈgloʊbəl","regional":"ˈriʤənəl","cultural":"ˈkəlʧərəl","economic":"ˌɛkəˈnɑmɪk","environmental":"ɪnˌvaɪrənˈmɛnəl","historical":"hɪˈstɔrɪkəl","political":"pəˈlɪtɪkəl","social":"ˈsoʊʃəl","technological":"ˌtɛknəˈlɑʤɪkəl","collective":"kəˈlɛktɪv","internal":"ˌɪnˈtərnəl","external":"ɪkˈstərnəl","secondary":"ˈsɛkənˌdɛri","amplify":"ˈæmpləˌfaɪ","attain":"əˈteɪn","constrain":"kənˈstreɪn","distribute":"dɪˈstrɪbjut","eliminate":"ɪˈlɪməˌneɪt","restrict":"riˈstrɪkt"};
 var PRO2_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1292431835&single=true&output=csv';
+var PRO_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1930488780&single=true&output=csv';
 var CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=543563696&single=true&output=csv';
 var MASTERY_THRESHOLD=20,MASTERY_CORRECT=5,QPR=10,TYPE_TIME=60,WMULT=1.5;
 var allWords=[],round=[],qIdx=0,score=0,rs={correct:0,wrong:0,bonus:0,nm:0},roundResults=[];
@@ -599,14 +393,7 @@ var prog={},recs=[],gCount=0,filter='all',timer=null,answering=false,cache={};
 
 function show(id){['loadingScreen','homeScreen','masteredScreen','gameScreen','resultScreen','ipaScreen','ipaQuizScreen','reviewScreen'].forEach(function(s){document.getElementById(s).classList.toggle('hidden',s!==id);});}
 function shuf(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
-function pts(ok,bonus,type,word){
-  if(!ok)return 0;
-  var base=type==='mc'?2:type==='ty'?4:3;
-  var db=(typeof WORD_DB!=='undefined')&&word?WORD_DB[word.word]||{}:{};
-  var stars=db.stars||1;
-  var p=base*stars;
-  return bonus?Math.round(p*WMULT):p;
-}
+function pts(ok,bonus,type,word){if(!ok)return 0;var base=type==='mc'?2:type==='ty'?4:3;var db=WORD_DB&&word?WORD_DB[word.word]||{}:{};return bonus?Math.round(base*(db.stars||1)*WMULT):base*(db.stars||1);}
 function mastered(w){return((prog[w.word]||{}).correct||0)>=MASTERY_CORRECT;}
 function missed(w){return((prog[w.word]||{}).wrong||0)>0;}
 function gp(k){return prog[k]||(prog[k]={correct:0,wrong:0,lastCorrectGame:0});}
@@ -626,110 +413,60 @@ function parseCSV(txt){
 }
 function ssplit(line){var r=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(cur);cur='';}else cur+=ch;}r.push(cur);return r;}
 
-
-
-function loadPro2(){
-  if(!PRO2_CSV_URL)return;
-  fetch(PRO2_CSV_URL)
-    .then(function(r){return r.ok?r.text():Promise.reject(r.status);})
-    .then(function(csv){
-      var lines=csv.split('\n');
-      if(lines.length<2)return;
-      // Parse header row to find column indices dynamically
-      var hdrs=ssplit(lines[0]).map(function(h){return h.trim().toLowerCase().replace(/^"|"$/g,'');});
-      var ci={sym:0,word:2,ipa:3,bold:4}; // defaults
-      hdrs.forEach(function(h,i){
-        if(h==='symbol')ci.sym=i;
-        else if(h==='word')ci.word=i;
-        else if(h==='ipa')ci.ipa=i;
-        else if(h==='bold')ci.bold=i;
-      });
-      // Clear existing words from all IPA_DATA entries
-      IPA_DATA.forEach(function(d){d.words=[];});
-      for(var i=1;i<lines.length;i++){
-        var cols=ssplit(lines[i]);
-        if(cols.length<3)continue;
-        var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
-        var sym=c(cols[ci.sym]),word=c(cols[ci.word]),ipa=c(cols[ci.ipa]||''),bold=c(cols[ci.bold]||'');
-        if(!sym||!word)continue;
-        var entry=IPA_DATA.find(function(d){return d.sym===sym;});
-        if(entry)entry.words.push({w:word,ipa:ipa,bold:bold});
-      }
-      console.log('pro2 loaded:',IPA_DATA.reduce(function(n,d){return n+d.words.length;},0),'words');
-    })
-    .catch(function(e){console.warn('pro2 CSV failed:',e);});
-}
-
-function loadIPA(){
-  if(!PRO_CSV_URL){return;}
-  fetch(PRO_CSV_URL)
-    .then(function(r){return r.ok?r.text():Promise.reject(r.status);})
-    .then(function(csv){
-      var lines=csv.split('\n');
-      if(lines.length<2)return;
-      IPA_DATA=[];
-      for(var i=1;i<lines.length;i++){
-        var cols=ssplit(lines[i]);
-        if(cols.length<5||!cols[0].trim())continue;
-        var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
-        var sym=c(cols[0]),mp3=c(cols[1]),img=c(cols[2]),src=c(cols[3]),desc=c(cols[4]);
-        var words=[];
-        for(var j=5;j<Math.min(cols.length,17);j++){
-          var w=c(cols[j]);if(w)words.push({w:w,ipa:'',bold:''});
-        }
-        // Determine category from symbol (vowels vs consonants)
-        var vowelSyms=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ'];
-        var cat=vowelSyms.indexOf(sym)>-1?'Vowel':'Consonant';
-        IPA_DATA.push({sym:sym,mp3:mp3,img:img,src:src,name:sym,cat:cat,desc:desc,words:words});
-      }
-      console.log('IPA_DATA loaded:',IPA_DATA.length,'symbols');
-      // Load pro2 AFTER IPA_DATA is ready
-      loadPro2();
-    })
-    .catch(function(e){console.warn('IPA CSV failed:',e);});
-}
-
 function loadWords(){
   allWords=[];
-  var TO=new Promise(function(_,rej){setTimeout(function(){rej('timeout');},10000);});
-  Promise.race([fetch(CSV_URL),TO])
+  fetch(CSV_URL)
     .then(function(r){return r.ok?r.text():Promise.reject('HTTP '+r.status);})
     .then(function(csv){
       var rows=parseCSVFull(csv);
       if(rows.length>100){
-        // Build allWords list AND WORD_DB from CSV
-        allWords=[];
         rows.forEach(function(r){
           if(!r.word)return;
-          var stars=r.priority?r.priority.split('★').length-1:1;
+          var stars=r.priority?(r.priority.match(/★/g)||[]).length:1;
           allWords.push({word:r.word,tier:r.tier,level:r.level,cat:r.cat,subcat:r.subcat,korean:r.korean,priority:r.priority||'',stars:stars});
-          WORD_DB[r.word]={
-            ipa:r.ipa,def:r.def,kid:r.kid,logic:r.logic,nuance:r.nuance,
-            origin:r.origin,trel:r.trel,exA:r.exA,exB:r.exB,exC:r.exC,
-            exD:r.exD,ans:r.ans,afc:r.afc,pri:r.priority||'',stars:stars,korean:r.korean
-          };
+          WORD_DB[r.word]={ipa:r.ipa,def:r.def,kid:r.kid,logic:r.logic,nuance:r.nuance,origin:r.origin,trel:r.trel,exA:r.exA,exB:r.exB,exC:r.exC,exD:r.exD,ans:r.ans,afc:r.afc,pri:r.priority||'',stars:stars,korean:r.korean};
         });
       }
     })
-    .catch(function(e){
-      console.warn('CSV load failed:',e);
-      // Show user-friendly message
-      var lt = document.getElementById('loadingText');
-      if(lt) lt.textContent = 'Could not load word data. Check connection and refresh.';
-    })
+    .catch(function(e){console.warn('CSV:',e);})
     .finally(function(){loadSt();showHome();});
 }
-function parseCSVFull(text){
-  var lines=text.split('\n');if(lines.length<2)return[];var res=[];
-  for(var i=1;i<lines.length;i++){
-    var cols=ssplit(lines[i]);if(cols.length<7)continue;
-    var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
-    res.push({word:c(cols[0]),tier:c(cols[1]),level:c(cols[2]),cat:c(cols[3]),subcat:c(cols[4]),korean:c(cols[14]),priority:c(cols[16]),
-      ipa:c(cols[5]),def:c(cols[6]),kid:c(cols[7]),logic:c(cols[8]),nuance:c(cols[9]),origin:c(cols[10]),
-      exA:c(cols[19]),exB:c(cols[20]),exC:c(cols[21]),exD:c(cols[22]),ans:c(cols[23]),afc:c(cols[17]),trel:c(cols[18])});
-  }return res;
+function loadIPA(){
+  if(!PRO_CSV_URL)return;
+  fetch(PRO_CSV_URL).then(function(r){return r.ok?r.text():Promise.reject(r.status);}).then(function(csv){
+    var lines=csv.split('
+');IPA_DATA=[];
+    for(var i=1;i<lines.length;i++){
+      var cols=ssplit(lines[i]);if(cols.length<5||!cols[0].trim())continue;
+      var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
+      var sym=c(cols[0]),mp3=c(cols[1]),img=c(cols[2]),src=c(cols[3]),desc=c(cols[4]);
+      var vowelSyms=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ'];
+      IPA_DATA.push({sym:sym,mp3:mp3,img:img,src:src,name:sym,cat:vowelSyms.indexOf(sym)>-1?'Vowel':'Consonant',desc:desc,words:[]});
+    }
+    console.log('IPA:',IPA_DATA.length);
+    loadPro2();
+  }).catch(function(e){console.warn('IPA:',e);});
 }
-function ssplit(line){var cols=[],cur='',inQ=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else{inQ=!inQ;}}else if(ch===','&&!inQ){cols.push(cur);cur='';}else cur+=ch;}cols.push(cur);return cols;}
+function loadPro2(){
+  if(!PRO2_CSV_URL)return;
+  fetch(PRO2_CSV_URL).then(function(r){return r.ok?r.text():Promise.reject(r.status);}).then(function(csv){
+    var lines=csv.split('
+');
+    var hdrs=ssplit(lines[0]).map(function(h){return h.trim().toLowerCase().replace(/^"|"$/g,'');});
+    var ci={sym:0,word:2,ipa:3,bold:4};
+    hdrs.forEach(function(h,i){if(h==='symbol')ci.sym=i;else if(h==='word')ci.word=i;else if(h==='ipa')ci.ipa=i;else if(h==='bold')ci.bold=i;});
+    IPA_DATA.forEach(function(d){d.words=[];});
+    for(var i=1;i<lines.length;i++){
+      var cols=ssplit(lines[i]);if(cols.length<3)continue;
+      var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
+      var sym=c(cols[ci.sym]),word=c(cols[ci.word]),ipa=c(cols[ci.ipa]||''),bold=c(cols[ci.bold]||'');
+      if(!sym||!word)continue;
+      var e=IPA_DATA.find(function(d){return d.sym===sym;});
+      if(e)e.words.push({w:word,ipa:ipa,bold:bold});
+    }
+    console.log('pro2:',IPA_DATA.reduce(function(n,d){return n+d.words.length;},0));
+  }).catch(function(e){console.warn('pro2:',e);});
+}
 
 function showHome(){
   stopAllAudio();
@@ -744,19 +481,9 @@ function showHome(){
   if(!recent.length){el.innerHTML='<div style="color:var(--muted);font-size:.84rem">No records yet. Play your first game!</div>';return;}
   var top=Math.max.apply(null,recs.map(function(r){return r.score;}));
   var recTotal=recs.length;
-  el.innerHTML=recent.map(function(r,i){
-    var recIdx=recTotal-1-i;
-    var hasWords=r.words&&r.words.length>0;
-    return '<div class="record-row" style="cursor:'+(hasWords?'pointer':'default')+'" '
-      +(hasWords?'onclick="showReview('+recIdx+')" title="Click to review this game"':'')+'>'
-      +'<div><span class="record-score">'+r.score+' pts</span>'
-      +(r.score===top&&i===0?'<span class="new-badge">NEW</span>':'')
-      +(hasWords?'<span style="font-size:.68rem;color:var(--accent);margin-left:8px;font-weight:700">&#128196; Review</span>':'')
-      +'</div>'
-      +'<div style="font-size:.74rem;color:var(--muted)">'+r.correct+' correct / '+r.wrong+' missed'+(r.nm?' / +'+r.nm+' mastered':'')+'</div>'
-      +'<div style="font-size:.71rem;color:var(--muted)">'+r.date+'</div>'
-      +'</div>';
-  }).join('');
+  el.innerHTML=recent.map(function(r,i){var recIdx=recTotal-1-i;var hw=r.words&&r.words.length>0;
+    return '<div class="record-row" style="cursor:'+(hw?'pointer':'default')+'"'+(hw?' onclick="showReview('+recIdx+')"':'')+'>'+
+    '<div><span class="record-score">'+r.score+' pts</span>'+(hw?'<span style="font-size:.68rem;color:var(--accent);margin-left:8px;font-weight:700">&#128196; Review</span>':'')+'</div>+(r.score===top&&i===0?'<span class="new-badge">NEW</span>':'')+'</div><div style="font-size:.74rem;color:var(--muted)">'+r.correct+' correct / '+r.wrong+' missed'+(r.nm?' / +'+r.nm+' mastered':'')+'</div><div style="font-size:.71rem;color:var(--muted)">'+r.date+'</div></div>';}).join('');
 }
 
 document.addEventListener('DOMContentLoaded',function(){
@@ -766,7 +493,6 @@ document.getElementById('playAgainBtn').addEventListener('click',startRound);
 document.getElementById('homeBtn').addEventListener('click',showHome);
 document.getElementById('masteredBtn').addEventListener('click',showMastered);
 document.getElementById('masteredBackBtn').addEventListener('click',showHome);
-  document.getElementById('reviewBackBtn').addEventListener('click',showHome);
 document.getElementById('restoreAllBtn').addEventListener('click',restoreAll);
 document.getElementById('quitBtn').addEventListener('click',function(){
   if(confirm('Quit this game? Your progress will not be saved.')){
@@ -820,93 +546,49 @@ function pickWords(){
 function fbPick(pool){var wt=[];pool.forEach(function(w){var r=missed(w)?3:1;for(var i=0;i<r;i++)wt.push(w);});var p=[],u={},tr=0;while(p.length<QPR&&tr<2000){var w=wt[Math.floor(Math.random()*wt.length)];if(!u[w.word]){p.push(w);u[w.word]=true;}tr++;}return p;}
 
 function showReview(recIdx){
-  var rec = recs[recIdx];
-  if(!rec){return;}
+  var rec=recs[recIdx];if(!rec)return;
   show('reviewScreen');
-  document.getElementById('reviewMeta').textContent =
-    rec.date + '  |  ' + rec.score + ' pts  |  ' +
-    rec.correct + ' correct / ' + rec.wrong + ' missed';
-
-  var words = rec.words || [];
-  if(!words.length){
-    document.getElementById('reviewList').innerHTML =
-      '<div style="color:var(--muted);text-align:center;padding:30px">No word data saved for this game.</div>';
-    return;
-  }
-
-  // Filter state
-  var curFilter = 'all';
+  document.getElementById('reviewMeta').textContent=rec.date+'  |  '+rec.score+' pts  |  '+rec.correct+' correct / '+rec.wrong+' missed';
+  var words=rec.words||[];
+  if(!words.length){document.getElementById('reviewList').innerHTML='<div style="color:var(--muted);text-align:center;padding:30px">No word data.</div>';return;}
+  var curFilter='all';
   function renderReview(){
-    var filtered = curFilter==='wrong' ? words.filter(function(r){return !r.ok;})
-                 : curFilter==='correct' ? words.filter(function(r){return r.ok;})
-                 : words;
-    var html = '';
-    filtered.forEach(function(r, i){
-      var w = r.word;
-      var db = WORD_DB[w.word]||{};
-      var stars = db.stars||1;
-      var starStr='';for(var s=0;s<stars;s++)starStr+='\u2605';
-      var ipa = db.ipa||'';
-      var def = db.def||'';
-      var kid = db.kid||'';
-      var exA = db.exA||''; var exB = db.exB||''; var exC = db.exC||'';
-      var exD = db.exD||''; var ans = db.ans||'';
-
-      html += '<div class="review-card '+(r.ok?'correct-card':'wrong-card')+'" id="rc'+i+'">';
-      // Header (always visible)
-      html += '<div class="review-card-header" onclick="toggleReview('+i+')">';
-      html += '<div>';
-      html += '<div class="review-word">'+w.word+'</div>';
-      html += '<div style="display:flex;gap:8px;align-items:center;margin-top:2px">';
-      html += '<span class="review-stars">'+starStr+'</span>';
-      html += (ipa?'<span class="review-ipa">'+ipa+'</span>':'');
-      html += '</div></div>';
-      html += '<span class="review-result '+(r.ok?'ok':'miss')+'">'+(r.ok?'\u2713 Correct':'\u2717 Missed')+'</span>';
-      html += '</div>';
-      // Body (expandable)
-      html += '<div class="review-body" id="rb'+i+'">';
-      if(def)html += '<div class="review-section"><div class="review-def">'+def+'</div>'
-        +(kid?'<div class="review-kid">\ud83d\udca1 '+kid+'</div>':'')
-        +'<button class="review-speak-btn" onclick="event.stopPropagation();spkReview(\''+w.word.replace(/'/g,"\\'")+' . '+def.replace(/'/g,"\\'")+'\')">'
-        +'\ud83d\udd0a Read aloud</button></div>';
-      if(exA||exB||exC){
-        html += '<div class="review-section">';
-        if(exA)html += '<div class="review-ex-label">Everyday</div><div class="review-ex">'+exA+'</div>';
-        if(exB)html += '<div class="review-ex-label" style="margin-top:6px">ELA / Literature</div><div class="review-ex">'+exB+'</div>';
-        if(exC)html += '<div class="review-ex-label" style="margin-top:6px">Science</div><div class="review-ex">'+exC+'</div>';
-        html += '</div>';
-      }
-      if(exD)html += '<div class="review-section" style="background:rgba(255,101,132,.05);padding:8px 10px;border-radius:8px;border-left:3px solid var(--accent2)">'
-        +'<div style="font-size:.65rem;font-weight:800;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">\ud83c\udfaf State Test</div>'
-        +'<div class="review-ex" style="color:var(--text);font-style:italic">'+exD+'</div>'
-        +(ans?'<div style="font-size:.8rem;color:var(--accent3);margin-top:4px">'+ans+'</div>':'')
-        +'</div>';
-      html += '</div>';
-      html += '</div>';
+    var filtered=curFilter==='wrong'?words.filter(function(r){return !r.ok;}):curFilter==='correct'?words.filter(function(r){return r.ok;}):words;
+    var html='<div class="review-filter-row">'
+      +'<button class="review-filter'+(curFilter==='all'?' active':'')+'" onclick="setRF('all')">All ('+words.length+')</button>'
+      +'<button class="review-filter'+(curFilter==='wrong'?' active wrong-filter':'')+'" onclick="setRF('wrong')">&#10007; Missed ('+words.filter(function(r){return !r.ok;}).length+')</button>'
+      +'<button class="review-filter'+(curFilter==='correct'?' active':'')+'" onclick="setRF('correct')">&#10003; Correct ('+words.filter(function(r){return r.ok;}).length+')</button>'
+      +'</div>';
+    filtered.forEach(function(r,i){
+      var w=r.word;var db=WORD_DB[w.word]||{};
+      var stars=db.stars||1;var starStr='';for(var s=0;s<stars;s++)starStr+='&#9733;';
+      html+='<div class="review-card '+(r.ok?'correct-card':'wrong-card')+'">'
+        +'<div class="review-card-header" onclick="toggleReview('+i+')">'
+        +'<div><div class="review-word">'+w.word+'</div>'
+        +'<div style="display:flex;gap:8px;align-items:center;margin-top:2px">'
+        +'<span class="review-stars">'+starStr+'</span>'
+        +(db.ipa?'<span style="font-size:.78rem;color:var(--muted);font-family:serif">'+db.ipa+'</span>':'')
+        +'</div></div>'
+        +'<span class="review-result '+(r.ok?'ok':'miss')+'">'+(r.ok?'&#10003; Correct':'&#10007; Missed')+'</span>'
+        +'</div>'
+        +'<div class="review-body" id="rb'+i+'">'
+        +(db.def?'<div class="review-def">'+db.def+'</div>':'')
+        +(db.kid?'<div class="review-kid">&#128161; '+db.kid+'</div>':'')
+        +(db.exA?'<div class="review-ex-label">Everyday</div><div class="review-ex">'+db.exA+'</div>':'')
+        +(db.exB?'<div class="review-ex-label" style="margin-top:6px">ELA</div><div class="review-ex">'+db.exB+'</div>':'')
+        +'</div></div>';
     });
-    document.getElementById('reviewList').innerHTML =
-      '<div class="review-filter-row">'
-      +'<button class="review-filter'+(curFilter==='all'?' active':'')+'" onclick="setRF(\'all\')">All ('+words.length+')</button>'
-      +'<button class="review-filter'+(curFilter==='wrong'?' active wrong-filter':'')+'" onclick="setRF(\'wrong\')">\u2717 Missed ('+words.filter(function(r){return !r.ok;}).length+')</button>'
-      +'<button class="review-filter'+(curFilter==='correct'?' active':'')+'" onclick="setRF(\'correct\')">\u2713 Correct ('+words.filter(function(r){return r.ok;}).length+')</button>'
-      +'</div>' + (html || '<div style="color:var(--muted);text-align:center;padding:20px">No words in this category.</div>');
+    document.getElementById('reviewList').innerHTML=html;
   }
-
-  window.setRF = function(f){ curFilter=f; renderReview(); };
-  window.toggleReview = function(i){
-    var body=document.getElementById('rb'+i);
-    if(body)body.classList.toggle('open');
-  };
-  window.spkReview=function(t){speak(t,0.75);};
+  window.setRF=function(f){curFilter=f;renderReview();};
+  window.toggleReview=function(i){var b=document.getElementById('rb'+i);if(b)b.classList.toggle('open');};
   renderReview();
 }
-
 function startRound(){clearTimer();gCount++;round=pickWords();qIdx=0;score=0;rs={correct:0,wrong:0,bonus:0,nm:0};roundResults=[];show('gameScreen');showQ();}
 function showQ(){
   if(qIdx>=round.length){endRound();return;}
-  var w=round[qIdx];
-  if(!w||!w.word){endRound();return;}
   answering=false;
+  var w=round[qIdx];
   document.getElementById('progressFill').style.width=(qIdx/round.length*100)+'%';
   document.getElementById('qCounter').textContent=(qIdx+1)+' / '+round.length;
   document.getElementById('headerScore').textContent=score+' pts';
@@ -988,40 +670,32 @@ function renderQ(word,type){
     area.innerHTML='<div class="game-card"><span class="badge badge-mc">&#128214; Choose the Word</span>'+bb+meta+'<div class="qlabel">Which word matches this description?</div><div class="def-box"><div class="shimmer" style="width:80%"></div><div class="shimmer" style="width:62%"></div><div class="shimmer" style="width:85%;margin-top:6px"></div></div><div class="options-grid" id="og" style="opacity:.3;pointer-events:none">'+Array(6).fill('<button class="option-btn"><div class="shimmer" style="height:12px;margin:0"></div></button>').join('')+'</div><div class="feedback-area" id="fa"></div></div>';
     var dist=shuf(allWords.filter(function(w){return w.word!==word.word;})).slice(0,5);
     var opts=shuf([word].concat(dist));
-    (function(){
-    var db=WORD_DB[word.word]||{};
-    var ai={def:db.def||'',ex:db.exA||db.ex&&db.ex[0]||''};
-    area.innerHTML='<div class="game-card"><span class="badge badge-mc">&#128214; Choose the Word</span>'+bb+meta+'<div class="qlabel">Which word matches this description?</div><div class="def-box"><div class="def-text">'+ai.def+'</div>'+(ai.ex?'<div class="ex-text">'+ai.ex+'</div>':'')+'</div><div class="options-grid" id="og">'+opts.map(function(o){return '<button class="option-btn" data-w="'+o.word+'">'+o.word+'</button>';}).join('')+'</div><div class="feedback-area" id="fa"></div></div>';
-    document.getElementById('og').addEventListener('click',function(e){var b=e.target.closest('.option-btn');if(!b||answering)return;doMC(word,b.dataset.w,bonus,ai);});
-  })();
+    getAI(word).then(function(ai){
+      area.innerHTML='<div class="game-card"><span class="badge badge-mc">&#128214; Choose the Word</span>'+bb+meta+'<div class="qlabel">Which word matches this description?</div><div class="def-box"><div class="def-text">'+ai.def+'</div><div class="ex-text">'+ai.ex+'</div></div><div class="options-grid" id="og">'+opts.map(function(o){return '<button class="option-btn" data-w="'+o.word+'">'+o.word+'</button>';}).join('')+'</div><div class="feedback-area" id="fa"></div></div>';
+      document.getElementById('og').addEventListener('click',function(e){var b=e.target.closest('.option-btn');if(!b||answering)return;doMC(word,b.dataset.w,bonus,ai);});
+    });
   }else if(type==='ty'){
-    area.innerHTML='<div class="game-card"><span class="badge badge-type">&#9000; Type the Word</span>'+bb+meta+'<div class="qlabel">Type the correct English word - 60 seconds!</div><div class="def-box" id="db"><div class="shimmer" style="width:76%"></div><div class="shimmer" style="width:66%"></div></div><div class="timer-container"><svg class="timer-ring" width="64" height="64"><circle cx="32" cy="32" r="27" fill="none" stroke="var(--border)" stroke-width="6"/><circle id="tc" cx="32" cy="32" r="27" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="'+circ+'" stroke-dashoffset="0"/></svg><div class="timer-text" id="tn">60</div></div><input class="type-input" id="ti" placeholder="Type the word here..." autocomplete="off" autocorrect="off" spellcheck="false" autofocus><div style="height:14px"></div><button class="submit-btn" id="sb">Submit</button><div class="feedback-area" id="fa"></div></div>';
-    (function(){
-    var dbw=WORD_DB[word.word]||{};
-    var ai={def:dbw.def||'',ex:dbw.exA||dbw.ex&&dbw.ex[0]||''};
-    var db=document.getElementById('db');if(db)db.innerHTML='<div class="def-text">'+ai.def+'</div>'+(ai.ex?'<div class="ex-text">'+ai.ex+'</div>':'');
-    startTimer(TYPE_TIME,function(){doType(word,bonus,true,ai);});
-    var sb2=document.getElementById('sb');if(sb2)sb2.addEventListener('click',function(){doType(word,bonus,false,ai);});
-    var ti2=document.getElementById('ti');if(ti2)ti2.addEventListener('keydown',function(e){if(e.key==='Enter')doType(word,bonus,false,ai);});
-  })();
+    area.innerHTML='<div class="game-card"><span class="badge badge-type">&#9000; Type the Word</span>'+bb+meta+'<div class="qlabel">Type the correct English word - 60 seconds!</div><div class="def-box" id="db"><div class="shimmer" style="width:76%"></div><div class="shimmer" style="width:66%"></div></div><div class="timer-container"><svg class="timer-ring" width="64" height="64"><circle cx="32" cy="32" r="27" fill="none" stroke="var(--border)" stroke-width="6"/><circle id="tc" cx="32" cy="32" r="27" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="'+circ+'" stroke-dashoffset="0"/></svg><div class="timer-text" id="tn">60</div></div><input class="type-input" id="ti" placeholder="Type the word here..." autocomplete="off" autocorrect="off" spellcheck="false" autofocus><button class="submit-btn" id="sb">Submit</button><div class="feedback-area" id="fa"></div></div>';
+    getAI(word).then(function(ai){
+      var db=document.getElementById('db');if(db)db.innerHTML='<div class="def-text">'+ai.def+'</div><div class="ex-text">'+ai.ex+'</div>';
+      startTimer(TYPE_TIME,function(){doType(word,bonus,true,ai);});
+      var sb2=document.getElementById('sb');if(sb2)sb2.addEventListener('click',function(){doType(word,bonus,false,ai);});
+      var ti2=document.getElementById('ti');if(ti2)ti2.addEventListener('keydown',function(e){if(e.key==='Enter')doType(word,bonus,false,ai);});
+    });
   }else{
     area.innerHTML='<div class="game-card"><span class="badge badge-sent">&#128221; Fill in the Blank</span>'+bb+meta+'<div class="qlabel">Read the sentences and find the missing word!</div><div id="sa">'+Array(3).fill('<div class="shimmer" style="height:48px;margin-bottom:7px"></div>').join('')+'</div><div class="word-choices" id="wc" style="opacity:.3;pointer-events:none">'+Array(10).fill('<button class="word-chip">...</button>').join('')+'</div><div class="feedback-area" id="fa"></div></div>';
     var dist2=shuf(allWords.filter(function(w){return w.word!==word.word;})).slice(0,9);
     var choices=shuf([word].concat(dist2));
     (function(){
-      var dbw=WORD_DB[word.word]||{};
-      var w=word.word;
-      var re=new RegExp('\\b('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?:s|es|ed|ing|er|d|ly)?)\\b','gi');
-      function mkBlank(s){return s?s.replace(re,'___'):'___';}
-      var sents=[
-        mkBlank(dbw.exA||dbw.ex&&dbw.ex[0]||'She uses ___ every day at school.'),
-        mkBlank(dbw.exB||dbw.ex&&dbw.ex[1]||'Can you use ___ correctly in a sentence?'),
-        mkBlank(dbw.exC||dbw.ex&&dbw.ex[2]||'My teacher asked us to remember what ___ means.')
-      ];
-      var sa=document.getElementById('sa');if(sa)sa.innerHTML=sents.map(function(s){return '<div class="sentence-item">'+s.replace(/___/g,'<span class="blank"></span>')+'</div>';}).join('');
-      var wc=document.getElementById('wc');
-      if(wc){wc.style.opacity='1';wc.style.pointerEvents='';wc.innerHTML=choices.map(function(w2){return '<button class="word-chip" data-w="'+w2.word+'">'+w2.word+'</button>';}).join('');wc.addEventListener('click',function(e){var ch=e.target.closest('.word-chip');if(!ch||answering)return;doSent(word,ch.dataset.w,bonus,sents);});}
-  })();
+    var dbw=WORD_DB[word.word]||{};
+    var re=new RegExp('\\b('+word.word+'(?:s|es|ed|ing|er|d|ly)?)\\b','gi');
+    function mkBlank(s){return s?s.replace(re,'___'):'___';}
+    var sents=[mkBlank(dbw.exA||''),mkBlank(dbw.exB||''),mkBlank(dbw.exC||'')].filter(Boolean);
+    if(!sents.length)sents=['"'+word.word+'" is used in a sentence with ___.'];
+    var sa=document.getElementById('sa');if(sa)sa.innerHTML=sents.map(function(s){return '<div class="sentence-item">'+s.replace(/___/g,'<span class="blank"></span>')+'</div>';}).join('');
+    var wc=document.getElementById('wc');
+    if(wc){wc.style.opacity='1';wc.style.pointerEvents='';wc.innerHTML=choices.map(function(w2){return '<button class="word-chip" data-w="'+w2.word+'">'+w2.word+'</button>';}).join('');wc.addEventListener('click',function(e){var ch=e.target.closest('.word-chip');if(!ch||answering)return;doSent(word,ch.dataset.w,bonus,sents);});}
+  })());
   }
 }
 
@@ -1036,7 +710,7 @@ function doType(word,bonus,timeout,ai){
   var inp=document.getElementById('ti');var val=inp?inp.value.trim().toLowerCase():'';
   var ok=val===word.word.toLowerCase();var p=pts(ok,bonus,'ty',word);var jm=upProg(word,ok);if(ok)score+=p;
   if(inp){inp.disabled=true;inp.classList.add(ok?'correct-input':'wrong-input');}
-  if(ok){showOK(p,word,bonus,ai,jm);setTimeout(function(){qIdx++;showQ();},1900);}else{cryEmoji();showWrong(word,null,timeout?'Time up! The word was:':null);}
+  if(ok){showOK(p,word,bonus,ai,jm);setTimeout(function(){qIdx++;showQ();},1900);}else{cryEmoji();showWrong(word,ai,timeout?'Time up! The word was:':null);}
 }
 function doSent(word,chosen,bonus,sents){
   answering=true;var ok=chosen===word.word;var p=pts(ok,bonus,'sent',word);var jm=upProg(word,ok);if(ok)score+=p;
@@ -1049,8 +723,7 @@ function upProg(word,ok){
   if(ok){p.correct++;p.lastCorrectGame=gCount;rs.correct++;if(p.correct===MASTERY_CORRECT){jm=true;rs.nm++;}}
   else{p.wrong++;rs.wrong++;}
   if(missed(word)&&ok)rs.bonus++;
-  // Track this word's result for review
-  roundResults.push({word:word,ok:ok});
+  if(typeof roundResults!=='undefined')roundResults.push({word:word,ok:ok});
   return jm;
 }
 function showOK(p,word,bonus,ai,jm){
@@ -1058,130 +731,45 @@ function showOK(p,word,bonus,ai,jm){
   setTimeout(function(){speak(word.word,0.8);},300);
   var fa=document.getElementById('fa');if(!fa)return;
   document.getElementById('headerScore').textContent=score+' pts';
-  var db=WORD_DB&&word?WORD_DB[word.word]||{}:{};
-  var stars=db.stars||1;
-  var starStr='';for(var si=0;si<stars;si++)starStr+='\u2605';
-  var ipa=db.ipa||'';
-  var def=db.def||'';
-  fa.innerHTML='<div class="fb-correct">'
-    +'<div class="fb-word-row">'
-    +'<span class="fb-word">Correct! \u201c'+word.word+'\u201d</span>'
-    +'<span class="fb-stars">'+starStr+'</span>'
-    +'</div>'
-    +(ipa?'<div style="font-size:.82rem;color:var(--muted);margin-top:2px;font-family:serif">'+ipa+'</div>':'')
-    +(def?'<div style="font-size:.83rem;margin-top:5px;opacity:.9;line-height:1.55">'+def+'</div>':'')
-    +'<div style="margin-top:6px"><span class="fb-pts">+'+p+' pts'+(bonus?' \xd71.5!':'')+'</span>'
-    +(jm?'<span style="color:var(--gold);font-size:.78rem;margin-left:8px;font-weight:700">\u2b50 Mastered!</span>':'')
-    +'</div>'
-    +'</div>';
+  fa.innerHTML='<div class="fb-correct"><span class="fb-word">Correct! "'+word.word+'"</span>'+(ai&&ai.ipa?'<div style="font-size:.8rem;color:var(--muted);margin-top:2px;font-family:serif">'+ai.ipa+'</div>':'')+(ai&&ai.def?'<div style="font-size:.81rem;margin-top:3px;opacity:.9;line-height:1.5">'+ai.def+'</div>':'')+'<div style="margin-top:4px"><span class="fb-pts">+'+p+' pts'+(bonus?' x1.5 Bonus!':'')+'</span></div>'+(jm?'<div style="color:var(--gold);font-size:.78rem;margin-top:4px;font-weight:700">Word mastered!</div>':'')+'</div>';
 }
 function showWrong(word,ai,extraMsg){
-  var db=WORD_DB[word.word]||{};
-  var fa=document.getElementById('feedbackArea');
-  if(!fa){fa=document.getElementById('fa');}
-  if(!fa)return;
-  document.getElementById('headerScore').textContent=score+' pts';
+  getWrongEx(word,ai).then(function(d){
+    var fa=document.getElementById('fa');if(!fa)return;
+    document.getElementById('headerScore').textContent=score+' pts';
+    fa.innerHTML='<div class="wrong-panel"><div style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)"><span class="wrong-word-big">'+word.word+'</span>'+( d.ipa ? '<span class="wrong-ipa">'+ d.ipa +'</span>' : '' )+'<span class="wrong-meta">'+word.tier+' &middot; '+word.cat+'</span></div><div class="dblock"><div class="dlabel">Definition</div><div class="ddef" id="ddef"></div></div><div class="dblock"><div class="dlabel">Example Sentences</div><div id="dex"><div class="shimmer" style="height:14px;width:86%;margin-bottom:4px"></div><div class="shimmer" style="height:14px;width:70%"></div></div></div><div class="dblock"><div class="dlabel">Korean Meaning</div><div class="dkorean">'+word.korean+'</div></div><button class="next-btn" id="nb">Next Question &rarr;</button></div>';
+    var dd=document.getElementById('ddef');if(dd)typeWrite(dd,d.definition,19);
+    var dx=document.getElementById('dex');
+    setTimeout(function(){
+      if(!dx)return;dx.innerHTML='';
+      d.examples.forEach(function(ex,i){
+        var div=document.createElement('div');div.className='dex';div.style.opacity='0';dx.appendChild(div);
+        setTimeout(function(){div.style.transition='opacity .3s';div.style.opacity='1';typeWriteHTML(div,(i+1)+'. '+boldWord(ex),16);},480+i*720);
+      });
+    },220);
+    var nb=document.getElementById('nb');if(nb)nb.addEventListener('click',function(){qIdx++;showQ();});
+    // Auto-speak the word when wrong panel appears
+    setTimeout(function(){speak(word.word, 0.7);}, 400);
+    // Make word clickable to re-speak
+    var wwb=fa.querySelector('.wrong-word-big');
+    if(wwb){wwb.style.cursor='pointer';wwb.title='Click to hear again';
+      wwb.addEventListener('click',function(){speak(word.word,0.75);});}
+    // Make example lines speakable after typewriter
+    setTimeout(function(){
+      fa.querySelectorAll('.dex').forEach(function(el){
+        el.style.cursor='pointer';el.title='Click to hear';
+        el.addEventListener('click',function(){speak(el.textContent.replace(/^\d+\.\s*/,''),0.8);});
+      });
+    }, 2800);
 
-  var pri=db.pri||db.priority||'';
-  var priLabel=pri.indexOf('Essential')>-1?'Essential':pri.indexOf('\u2605\u2605\u2605\u2605')>-1?'High Priority':pri.indexOf('\u2605\u2605\u2605')>-1?'Grade 4':'';
-  var afc=(db.afc||'');
-  var showAfc=afc&&afc!=='General Academic Vocabulary';
-  var exA=db.exA||''; var exB=db.exB||''; var exC=db.exC||'';
-  var exD=db.exD||''; var ans=db.ans||'';
-  var hasExamples=exA||exB||exC;
-  var ipa=db.ipa||'';
-  var def=db.def||'';
-  var kid=db.kid||'';
-  var logic=db.logic||'';
-  var nuance=db.nuance||db.nua||'';
-
-  // Helper: speak text, stopping current
-  function spk(t){speak(t,0.75);}
-  function hw(s,w){var e=w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return s.replace(new RegExp('('+e+'(?:s|es|ed|ing|er|d|ly)?)', 'gi'),'<span class="hw">$1</span>');}
-
-  var html='<div class="wrong-panel" id="wpanel">';
-
-  // Header — click speaks word
-  html+='<div class="wp-header" id="wph">'
-    +'<div class="wp-word-row">'
-    +'<span class="wrong-word-big">'+word.word+'</span>'
-    +'<span style="font-size:1rem;opacity:.5;margin-left:4px">&#128266;</span>'
-    +(priLabel?'<span class="g4-badge'+(pri.indexOf('\u2605\u2605\u2605')>-1?' high':'')+'">'+priLabel+'</span>':'')
-    +'</div>'
-    +(ipa?'<span class="wrong-ipa">'+ipa+'</span>':'')
-    +'<div class="wp-meta-row">'
-    +'<span class="wp-tier">'+word.tier+' &middot; '+word.cat+'</span>'
-    +(showAfc?'<span class="afc-tag">'+afc+'</span>':'')
-    +'</div></div>';
-
-  // Core Meaning — click speaks definition + kid explanation
-  html+='<div class="wp-section wp-clickable" id="wps-def" title="Click to hear">'
-    +'<div class="wp-slabel">&#128266; Core Meaning</div>'
-    +'<div class="wp-def" id="wpDef"><div class="shimmer" style="height:18px;width:90%"></div></div>'
-    +(kid?'<div class="wp-kid" id="wpKid" style="opacity:0">&#128161; '+kid+'</div>':'')
-    +'</div>';
-
-  // Examples — each row click speaks that sentence
-  if(hasExamples){
-    html+='<div class="wp-section"><div class="wp-slabel">Examples</div><div class="ex-rows">';
-    if(exA)html+='<div class="ex-row wp-clickable" id="wps-exA" title="Click to hear"><div class="ex-icon">&#128218;</div><div class="ex-col"><div class="ex-type">Everyday / School</div><div class="ex-text" id="wpExA"></div></div></div>';
-    if(exB)html+='<div class="ex-row wp-clickable" id="wps-exB" title="Click to hear"><div class="ex-icon">&#128214;</div><div class="ex-col"><div class="ex-type">ELA / Literature</div><div class="ex-text" id="wpExB"></div></div></div>';
-    if(exC)html+='<div class="ex-row wp-clickable" id="wps-exC" title="Click to hear"><div class="ex-icon">&#128300;</div><div class="ex-col"><div class="ex-type">Science / Social Studies</div><div class="ex-text" id="wpExC"></div></div></div>';
-    html+='</div></div>';
-  }
-
-  // Word Structure — click speaks logic
-  if(logic)html+='<div class="wp-section wp-clickable" id="wps-logic" title="Click to hear"><div class="wp-slabel">&#128266; Word Structure</div><div class="wp-logic">'+logic+'</div></div>';
-
-  // Nuance — click speaks nuance
-  if(nuance)html+='<div class="wp-section wp-clickable" id="wps-nuance" title="Click to hear"><div class="wp-slabel">&#128266; Nuance &amp; Usage</div><div class="wp-nuance">'+nuance+'</div></div>';
-
-  // State Test — click speaks prompt
-  if(exD)html+='<div class="wp-test wp-clickable" id="wps-test" title="Click to hear"><div class="wp-test-lbl">&#127919; State Test Thinking</div><div class="wp-test-q">'+exD+'</div>'+(ans?'<div class="wp-test-ans">'+ans+'</div>':'')+'</div>';
-
-  html+='<button class="next-btn" id="nb">Next Question &rarr;</button></div>';
-
-  fa.innerHTML=html;
-
-  // Typewriter for definition
-  var wpDef=fa.querySelector('#wpDef');
-  if(wpDef&&def){wpDef.innerHTML='';var ti=0;(function tick(){if(ti<def.length){wpDef.textContent+=def[ti++];setTimeout(tick,15);}})();}
-  var wpKid=fa.querySelector('#wpKid');
-  if(wpKid)setTimeout(function(){wpKid.style.opacity='1';},900);
-
-  // Fade in examples with word highlight
-  [['wpExA',exA],['wpExB',exB],['wpExC',exC]].forEach(function(p,i){
-    var el=fa.querySelector('#'+p[0]);
-    if(el&&p[1]){setTimeout(function(){el.style.opacity='0';el.innerHTML=hw(p[1],word.word);el.style.transition='opacity .4s';el.style.opacity='1';},300+i*250);}
   });
-
-  // Section click → TTS
-  var wph=fa.querySelector('#wph');
-  if(wph)wph.addEventListener('click',function(){spk(word.word);});
-
-  var wpsDef=fa.querySelector('#wps-def');
-  if(wpsDef)wpsDef.addEventListener('click',function(){spk(def+(kid?' '+kid:''));});
-
-  var wpsExA=fa.querySelector('#wps-exA');
-  if(wpsExA)wpsExA.addEventListener('click',function(){spk(exA);});
-  var wpsExB=fa.querySelector('#wps-exB');
-  if(wpsExB)wpsExB.addEventListener('click',function(){spk(exB);});
-  var wpsExC=fa.querySelector('#wps-exC');
-  if(wpsExC)wpsExC.addEventListener('click',function(){spk(exC);});
-
-  var wpsLogic=fa.querySelector('#wps-logic');
-  if(wpsLogic)wpsLogic.addEventListener('click',function(){spk(logic);});
-  var wpsNuance=fa.querySelector('#wps-nuance');
-  if(wpsNuance)wpsNuance.addEventListener('click',function(){spk(nuance);});
-  var wpsTest=fa.querySelector('#wps-test');
-  if(wpsTest)wpsTest.addEventListener('click',function(){spk(exD+(ans?' '+ans:''));});
-
-  // Auto speak word on load (delay lets DOM settle)
-  setTimeout(function(){spk(word.word);},200);
-
-  var nb=fa.querySelector('#nb');
-  if(nb)nb.addEventListener('click',function(e){e.stopPropagation();if(window.speechSynthesis)window.speechSynthesis.cancel();qIdx++;showQ();});
 }
+
+// AI CALLS
+
+
+
+
 
 function startTimer(secs,onExp){
   var left=secs,circ=2*Math.PI*27;
@@ -1199,7 +787,7 @@ function endRound(){
   clearTimer();
   var pb=recs.length?Math.max.apply(null,recs.map(function(r){return r.score;})):0,isNew=score>pb;
   var now=new Date();
-  recs.push({score:score,correct:rs.correct,wrong:rs.wrong,nm:rs.nm,date:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()]+'.'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'),words:roundResults});
+  recs.push({score:score,correct:rs.correct,wrong:rs.wrong,nm:rs.nm,words:roundResults,date:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()]+'.'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')});
   if(recs.length>50)recs.shift();saveSt();
   show('resultScreen');
   document.getElementById('resultScore').textContent=score;
@@ -1217,9 +805,6 @@ function endRound(){
 // ─── SPEECH ───────────────────────────────────────────────────
 function speak(word, rate, pitch) {
   if (!window.speechSynthesis) return;
-  // Stop any ongoing IPA sequence
-  _seqCancelled = true;
-  if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   window.speechSynthesis.cancel();
   setTimeout(function() {
     var utt = new SpeechSynthesisUtterance(word);
@@ -1239,7 +824,7 @@ if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = function(){ window.speechSynthesis.getVoices(); };
 }
 
-var IPA_DATA = [];
+var IPA_DATA=[];
 
 var _ipaAudio = null;
 var _seqCancelled = false;  // global cancel flag for sequences
@@ -1282,33 +867,24 @@ function speakWordsSequence(words, rate) {
 
 function playIPA(mp3Url) {
   if (!mp3Url) return;
-  _seqCancelled = true;
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
   if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
-  _seqCancelled = false;
   _ipaAudio = new Audio(mp3Url);
   _ipaAudio.play().catch(function(e) { console.warn('IPA audio failed:', e); });
 }
 
-var _ipaSeqId = 0;  // session token — incremented each time a new sequence starts
-
 function playIPAThenWords(mp3Url, wordsCsv) {
-  // Cancel everything and get a new session token
-  _seqCancelled = true;
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
+  stopAllAudio();
   _seqCancelled = false;
-
-  var myId = ++_ipaSeqId;           // this sequence's unique ID
   var words = wordsCsv.split(',').filter(Boolean);
-
-  function isActive() { return myId === _ipaSeqId && !_seqCancelled; }
-
+  // Highlight the active word entry in the IPA card
   function highlightWord(idx) {
-    document.querySelectorAll('.ipa-word-entry').forEach(function(el) {
+    document.querySelectorAll('.ipa-word-entry').forEach(function(el, i) {
       el.style.background = '';
     });
-    document.querySelectorAll('.ipa-word-entry').forEach(function(el) {
+    // Find the word entries near the clicked button
+    var entries = document.querySelectorAll('.ipa-word-entry');
+    // We don't know which card was clicked, so highlight by word text
+    entries.forEach(function(el) {
       var wtext = el.querySelector('.ipa-word-text');
       if (wtext && words[idx] && wtext.textContent.trim() === words[idx]) {
         el.style.background = 'rgba(108,99,255,.18)';
@@ -1326,27 +902,27 @@ function playIPAThenWords(mp3Url, wordsCsv) {
   var symAudio = new Audio(mp3Url);
   _ipaAudio = symAudio;
   symAudio.onended = function() {
-    if (!isActive()) return;
+    if (_seqCancelled) return;
     var i = 0;
     function nextWord() {
-      if (!isActive() || i >= words.length) { clearHighlight(); return; }
+      if (_seqCancelled || i >= words.length) { clearHighlight(); return; }
       var w = words[i];
       highlightWord(i);
       i++;
       var utt = new SpeechSynthesisUtterance(w);
       utt.lang = 'en-US';
-      utt.rate = 0.65;
+      utt.rate = 0.72;
       var voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
       var v = voices.find(function(v){ return v.lang==='en-US'&&v.localService; })
              || voices.find(function(v){ return v.lang.startsWith('en'); });
       if (v) utt.voice = v;
       utt.onend = function() {
-        if (isActive()) setTimeout(nextWord, 350);
+        if (!_seqCancelled) setTimeout(nextWord, 350);
         else clearHighlight();
       };
       utt.onerror = function() {
         clearHighlight();
-        if (isActive()) setTimeout(nextWord, 350);
+        if (!_seqCancelled) setTimeout(nextWord, 350);
       };
       window.speechSynthesis.speak(utt);
     }
@@ -1363,9 +939,8 @@ function boldIPA(pron, bold) {
   return pron.replace(new RegExp(escaped), '<span class="ipa-bold">' + bold + '</span>');
 }
 
-// IPA Guide animation globals
-var _activeCard = null;
-var _cardSeqId  = 0;
+// IPA Guide globals
+var _activeCard=null, _cardSeqId=0;
 
 function toggleIPACard(cardId, mp3, wordCsv) {
   if (_activeCard === cardId) { stopCardAnim(); return; }
@@ -1391,97 +966,79 @@ function toggleIPACard(cardId, mp3, wordCsv) {
 
   function isActive() { return myId === _cardSeqId && _activeCard === cardId; }
 
-  // Conveyor: words[cur] is the BIG word (leftmost), then smaller ones to its right
-  var cur = 0;
-  var SM_COUNT = 4; // small words visible to the right
+  // Build conveyor: show N words as chips, current one (idx=1) is big
+  // All chips slide left together each step
+  var VISIBLE = 5; // how many words visible at once
+  var cur = 0;     // index of the "big" word in the words array
 
-  function buildRow(offset) {
-    // offset: 0 = current position, used for slide calculation
-    var row = document.createElement('div');
-    row.className = 'ipa-conveyor-row';
-    // Big word
-    var bigW = words[cur % words.length];
-    var bigD = ipaMap[bigW] || {ipa:'', bold:''};
-    var big = document.createElement('div');
-    big.className = 'ipa-chip-big';
-    var bigWord = document.createElement('span');
-    bigWord.className = 'ipa-chip-word';
-    bigWord.textContent = bigW;
-    big.appendChild(bigWord);
-    if (bigD.ipa) {
-      var bigPron = document.createElement('span');
-      bigPron.className = 'ipa-chip-pron';
-      bigPron.innerHTML = '[' + boldIPA(bigD.ipa, bigD.bold) + ']';
-      big.appendChild(bigPron);
-    }
-    row.appendChild(big);
-    // Small words
-    for (var i = 1; i <= SM_COUNT; i++) {
-      var smW = words[(cur + i) % words.length];
-      var sm = document.createElement('div');
-      sm.className = 'ipa-chip-sm';
-      var smWord = document.createElement('span');
-      smWord.className = 'ipa-chip-word';
-      smWord.textContent = smW;
-      sm.appendChild(smWord);
-      row.appendChild(sm);
-    }
-    return row;
-  }
-
-  // Initial render — no animation
-  stage.innerHTML = '';
-  stage.appendChild(buildRow(0));
-  speak(words[0], 0.5);
-
-  function advance() {
+  function renderConveyor() {
     if (!isActive()) return;
-    var oldRow = stage.querySelector('.ipa-conveyor-row');
-    cur = (cur + 1) % words.length;
-    var newRow = buildRow(0);
-
-    // Position new row off-screen to the right
-    newRow.style.transform = 'translateX(100%)';
-    newRow.style.position = 'absolute';
-    newRow.style.top = '0'; newRow.style.left = '0'; newRow.style.width = '100%';
-    stage.style.position = 'relative';
-    stage.appendChild(newRow);
-
-    // Slide both: old→left, new→center
+    stage.innerHTML = '';
+    var track = document.createElement('div');
+    track.className = 'ipa-conveyor';
+    // Show VISIBLE words: cur-1 left, cur center(big), cur+1..+3 right
+    var startIdx = cur - 1;
+    for (var i = startIdx; i < startIdx + VISIBLE; i++) {
+      var wi = ((i % words.length) + words.length) % words.length;
+      var w = words[wi];
+      var isBig = (i === cur);
+      var chip = document.createElement('div');
+      chip.className = 'ipa-chip' + (isBig ? ' ipa-chip-big' : ' ipa-chip-sm');
+      var wdata = ipaMap[w] || {ipa:'', bold:''};
+      var wordSpan = document.createElement('span');
+      wordSpan.className = 'ipa-chip-word';
+      wordSpan.textContent = w;
+      chip.appendChild(wordSpan);
+      if (isBig && wdata.ipa) {
+        var pronSpan = document.createElement('span');
+        pronSpan.className = 'ipa-chip-pron';
+        pronSpan.innerHTML = '[' + boldIPA(wdata.ipa, wdata.bold) + ']';
+        chip.appendChild(pronSpan);
+      }
+      track.appendChild(chip);
+    }
+    stage.appendChild(track);
+    // Animate track sliding in from right
+    track.style.transform = 'translateX(60px)';
+    track.style.opacity = '0';
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
-        var dur = '0.42s';
-        var ease = 'cubic-bezier(.4,0,.2,1)';
-        if (oldRow) {
-          oldRow.style.transition = 'transform ' + dur + ' ' + ease;
-          oldRow.style.transform = 'translateX(-100%)';
-        }
-        newRow.style.transition = 'transform ' + dur + ' ' + ease;
-        newRow.style.transform = 'translateX(0)';
-        // After transition: clean up
-        setTimeout(function() {
-          if (!isActive()) return;
-          if (oldRow && oldRow.parentNode) oldRow.remove();
-          newRow.style.position = '';
-          newRow.style.top = ''; newRow.style.left = ''; newRow.style.width = '';
-          stage.style.position = 'relative';
-          // Speak & schedule next
-          var w = words[cur];
-          speak(w, 0.5);
-          var delay = Math.max(1500, w.length * 80 + 1000);
-          setTimeout(advance, delay);
-        }, 440);
+        track.style.transition = 'transform 0.38s cubic-bezier(.22,.68,0,1.1), opacity 0.25s';
+        track.style.transform = 'translateX(0)';
+        track.style.opacity = '1';
       });
     });
   }
 
-  function startConveyor() {
-    var w = words[0];
-    var delay = Math.max(1500, w.length * 80 + 1000);
-    setTimeout(advance, delay);
+  function step() {
+    if (!isActive()) return;
+    // Slide current track OUT to the left, then render next
+    var oldTrack = stage.querySelector('.ipa-conveyor');
+    if (oldTrack) {
+      oldTrack.style.transition = 'transform 0.32s ease-in, opacity 0.25s';
+      oldTrack.style.transform = 'translateX(-60px)';
+      oldTrack.style.opacity = '0';
+    }
+    cur = (cur + 1) % words.length;
+    setTimeout(function() {
+      if (!isActive()) return;
+      renderConveyor();
+      var w = words[cur];
+      speak(w, 0.5);
+      var delay = Math.max(1500, w.length * 80 + 1000);
+      setTimeout(step, delay);
+    }, 320);
   }
 
-  // Play MP3 first
+  // Play MP3 first, then start conveyor
+  function startConveyor() {
+    cur = 0;
+    renderConveyor();
+    speak(words[0], 0.5);
+    var delay = Math.max(1500, words[0].length * 80 + 1000);
+    setTimeout(step, delay);
+  }
+
   if (mp3) {
     var a = new Audio(mp3); _ipaAudio = a;
     a.onended = function() { if (isActive()) startConveyor(); };
@@ -1496,57 +1053,40 @@ function stopCardAnim() {
   _cardSeqId++;
   if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
-  document.querySelectorAll('.ipa-word-stage').forEach(function(s) { s.innerHTML = ''; });
+  document.querySelectorAll('.ipa-conveyor').forEach(function(el) { el.remove(); });
   document.querySelectorAll('.ipa-playing').forEach(function(b) { b.classList.remove('ipa-playing'); });
   _activeCard = null;
 }
 
 
-function makeIPACards(items) {
-  var h = '';
-  items.forEach(function(item, idx) {
-    var cardId = 'ipacard-' + idx;
-    var wordList = item.words.map(function(w){ return w.w; }).join(',');
-    var descHL = (item.desc||'').replace(/"([^"]+)"/g, '"<span class="ipa-sound">$1</span>"');
-    var catCls = item.cat === 'Vowel' ? 'vowel' : 'consonant';
-    h += '<div class="ipa-card" id="' + cardId + '">'
-      + '<button class="ipa-sym-btn ' + catCls + '"'
-      + ' data-card="' + cardId + '"'
-      + ' data-mp3="' + (item.mp3||'') + '"'
-      + ' data-words="' + wordList + '">'
-      + item.sym
-      + '</button>'
-      + '<div class="ipa-body">'
-      + '<div class="ipa-desc-main">' + descHL + '</div>'
-      + '<div class="ipa-word-stage" id="' + cardId + '-stage">'
-      + '<div class="ipa-word-slide" id="' + cardId + '-slide"></div>'
-      + '</div></div></div>';
+function makeIPACards(items){
+  var h='';
+  items.forEach(function(item,idx){
+    var cardId='ipacard-'+idx;
+    var wordList=item.words.map(function(w){return w.w;}).join(',');
+    var descHL=(item.desc||'').replace(/"([^"]+)"/g,'"<span class="ipa-sound">$1</span>"');
+    var catCls=item.cat==='Vowel'?'vowel':'consonant';
+    h+='<div class="ipa-card" id="'+cardId+'">'
+      +'<button class="ipa-sym-btn '+catCls+'" data-card="'+cardId+'" data-mp3="'+(item.mp3||'')+'" data-words="'+wordList+'">'+item.sym+'</button>'
+      +'<div class="ipa-body">'
+      +'<div class="ipa-desc-main">'+descHL+'</div>'
+      +'<div class="ipa-word-stage" id="'+cardId+'-stage"></div>'
+      +'</div></div>';
   });
   return h;
 }
-
-function showIPA() {
+function showIPA(){
   show('ipaScreen');
   stopCardAnim();
-  var vowels = IPA_DATA.filter(function(d){ return d.cat === 'Vowel'; });
-  var consonants = IPA_DATA.filter(function(d){ return d.cat === 'Consonant'; });
-  var html = '<div class="ipa-section-title">Vowels</div>' + makeIPACards(vowels)
-           + '<div class="ipa-section-title" style="margin-top:20px">Consonants</div>' + makeIPACards(consonants);
-  document.getElementById('ipaContent').innerHTML = html;
-  // Attach click listeners via data attributes (avoids quote-escaping issues)
-  document.querySelectorAll('#ipaContent .ipa-sym-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      toggleIPACard(this.dataset.card, this.dataset.mp3, this.dataset.words);
-    });
+  var vowels=IPA_DATA.filter(function(d){return d.cat==='Vowel';});
+  var consonants=IPA_DATA.filter(function(d){return d.cat==='Consonant';});
+  var html='<div class="ipa-section-title">Vowels</div>'+makeIPACards(vowels)+'<div class="ipa-section-title" style="margin-top:20px">Consonants</div>'+makeIPACards(consonants);
+  document.getElementById('ipaContent').innerHTML=html;
+  document.querySelectorAll('#ipaContent .ipa-sym-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){toggleIPACard(this.dataset.card,this.dataset.mp3,this.dataset.words);});
   });
 }
 
-// ═══════════════════════════════════════════
-// IPA QUIZ
-// ═══════════════════════════════════════════
-var iqScore = 0, iqTotal = 0, iqCurrent = null;
-
-// Flatten all example words from IPA_DATA with their symbol info
 function getIPAWordPool() {
   var pool = [];
   IPA_DATA.forEach(function(item) {
@@ -1601,8 +1141,8 @@ function renderIQQuestion() {
     area.innerHTML = '<div class="iq-score-bar"><span>Question ' + (iqTotal+1) + '</span><span class="iq-score-num">' + iqScore + ' pts</span></div>'
       + '<div class="iq-card">'
       + '<span class="iq-type-badge iq-badge-1">&#128214; Description &#8594; Symbol</span>'
-      + '<div class="iq-t0-hint">Which IPA symbol makes this sound?</div>'
-      + '<div class="iq-t0-desc">' + descHL + '</div>'
+      + '<div class="iq-question">' + descHL + '</div>'
+      + '<div class="iq-hint">Which IPA symbol makes this sound?</div>'
       + '<div class="iq-options">' + optsHTML + '</div>'
       + '<div id="iqFeedback"></div>'
       + '</div>';
@@ -1625,8 +1165,8 @@ function renderIQQuestion() {
     area.innerHTML = '<div class="iq-score-bar"><span>Question ' + (iqTotal+1) + '</span><span class="iq-score-num">' + iqScore + ' pts</span></div>'
       + '<div class="iq-card">'
       + '<span class="iq-type-badge iq-badge-2">&#128488; Word &#8594; Symbol</span>'
-      + '<div class="iq-t0-hint">Which IPA symbol represents the <strong>' + entry.name + '</strong> sound?</div>'
-      + '<div class="iq-t1-word-block"><button class="iq-word-big" onclick="speak(\'' + entry.word + '\',0.5)" title="Click to hear">' + entry.word + '</button></div>'
+      + '<div class="iq-question"><span class="iq-sym" onclick="speak(\'' + entry.word + '\',0.5)" style="cursor:pointer" title="Click to hear the word">&#128266; ' + entry.word + '</span></div>'
+      + '<div class="iq-hint">Which IPA symbol represents the <strong>' + entry.name + '</strong> sound in this word?</div>'
       + '<div class="iq-options">' + optsHTML + '</div>'
       + '<div id="iqFeedback"></div>'
       + '</div>';
@@ -1662,14 +1202,13 @@ function renderIQQuestion() {
     area.innerHTML = '<div class="iq-score-bar"><span>Question ' + (iqTotal+1) + '</span><span class="iq-score-num">' + iqScore + ' pts</span></div>'
       + '<div class="iq-card">'
       + '<span class="iq-type-badge iq-badge-3">&#9745; Symbol &#8594; Words (multi-select)</span>'
-      + '<div class="iq-t0-hint">Select ALL words that contain this sound, then press Check.</div>'
-      + '<div class="iq-focus-block">'
-      + '<button class="iq-sym-big" style="color:' + catColor + '" onclick="playIPA(\'' + correct.mp3 + '\')" title="Click to hear">'
-      + correct.sym + '<span class="iq-sym-speaker">&#128266;</span></button>'
-      + '<div class="iq-q2-desc">' + descHL + '</div>'
+      + '<div class="iq-question">'
+      + '<span class="iq-sym" style="color:' + catColor + ';cursor:pointer" onclick="playIPA(\'' + correct.mp3 + '\')" title="Click to hear">' + correct.sym + '</span>'
+      + descHL
       + '</div>'
+      + '<div class="iq-hint">Select ALL words that contain this sound, then press Check.</div>'
       + '<div class="iq-options" id="iqOpts">' + optsHTML + '</div>'
-      + '<button class="iq-next-btn" id="iqCheckBtn" style="margin-top:16px;background:var(--surface2);color:var(--text);border:1px solid var(--border);">Check &#10003;</button>'
+      + '<button class="iq-next-btn" id="iqCheckBtn" style="margin-top:12px;background:var(--surface2);color:var(--text);border:1px solid var(--border);">Check Answers</button>'
       + '<div id="iqFeedback"></div>'
       + '</div>';
 
@@ -1726,12 +1265,8 @@ function gradeSingleSelect(chosen, btn) {
     // Show correct feedback briefly
     fbEl.innerHTML = '<div class="iq-feedback correct">'
       + '&#9989; Correct! <strong>' + item.sym + '</strong> &mdash; ' + item.name + ': ' + descHL
-      + (iqCurrent.entry ? '<div style="font-size:.9rem;margin-top:8px;font-weight:700;color:var(--text)">' + iqCurrent.entry.word + ' <span style="font-family:serif;font-weight:400;color:var(--muted);font-size:.85rem">[' + iqCurrent.entry.ipa + ']</span></div>' : '')
       + '</div>';
-    // Play correct symbol MP3, then after it ends show grid + play sequence
-    var _myIqId = ++_ipaSeqId;
-    function showGridAndPlay() {
-      if (_myIqId !== _ipaSeqId) return;
+    setTimeout(function() {
       // Build full IPA symbol grid grouped by category
       var vowels = IPA_DATA.filter(function(d){ return d.cat === 'Vowel'; });
       var consonants = IPA_DATA.filter(function(d){ return d.cat === 'Consonant'; });
@@ -1746,7 +1281,6 @@ function gradeSingleSelect(chosen, btn) {
       }
       fbEl.innerHTML = '<div class="iq-feedback correct" style="margin-bottom:14px">'
         + '&#9989; Correct! <strong>' + item.sym + '</strong> &mdash; ' + item.name + ': ' + descHL
-        + (iqCurrent.entry ? '<div style="font-size:.9rem;margin-top:8px;font-weight:700;color:var(--text)">' + iqCurrent.entry.word + ' <span style="font-family:serif;font-weight:400;color:var(--muted);font-size:.85rem">[' + iqCurrent.entry.ipa + ']</span></div>' : '')
         + '</div>'
         + '<div class="iq-all-syms-panel">'
         + '<div class="iq-syms-label">Vowels</div>'
@@ -1756,36 +1290,27 @@ function gradeSingleSelect(chosen, btn) {
         + '<div style="font-size:.75rem;color:var(--muted);margin-top:8px">&#128266; Click any symbol to hear it</div>'
         + '</div>'
         + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-      // Play grid symbols sequence after short delay
-      setTimeout(function(){ if(_myIqId === _ipaSeqId) playSymbolsSequenceGrid(); }, 1000);
-    }
-    // Trigger: play MP3 then showGridAndPlay, or show immediately
-    if (item.mp3) {
-      var _iqAudio = new Audio(item.mp3);
-      _ipaAudio = _iqAudio;
-      _iqAudio.onended = function() { showGridAndPlay(); };
-      _iqAudio.onerror = function() { showGridAndPlay(); };
-      _iqAudio.play().catch(function() { showGridAndPlay(); });
-    } else {
-      setTimeout(showGridAndPlay, 200);
-    }
+      var singleOpts = Array.from(document.querySelectorAll('.iq-opt')).map(function(b){ return b.dataset.val; });
+      speakWordsSequence(singleOpts.filter(function(v){ return v.length > 1; }), 0.6); // only real words not symbols
+      // For word→symbol quiz, the opts are symbols not words - speak differently
+      // Just run grid sequence
+      setTimeout(function(){ if(!_seqCancelled) playSymbolsSequenceGrid(); }, 1000);
+    }, 1500);
   } else {
     fbEl.innerHTML = '<div class="iq-feedback wrong">'
       + '&#10060; Not quite. Correct: <strong>' + correct + '</strong> &mdash; ' + item.name + ': ' + descHL
       + '<div style="font-size:.78rem;margin-top:6px;color:var(--muted)">&#128266; Click any symbol above to hear its sound</div>'
       + '</div>'
       + '<button class="iq-next-btn" onclick="renderIQQuestion()">Next Question &#8594;</button>';
-    // Auto-play: play correct symbol MP3 -> then speak word (type1) -> then option buttons
-    var _myWqId = ++_ipaSeqId;
-    function wqActive() { return _myWqId === _ipaSeqId; }
-    var _corSym = IPA_DATA.find(function(s){ return s.sym === correct; });
-    function startSymSeq() {
-      if (!wqActive()) return;
+    // Auto-play all option symbols in order via MP3
+    setTimeout(function() {
+      _seqCancelled = false;
       var optBtns = Array.from(document.querySelectorAll('.iq-opt'));
       var qi = 0;
       function playNextSym() {
-        if (!wqActive() || qi >= optBtns.length) return;
+        if (_seqCancelled || qi >= optBtns.length) return;
         var btn = optBtns[qi++];
+        // Use data-mp3 directly if available, else look up IPA_DATA
         var mp3 = btn.dataset.mp3;
         if (!mp3) {
           var d = IPA_DATA.find(function(d){ return d.sym === btn.dataset.val; });
@@ -1796,45 +1321,19 @@ function gradeSingleSelect(chosen, btn) {
         var a = new Audio(mp3); _ipaAudio = a;
         a.onended = function() {
           if (btn) btn.classList.remove('iq-playing');
-          if (wqActive()) setTimeout(playNextSym, 180);
+          if (!_seqCancelled) setTimeout(playNextSym, 180);
         };
         a.onerror = function() {
           if (btn) btn.classList.remove('iq-playing');
-          if (wqActive()) setTimeout(playNextSym, 300);
+          if (!_seqCancelled) setTimeout(playNextSym, 300);
         };
         a.play().catch(function() {
           if (btn) btn.classList.remove('iq-playing');
-          if (wqActive()) setTimeout(playNextSym, 300);
+          if (!_seqCancelled) setTimeout(playNextSym, 300);
         });
       }
       playNextSym();
-    }
-    // Play correct symbol MP3 first, then word TTS (type 1), then option sequence
-    function afterMp3() {
-      if (!wqActive()) return;
-      if (iqCurrent.entry) {
-        var wu = new SpeechSynthesisUtterance(iqCurrent.entry.word);
-        wu.lang = 'en-US'; wu.rate = 0.6;
-        var vs = window.speechSynthesis.getVoices();
-        var v = vs.find(function(x){return x.lang==='en-US'&&x.localService;})||vs.find(function(x){return x.lang.startsWith('en-US');});
-        if (v) wu.voice = v;
-        wu.onend = function() { if (wqActive()) setTimeout(startSymSeq, 400); };
-        window.speechSynthesis.cancel();
-        setTimeout(function(){ window.speechSynthesis.speak(wu); }, 200);
-      } else {
-        setTimeout(startSymSeq, 400);
-      }
-    }
-    setTimeout(function(){
-      if (_corSym && _corSym.mp3) {
-        var ca = new Audio(_corSym.mp3); _ipaAudio = ca;
-        ca.onended = function(){ afterMp3(); };
-        ca.onerror = function(){ afterMp3(); };
-        ca.play().catch(function(){ afterMp3(); });
-      } else {
-        afterMp3();
-      }
-    }, 300);
+    }, 400);
   }
 }
 
@@ -1987,12 +1486,14 @@ function showIQResult() {
     + '<button class="btn-s" onclick="showHome()" style="width:100%;max-width:280px;margin:10px auto 0;display:block;padding:12px">Home</button>'
     + '</div>';
 }
+
+
 loadWords();
-loadIPA(); // loadPro2 is called inside loadIPA after IPA_DATA ready
+  loadIPA();
 </script>
 <div id="ipaQuizScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:660px;width:100%;margin:0 auto;">
-    <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
         <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;">&#127381; IPA Quiz</div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;" id="iqSubtitle">Test your pronunciation knowledge</div>
@@ -2002,18 +1503,13 @@ loadIPA(); // loadPro2 is called inside loadIPA after IPA_DATA ready
     <div id="ipaQuizArea"></div>
   </div>
 </div>
-
 <div id="reviewScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:720px;width:100%;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
-      <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;">&#128196; Game Review</div>
-        <div id="reviewMeta" style="color:var(--muted);font-size:.82rem;margin-top:2px;"></div>
-      </div>
+      <div><div style="font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;">&#128196; Game Review</div>
+      <div id="reviewMeta" style="color:var(--muted);font-size:.82rem;margin-top:2px;"></div></div>
       <button class="btn-s" id="reviewBackBtn">&#8592; Back</button>
-    </div>
-    <div id="reviewList"></div>
+    </div><div id="reviewList"></div>
   </div>
-</div>
-</body>
+</div></body>
 </html>
