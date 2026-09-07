@@ -301,13 +301,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* Analog tuner row: one continuous strip. Only the stage's outer RIGHT edge clips overflow. */
 .ipa-word-stage{overflow:hidden;border-top:1px solid var(--border);margin-top:6px;padding-top:8px;position:relative;height:44px;}
 .ipa-tuner-track{display:flex;align-items:baseline;gap:0;position:absolute;left:0;bottom:4px;white-space:nowrap;will-change:transform;}
-.ipa-tuner-item{width:148px;min-width:148px;max-width:148px;flex:0 0 148px;display:flex;align-items:baseline;gap:5px;white-space:nowrap;overflow:visible;}
-.ipa-tuner-word{font-size:.95rem;font-weight:600;color:var(--muted);line-height:1;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease,font-weight .52s ease;}
-.ipa-tuner-pron{font-size:.68rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease;}
+/* One continuous row. Items have invisible spacing only; there are no visible cells/dividers. */
+.ipa-tuner-item{width:190px;min-width:190px;max-width:190px;flex:0 0 190px;display:flex;align-items:baseline;gap:6px;white-space:nowrap;overflow:visible;}
+.ipa-tuner-word{font-size:.95rem;font-weight:600;color:var(--muted);line-height:1;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease,font-weight .52s ease;transform-origin:left bottom;}
+.ipa-tuner-pron{font-size:.68rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease;transform-origin:left bottom;}
 .ipa-tuner-pron .ipa-bold{color:var(--accent3);font-weight:700;}
 .ipa-tuner-item.is-focus .ipa-tuner-word{font-size:1.85rem;font-weight:800;color:var(--accent2);font-family:'Space Grotesk',sans-serif;}
 .ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:.82rem;}
-.ipa-word-stage::after{content:'';position:absolute;left:164px;top:8px;bottom:2px;width:1px;background:var(--border);pointer-events:none;}
 .ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
 </style>
 </head>
@@ -1011,7 +1011,7 @@ function toggleIPACard(cardId, mp3, wordCsv) {
   if (!stage) return;
   var cur = 0;
   var spokenCount = 0;
-  var ITEM_W = 148;
+  var ITEM_W = 190;
 
   function isActive() { return myId === _cardSeqId; }
 
