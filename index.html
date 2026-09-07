@@ -418,21 +418,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
 
-/* IPA Guide Conveyor Belt */
-.ipa-word-stage{
-  min-height:80px;
-  overflow:hidden;
-  border-top:1px solid var(--border);
-  padding-top:10px;
-  margin-top:6px;
-  position:relative;
-}
-.ipa-conveyor{
-  display:flex;
-  align-items:center;
-  gap:18px;
-  will-change:transform,opacity;
-}
 /* Small chips (background words) */
 .ipa-chip-sm{
   display:flex;
@@ -483,6 +468,30 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 8px rgba(255,101,132,.3);}
   50%{box-shadow:0 0 0 3px var(--accent2),0 0 20px rgba(255,101,132,.6);}
 }
+
+/* IPA Guide */
+.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
+.ipa-card:hover{border-color:rgba(108,99,255,.4);}
+.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:0;cursor:pointer;font-size:1.6rem;font-family:'Courier New',monospace;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;}
+.ipa-sym-btn.vowel{color:var(--accent3);}
+.ipa-sym-btn.consonant{color:var(--accent);}
+.ipa-sym-btn:hover{transform:scale(1.07);}
+.ipa-playing{animation:ipaPulse 1.1s ease-in-out infinite!important;box-shadow:0 0 0 3px var(--accent2)!important;}
+@keyframes ipaPulse{0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 8px rgba(255,101,132,.3);}50%{box-shadow:0 0 0 3px var(--accent2),0 0 20px rgba(255,101,132,.6);}}
+.ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.ipa-desc-main{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.55;}
+/* Conveyor stage */
+.ipa-word-stage{height:54px;overflow:hidden;border-top:1px solid var(--border);margin-top:8px;padding-top:8px;position:relative;}
+.ipa-conveyor-row{display:flex;align-items:center;gap:20px;height:100%;will-change:transform;}
+/* Big word (leftmost, current) */
+.ipa-chip-big{display:flex;align-items:baseline;gap:8px;flex-shrink:0;}
+.ipa-chip-big .ipa-chip-word{font-size:1.85rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;white-space:nowrap;}
+.ipa-chip-pron{font-size:.82rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.04em;white-space:nowrap;}
+.ipa-chip-pron .ipa-bold{color:var(--accent3);font-weight:700;}
+/* Small words */
+.ipa-chip-sm{flex-shrink:0;opacity:.45;}
+.ipa-chip-sm .ipa-chip-word{font-size:.9rem;font-weight:500;color:var(--text);white-space:nowrap;}
+.ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
 </style>
 </head>
 <body>
@@ -1382,79 +1391,97 @@ function toggleIPACard(cardId, mp3, wordCsv) {
 
   function isActive() { return myId === _cardSeqId && _activeCard === cardId; }
 
-  // Build conveyor: show N words as chips, current one (idx=1) is big
-  // All chips slide left together each step
-  var VISIBLE = 5; // how many words visible at once
-  var cur = 0;     // index of the "big" word in the words array
+  // Conveyor: words[cur] is the BIG word (leftmost), then smaller ones to its right
+  var cur = 0;
+  var SM_COUNT = 4; // small words visible to the right
 
-  function renderConveyor() {
-    if (!isActive()) return;
-    stage.innerHTML = '';
-    var track = document.createElement('div');
-    track.className = 'ipa-conveyor';
-    // Show VISIBLE words: cur-1 left, cur center(big), cur+1..+3 right
-    var startIdx = cur - 1;
-    for (var i = startIdx; i < startIdx + VISIBLE; i++) {
-      var wi = ((i % words.length) + words.length) % words.length;
-      var w = words[wi];
-      var isBig = (i === cur);
-      var chip = document.createElement('div');
-      chip.className = 'ipa-chip' + (isBig ? ' ipa-chip-big' : ' ipa-chip-sm');
-      var wdata = ipaMap[w] || {ipa:'', bold:''};
-      var wordSpan = document.createElement('span');
-      wordSpan.className = 'ipa-chip-word';
-      wordSpan.textContent = w;
-      chip.appendChild(wordSpan);
-      if (isBig && wdata.ipa) {
-        var pronSpan = document.createElement('span');
-        pronSpan.className = 'ipa-chip-pron';
-        pronSpan.innerHTML = '[' + boldIPA(wdata.ipa, wdata.bold) + ']';
-        chip.appendChild(pronSpan);
-      }
-      track.appendChild(chip);
+  function buildRow(offset) {
+    // offset: 0 = current position, used for slide calculation
+    var row = document.createElement('div');
+    row.className = 'ipa-conveyor-row';
+    // Big word
+    var bigW = words[cur % words.length];
+    var bigD = ipaMap[bigW] || {ipa:'', bold:''};
+    var big = document.createElement('div');
+    big.className = 'ipa-chip-big';
+    var bigWord = document.createElement('span');
+    bigWord.className = 'ipa-chip-word';
+    bigWord.textContent = bigW;
+    big.appendChild(bigWord);
+    if (bigD.ipa) {
+      var bigPron = document.createElement('span');
+      bigPron.className = 'ipa-chip-pron';
+      bigPron.innerHTML = '[' + boldIPA(bigD.ipa, bigD.bold) + ']';
+      big.appendChild(bigPron);
     }
-    stage.appendChild(track);
-    // Animate track sliding in from right
-    track.style.transform = 'translateX(60px)';
-    track.style.opacity = '0';
+    row.appendChild(big);
+    // Small words
+    for (var i = 1; i <= SM_COUNT; i++) {
+      var smW = words[(cur + i) % words.length];
+      var sm = document.createElement('div');
+      sm.className = 'ipa-chip-sm';
+      var smWord = document.createElement('span');
+      smWord.className = 'ipa-chip-word';
+      smWord.textContent = smW;
+      sm.appendChild(smWord);
+      row.appendChild(sm);
+    }
+    return row;
+  }
+
+  // Initial render — no animation
+  stage.innerHTML = '';
+  stage.appendChild(buildRow(0));
+  speak(words[0], 0.5);
+
+  function advance() {
+    if (!isActive()) return;
+    var oldRow = stage.querySelector('.ipa-conveyor-row');
+    cur = (cur + 1) % words.length;
+    var newRow = buildRow(0);
+
+    // Position new row off-screen to the right
+    newRow.style.transform = 'translateX(100%)';
+    newRow.style.position = 'absolute';
+    newRow.style.top = '0'; newRow.style.left = '0'; newRow.style.width = '100%';
+    stage.style.position = 'relative';
+    stage.appendChild(newRow);
+
+    // Slide both: old→left, new→center
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
-        track.style.transition = 'transform 0.38s cubic-bezier(.22,.68,0,1.1), opacity 0.25s';
-        track.style.transform = 'translateX(0)';
-        track.style.opacity = '1';
+        var dur = '0.42s';
+        var ease = 'cubic-bezier(.4,0,.2,1)';
+        if (oldRow) {
+          oldRow.style.transition = 'transform ' + dur + ' ' + ease;
+          oldRow.style.transform = 'translateX(-100%)';
+        }
+        newRow.style.transition = 'transform ' + dur + ' ' + ease;
+        newRow.style.transform = 'translateX(0)';
+        // After transition: clean up
+        setTimeout(function() {
+          if (!isActive()) return;
+          if (oldRow && oldRow.parentNode) oldRow.remove();
+          newRow.style.position = '';
+          newRow.style.top = ''; newRow.style.left = ''; newRow.style.width = '';
+          stage.style.position = 'relative';
+          // Speak & schedule next
+          var w = words[cur];
+          speak(w, 0.5);
+          var delay = Math.max(1500, w.length * 80 + 1000);
+          setTimeout(advance, delay);
+        }, 440);
       });
     });
   }
 
-  function step() {
-    if (!isActive()) return;
-    // Slide current track OUT to the left, then render next
-    var oldTrack = stage.querySelector('.ipa-conveyor');
-    if (oldTrack) {
-      oldTrack.style.transition = 'transform 0.32s ease-in, opacity 0.25s';
-      oldTrack.style.transform = 'translateX(-60px)';
-      oldTrack.style.opacity = '0';
-    }
-    cur = (cur + 1) % words.length;
-    setTimeout(function() {
-      if (!isActive()) return;
-      renderConveyor();
-      var w = words[cur];
-      speak(w, 0.5);
-      var delay = Math.max(1500, w.length * 80 + 1000);
-      setTimeout(step, delay);
-    }, 320);
-  }
-
-  // Play MP3 first, then start conveyor
   function startConveyor() {
-    cur = 0;
-    renderConveyor();
-    speak(words[0], 0.5);
-    var delay = Math.max(1500, words[0].length * 80 + 1000);
-    setTimeout(step, delay);
+    var w = words[0];
+    var delay = Math.max(1500, w.length * 80 + 1000);
+    setTimeout(advance, delay);
   }
 
+  // Play MP3 first
   if (mp3) {
     var a = new Audio(mp3); _ipaAudio = a;
     a.onended = function() { if (isActive()) startConveyor(); };
@@ -1469,11 +1496,10 @@ function stopCardAnim() {
   _cardSeqId++;
   if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
-  document.querySelectorAll('.ipa-conveyor').forEach(function(el) { el.remove(); });
+  document.querySelectorAll('.ipa-word-stage').forEach(function(s) { s.innerHTML = ''; });
   document.querySelectorAll('.ipa-playing').forEach(function(b) { b.classList.remove('ipa-playing'); });
   _activeCard = null;
 }
-
 
 
 function makeIPACards(items) {
