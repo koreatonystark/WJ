@@ -351,6 +351,27 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .record-row:hover .record-score{color:var(--accent2);}
 
 .iq-sym-speaker-hint{font-size:.85rem;opacity:.4;margin-left:4px;vertical-align:middle;}
+
+.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
+.ipa-card:hover{border-color:var(--accent);background:rgba(108,99,255,.04);}
+.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:0;cursor:pointer;font-size:1.6rem;font-weight:400;font-family:'Courier New',monospace;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;}
+.ipa-sym-btn:hover{transform:scale(1.08);box-shadow:0 4px 16px rgba(108,99,255,.25);}
+.ipa-sym-btn.vowel{color:var(--accent3);}
+.ipa-sym-btn.consonant{color:var(--accent);}
+.ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;}
+.ipa-desc-main{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.55;}
+/* Word animation stage */
+.ipa-word-stage{height:56px;display:flex;align-items:center;overflow:hidden;position:relative;}
+.ipa-word-slide{display:flex;align-items:baseline;gap:10px;opacity:0;}
+.ipa-slide-word{font-size:1.8rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;}
+.ipa-slide-pron{font-size:.9rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.04em;}
+.ipa-slide-pron .ipa-bold{color:var(--accent3);font-weight:800;}
+@keyframes ipaSlideIn{
+  0%{opacity:0;transform:translateX(60px) scale(.85);}
+  60%{opacity:1;transform:translateX(-4px) scale(1.05);}
+  80%{transform:translateX(2px) scale(.98);}
+  100%{opacity:1;transform:translateX(0) scale(1);}
+}
 </style>
 </head>
 <body>
@@ -1227,29 +1248,87 @@ function showIPA() {
 
   function makeCards(items) {
     var h = '';
-    items.forEach(function(item) {
-      // Encode word list for the chain function
+    items.forEach(function(item, idx) {
+      var cardId = 'ipacard-' + idx;
       var wordList = item.words.map(function(w){ return w.w; }).join(',');
-      var wordEntries = item.words.map(function(wobj) {
-        var pronDisplay = boldIPA(wobj.ipa, wobj.bold);
-        return '<div class="ipa-word-entry" onclick="speak(\'' + wobj.w + '\', 0.45)" title="Click to hear">'
-          + '<span class="ipa-word-text">' + wobj.w + '</span>'
-          + (pronDisplay ? '<span class="ipa-word-pron">[' + pronDisplay + ']</span>' : '')
-          + '</div>';
-      }).join('');
       var descHL = item.desc.replace(/"([^"]+)"/g, '"<span class="ipa-sound">$1</span>"');
-      h += '<div class="ipa-card">'
+      // Encode word+ipa pairs as JSON-safe string
+      var wordDataJson = JSON.stringify(item.words.map(function(w){return {w:w.w,ipa:w.ipa,bold:w.bold};}));
+      h += '<div class="ipa-card" id="' + cardId + '">'
         + '<button class="ipa-sym-btn ' + (item.cat==='Vowel'?'vowel':'consonant') + '" '
-        + 'onclick="playIPAThenWords(\'' + item.mp3 + '\',\'' + wordList + '\')" title="Click to hear sound + example words">'
-        + item.sym
-        + '</button>'
+        + 'onclick="startIPACardAnim(\'' + cardId + '\',\'' + item.mp3 + '\',\'' + wordList + '\')" '
+        + 'title="Click to hear">'
+        + item.sym + '</button>'
         + '<div class="ipa-body">'
         + '<div class="ipa-desc-main">' + descHL + '</div>'
-        + '<div class="ipa-words-list">' + wordEntries + '</div>'
+        + '<div class="ipa-word-stage" id="' + cardId + '-stage">'
+        + '<div class="ipa-word-slide" id="' + cardId + '-slide"></div>'
+        + '</div>'
         + '</div>'
         + '</div>';
     });
     return h;
+  }
+
+  // IPA card animation: play mp3 then slide words one by one
+  var _cardAnimId = 0;
+  function startIPACardAnim(cardId, mp3, wordCsv) {
+    // Stop any running animation
+    _ipaSeqId++;
+    _seqCancelled = true;
+    if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio = null; }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    // Reset all cards' stages
+    document.querySelectorAll('.ipa-word-slide').forEach(function(el){
+      el.textContent = ''; el.className = 'ipa-word-slide';
+    });
+
+    var mySeqId = ++_ipaSeqId;
+    _seqCancelled = false;
+    var words = wordCsv.split(',').filter(Boolean);
+    var stage = document.getElementById(cardId + '-stage');
+    var slide = document.getElementById(cardId + '-slide');
+    if (!slide) return;
+
+    // Find word IPA data from IPA_DATA
+    var symEntry = IPA_DATA.find(function(d){ return ('ipacard-' + IPA_DATA.indexOf(d)) === cardId || true; });
+    // Build word→ipa map from all IPA_DATA entries
+    var ipaMap = {};
+    IPA_DATA.forEach(function(d){
+      d.words.forEach(function(w){ if(!ipaMap[w.w]) ipaMap[w.w]={ipa:w.ipa,bold:w.bold}; });
+    });
+
+    function isActive(){ return mySeqId === _ipaSeqId && !_seqCancelled; }
+
+    function showWord(i) {
+      if (!isActive() || i >= words.length) {
+        if (slide) { slide.style.animation = 'none'; slide.textContent = ''; }
+        return;
+      }
+      var w = words[i];
+      var wdata = ipaMap[w] || {ipa:'', bold:''};
+      var pronHTML = wdata.ipa ? '<span class="ipa-slide-pron">[' + boldIPA(wdata.ipa, wdata.bold) + ']' + '</span>' : '';
+      slide.innerHTML = '<span class="ipa-slide-word">' + w + '</span>' + pronHTML;
+      slide.style.animation = 'none';
+      // Force reflow
+      void slide.offsetWidth;
+      slide.style.animation = 'ipaSlideIn 0.4s cubic-bezier(.22,.68,0,1.2) forwards';
+      // Speak the word
+      speak(w, 0.5);
+      // Show next word after delay
+      var delay = Math.max(1200, w.length * 80 + 800);
+      setTimeout(function(){ if(isActive()) showWord(i + 1); }, delay);
+    }
+
+    // Play MP3 first, then animate words
+    if (mp3) {
+      var a = new Audio(mp3); _ipaAudio = a;
+      a.onended = function(){ if(isActive()) setTimeout(function(){ showWord(0); }, 200); };
+      a.onerror = function(){ if(isActive()) showWord(0); };
+      a.play().catch(function(){ if(isActive()) showWord(0); });
+    } else {
+      showWord(0);
+    }
   }
 
   var html = '<div class="ipa-section-title">Vowels</div>' + makeCards(vowels)
