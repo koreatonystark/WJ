@@ -297,6 +297,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .review-word{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;}
 .review-result{font-size:.75rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto;}
 .review-result.ok{background:rgba(67,233,123,.15);color:var(--accent3);}.review-result.miss{background:rgba(255,101,132,.15);color:var(--accent2);}
+.memory-review{width:min(760px,94vw);margin:18px auto 4px;text-align:left}.memory-review-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:800;color:var(--text);margin:0 0 10px}.memory-review-note{font-size:.72rem;color:var(--muted);margin:-4px 0 10px}.memory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px}.memory-card{display:flex;align-items:center;gap:9px;min-height:72px;padding:8px 9px;border:1px solid var(--border);border-radius:11px;background:var(--surface);overflow:hidden}.memory-card.ok{border-color:rgba(67,233,123,.28)}.memory-card.miss{border-color:rgba(255,101,132,.34)}.memory-thumb-wrap{width:58px;height:58px;min-width:58px;border-radius:9px;overflow:hidden;background:var(--surface2);display:none;align-items:center;justify-content:center}.memory-card.has-image .memory-thumb-wrap{display:flex}.memory-thumb{width:100%;height:100%;object-fit:cover;display:block}.memory-word{font-size:.9rem;font-weight:800;color:var(--text);line-height:1.15}.memory-ipa{font-family:'Courier New',monospace;font-size:.67rem;color:var(--accent);margin-top:3px;line-height:1.2}.memory-status{font-size:.66rem;margin-top:4px;font-weight:800}.memory-card.ok .memory-status{color:var(--accent3)}.memory-card.miss .memory-status{color:var(--accent2)}@media(max-width:520px){.memory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.memory-card{padding:7px}.memory-thumb-wrap{width:50px;height:50px;min-width:50px}.memory-word{font-size:.82rem}.memory-ipa{font-size:.62rem}}
 .review-stars{font-size:.85rem;color:var(--gold);}.review-body{padding:0 16px 14px;display:none;}.review-body.open{display:block;}
 .review-def{font-size:.88rem;line-height:1.6;color:var(--text);margin-bottom:8px;}
 .review-kid{font-size:.82rem;color:var(--accent3);padding:6px 10px;background:rgba(67,233,123,.06);border-radius:7px;border-left:3px solid var(--accent3);margin-bottom:8px;line-height:1.5;}
@@ -460,6 +461,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div id="newRecordBanner" class="new-record hidden">&#127881; New Record! &#127881;</div>
   <div class="result-breakdown" id="resultBreakdown"></div>
   <div id="masteredMsg" style="color:var(--accent3);font-size:.86rem;margin-bottom:3px;"></div>
+  <div id="memoryReview" class="memory-review"></div>
   <div class="result-btns">
     <button class="btn-p" id="playAgainBtn">Play Again &#128640;</button>
     <button class="btn-s" id="homeBtn">Home</button>
@@ -469,7 +471,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div style="max-width:700px;width:100%;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v29</span></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v30</span></div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
       </div>
       <button class="btn-s" id="ipaBackBtn">&#8592; Back</button>
@@ -1309,6 +1311,48 @@ function startTimer(secs,onExp){
 }
 function clearTimer(){if(timer){clearInterval(timer);timer=null;}}
 
+function wikipediaThumbForWord(word, definition, card){
+  if(!word || !card) return;
+  var title=String(word).trim();
+  var exact='https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(title.replace(/ /g,'_'));
+  fetch(exact,{headers:{'Accept':'application/json'}}).then(function(r){
+    if(!r.ok) throw new Error('no exact page');
+    return r.json();
+  }).then(function(data){
+    if(!data || data.type==='disambiguation' || !data.thumbnail || !data.thumbnail.source) throw new Error('no useful thumb');
+    var img=card.querySelector('.memory-thumb');
+    if(!img) return;
+    img.onload=function(){card.classList.add('has-image');};
+    img.onerror=function(){card.classList.remove('has-image');};
+    img.src=data.thumbnail.source;
+    img.alt=title;
+    img.title=data.title||title;
+  }).catch(function(){
+    /* Abstract words and unmatched titles simply remain text-only. */
+  });
+}
+function renderMemoryReview(results){
+  var host=document.getElementById('memoryReview');
+  if(!host)return;
+  var rows=(results||[]).slice(-10);
+  if(!rows.length){host.innerHTML='';return;}
+  host.innerHTML='<div class="memory-review-title">🖼️ Word Memory Review</div>'
+    +'<div class="memory-review-note">A small picture appears only when an exact, useful Wikipedia image is available.</div>'
+    +'<div class="memory-grid">'+rows.map(function(r,i){
+      var w=(r&&r.word)||{};var word=w.word||'';var db=WORD_DB[word]||{};var ipa=db.ipa||IPA_MAP[word]||'';
+      return '<div class="memory-card '+(r.ok?'ok':'miss')+'" data-memory-word="'+escHTML(word)+'" data-memory-index="'+i+'">'
+        +'<div class="memory-thumb-wrap"><img class="memory-thumb" loading="lazy"></div>'
+        +'<div style="min-width:0"><div class="memory-word">'+escHTML(word)+'</div>'
+        +(ipa?'<div class="memory-ipa">['+escHTML(ipa.replace(/^\[|\]$/g,''))+']</div>':'')
+        +'<div class="memory-status">'+(r.ok?'✓ remembered':'✕ review')+'</div></div></div>';
+    }).join('')+'</div>';
+  rows.forEach(function(r,i){
+    var w=(r&&r.word)||{};var word=w.word||'';var db=WORD_DB[word]||{};
+    var card=host.querySelector('[data-memory-index="'+i+'"]');
+    wikipediaThumbForWord(word,db.def||db.kid||'',card);
+  });
+}
+
 function endRound(){
   clearTimer();
   var pb=recs.length?Math.max.apply(null,recs.map(function(r){return r.score;})):0,isNew=score>pb;
@@ -1327,6 +1371,7 @@ function endRound(){
     +'<div class="bd-item"><div class="bd-num" style="color:var(--accent4)">'+rs.bonus+'</div><div class="bd-label">Bonus</div></div>'
     +'<div class="bd-item"><div class="bd-num" style="color:var(--gold)">'+rs.nm+'</div><div class="bd-label">Mastered</div></div>'
     +'<div class="bd-item"><div class="bd-num" style="color:var(--text)">'+score+'</div><div class="bd-label">Total Pts</div></div>';
+  renderMemoryReview(roundResults);
 }
 // ─── SPEECH ───────────────────────────────────────────────────
 function speak(word, rate, pitch) {
