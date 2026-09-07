@@ -142,10 +142,15 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-opt.correct .iq-word-ipa,.iq-opt.missed .iq-word-ipa{color:var(--accent3);opacity:.9;}
 .iq-opt.wrong .iq-word-ipa{color:var(--accent2);opacity:.9;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
-.iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
-.iq-opt.correct{border-color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;color:var(--accent3)!important;}
-.iq-opt.wrong{border-color:var(--accent2)!important;background:rgba(255,101,132,.15)!important;color:var(--accent2)!important;}
-.iq-opt.missed{border-color:var(--accent3)!important;background:rgba(67,233,123,.08)!important;color:var(--accent3)!important;opacity:.7;}
+/* Multi-select: selected = green, untouched = neutral gray. */
+.iq-opt.selected{border-color:var(--accent3)!important;background:rgba(67,233,123,.10)!important;color:var(--accent3)!important;}
+.iq-opt.correct{position:relative;border-color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;color:var(--accent3)!important;padding-right:34px;}
+.iq-opt.correct::after{content:'✓';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:1.1rem;font-weight:900;color:var(--accent3);}
+.iq-opt.wrong{position:relative;border-color:var(--accent2)!important;background:rgba(255,101,132,.12)!important;color:var(--accent2)!important;padding-right:34px;}
+.iq-opt.wrong::after{content:'✕';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:1.1rem;font-weight:900;color:var(--accent2);}
+.iq-opt.missed{position:relative;border:2px dashed var(--accent2)!important;background:rgba(255,101,132,.06)!important;color:var(--text)!important;opacity:1;padding-right:34px;}
+.iq-opt.missed::after{content:'○';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:1.1rem;font-weight:900;color:var(--accent2);}
+.iq-symbol-prompt{display:inline-flex;align-items:center;justify-content:center;min-width:82px;height:82px;padding:0 18px;margin:2px 14px 8px 0;border:2px solid currentColor;border-radius:16px;background:rgba(255,255,255,.035);font-family:'Courier New',monospace;font-size:3rem!important;font-weight:700;line-height:1;vertical-align:middle;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);}
 .iq-opt:disabled{cursor:default;}
 .iq-sym-opt{min-width:52px;text-align:center;font-family:'Courier New',monospace;font-size:1.1rem;}
 .iq-feedback{margin-top:14px;border-radius:12px;padding:12px 16px;font-size:.88rem;line-height:1.5;}
@@ -234,10 +239,15 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-options{display:flex;flex-wrap:wrap;gap:9px;}
 .iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
-.iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
-.iq-opt.correct{border-color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;color:var(--accent3)!important;}
-.iq-opt.wrong{border-color:var(--accent2)!important;background:rgba(255,101,132,.15)!important;color:var(--accent2)!important;}
-.iq-opt.missed{border-color:var(--accent3)!important;background:rgba(67,233,123,.08)!important;color:var(--accent3)!important;opacity:.7;}
+/* Multi-select: selected = green, untouched = neutral gray. */
+.iq-opt.selected{border-color:var(--accent3)!important;background:rgba(67,233,123,.10)!important;color:var(--accent3)!important;}
+.iq-opt.correct{position:relative;border-color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;color:var(--accent3)!important;padding-right:34px;}
+.iq-opt.correct::after{content:'✓';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:1.1rem;font-weight:900;color:var(--accent3);}
+.iq-opt.wrong{position:relative;border-color:var(--accent2)!important;background:rgba(255,101,132,.12)!important;color:var(--accent2)!important;padding-right:34px;}
+.iq-opt.wrong::after{content:'✕';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:1.1rem;font-weight:900;color:var(--accent2);}
+.iq-opt.missed{position:relative;border:2px dashed var(--accent2)!important;background:rgba(255,101,132,.06)!important;color:var(--text)!important;opacity:1;padding-right:34px;}
+.iq-opt.missed::after{content:'○';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:1.1rem;font-weight:900;color:var(--accent2);}
+.iq-symbol-prompt{display:inline-flex;align-items:center;justify-content:center;min-width:82px;height:82px;padding:0 18px;margin:2px 14px 8px 0;border:2px solid currentColor;border-radius:16px;background:rgba(255,255,255,.035);font-family:'Courier New',monospace;font-size:3rem!important;font-weight:700;line-height:1;vertical-align:middle;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);}
 .iq-opt:disabled{cursor:default;}
 .iq-sym-opt{min-width:52px;text-align:center;font-family:'Courier New',monospace;font-size:1.1rem;}
 .iq-feedback{margin-top:14px;border-radius:12px;padding:12px 16px;font-size:.88rem;line-height:1.5;}
@@ -455,7 +465,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div style="max-width:700px;width:100%;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v26</span></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v27</span></div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
       </div>
       <button class="btn-s" id="ipaBackBtn">&#8592; Back</button>
@@ -1914,8 +1924,8 @@ function renderIQQuestion() {
       + '<div class="iq-card">'
       + '<span class="iq-type-badge iq-badge-3">&#9745; Symbol &#8594; Words (multi-select)</span>'
       + '<div class="iq-question">'
-      + '<span class="iq-sym" style="color:' + catColor + ';cursor:pointer" onclick="playIPA(\'' + correct.mp3 + '\')" title="Click to hear">' + correct.sym + '</span>'
-      + descHL
+      + '<span class="iq-sym iq-symbol-prompt" style="color:' + catColor + ';cursor:pointer" onclick="playIPA(\'' + correct.mp3 + '\')" title="Click to hear">' + correct.sym + '</span>'
+      + '<span class="iq-question-text">' + descHL + '</span>'
       + '</div>'
       + '<div class="iq-hint">Select ALL words that contain this sound, then press Check.</div>'
       + '<div class="iq-options" id="iqOpts">' + optsHTML + '</div>'
@@ -2049,17 +2059,29 @@ function gradeSingleSelect(chosen, btn) {
   }
 }
 
+function normalizeGAWordIPA(ipa, word){
+  if (!ipa) return '';
+  var x=String(ipa).replace(/^\[|\]$/g,'').trim();
+  // Normalize legacy/non-GA spellings to the WJ General American symbol set.
+  x=x.replace(/ɡ/g,'g').replace(/ʧ/g,'tʃ').replace(/ʤ/g,'dʒ');
+  // The old examples sheet contains a few British-style /ɒ/ transcriptions.
+  // Prefer the built-in General American map below; this is only a last-resort cleanup.
+  x=x.replace(/ɒ/g,'ɑ');
+  return x;
+}
+
 function getQuizWordIPA(word){
-  // IPA example sheet already stores an IPA transcription for every sample word.
-  // Search all symbol groups because a word may appear under more than one sound.
+  // 1) WJ's built-in General American map is authoritative for quiz display.
+  if (typeof IPA_MAP !== 'undefined' && IPA_MAP[word]) return normalizeGAWordIPA(IPA_MAP[word], word);
+  // 2) Then the main Word Database, if it has a pronunciation.
+  if (WORD_DB[word] && WORD_DB[word].ipa) return normalizeGAWordIPA(WORD_DB[word].ipa, word);
+  // 3) Finally use the IPA example sheet, normalized to our GA symbol set.
   for (var i=0;i<IPA_DATA.length;i++) {
     var arr=IPA_DATA[i].words||[];
     for (var j=0;j<arr.length;j++) {
-      if (arr[j].w===word && arr[j].ipa) return arr[j].ipa;
+      if (arr[j].w===word && arr[j].ipa) return normalizeGAWordIPA(arr[j].ipa, word);
     }
   }
-  // Fallback to the main Word Database if this word also exists there.
-  if (WORD_DB[word] && WORD_DB[word].ipa) return WORD_DB[word].ipa;
   return '';
 }
 
@@ -2099,10 +2121,12 @@ function gradeMultiSelect() {
     b.disabled = false;
     var isInCorrect = correctWords.indexOf(b.dataset.val) >= 0;
     var wasSelected = selected.indexOf(b.dataset.val) >= 0;
+    // Remove the temporary selection state so grading colors are unambiguous.
+    b.classList.remove('selected');
     if (isInCorrect && wasSelected) b.classList.add('correct');
     else if (!isInCorrect && wasSelected) b.classList.add('wrong');
     else if (isInCorrect && !wasSelected) b.classList.add('missed');
-    // Enable audio on click after grading
+    // untouched distractors stay gray / neutral
     b.onclick = function() { speak(b.dataset.val, 0.5); };
   });
   // Reveal the stored word IPA only after the answer has been checked.
