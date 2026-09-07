@@ -302,18 +302,20 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .ipa-word-stage{overflow:hidden;border-top:1px solid var(--border);margin-top:0;padding-top:5px;position:relative;height:42px;}
 .ipa-tuner-track{display:flex;align-items:baseline;gap:0;position:absolute;left:0;bottom:5px;white-space:nowrap;will-change:transform;}
 /* Compact invisible intervals: no cells, no dividers. */
-.ipa-tuner-item{width:140px;min-width:140px;max-width:140px;flex:0 0 140px;display:flex;align-items:baseline;gap:5px;white-space:nowrap;overflow:visible;}
+.ipa-tuner-item{width:112px;min-width:112px;max-width:112px;flex:0 0 112px;display:flex;align-items:baseline;gap:4px;white-space:nowrap;overflow:visible;}
+.ipa-tuner-item:first-child{width:205px;min-width:205px;max-width:205px;flex-basis:205px;}
 .ipa-tuner-word{font-size:.92rem;font-weight:600;color:var(--muted);line-height:1;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease,font-weight .52s ease;transform-origin:left bottom;}
 .ipa-tuner-pron{font-size:.65rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.02em;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease;transform-origin:left bottom;}
 .ipa-tuner-pron .ipa-bold{color:var(--accent3);font-weight:700;}
 .ipa-tuner-item.is-focus .ipa-tuner-word{font-size:1.72rem;font-weight:800;color:var(--accent2);font-family:'Space Grotesk',sans-serif;}
-.ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:.76rem;}
+.ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:1.02rem;font-weight:600;}
 .ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 8px;}
 @media(max-width:560px){
   .ipa-card{padding:10px 11px;gap:10px;min-height:100px;}
   .ipa-sym-btn{width:56px;height:56px;font-size:1.45rem;}
   .ipa-body{grid-template-rows:minmax(36px,auto) 40px;}
-  .ipa-tuner-item{width:126px;min-width:126px;max-width:126px;flex-basis:126px;}
+  .ipa-tuner-item{width:102px;min-width:102px;max-width:102px;flex-basis:102px;}
+  .ipa-tuner-item:first-child{width:188px;min-width:188px;max-width:188px;flex-basis:188px;}
 }
 </style>
 </head>
@@ -1017,7 +1019,8 @@ function toggleIPACard(cardId, mp3, wordCsv) {
   if (!stage) return;
   var cur = 0;
   var spokenCount = 0;
-  var ITEM_W = window.matchMedia('(max-width:560px)').matches ? 126 : 140;
+  var WAIT_W = window.matchMedia('(max-width:560px)').matches ? 102 : 112;
+  var FOCUS_W = window.matchMedia('(max-width:560px)').matches ? 188 : 205;
 
   function isActive() { return myId === _cardSeqId; }
 
@@ -1033,6 +1036,10 @@ function toggleIPACard(cardId, mp3, wordCsv) {
       var d = ipaMap[w] || { ipa:'', bold:'' };
       var item = document.createElement('div');
       item.className = 'ipa-tuner-item' + (i === 0 ? ' is-focus' : '');
+      item.style.width = (i === 0 ? FOCUS_W : WAIT_W) + 'px';
+      item.style.minWidth = item.style.width;
+      item.style.maxWidth = item.style.width;
+      item.style.flexBasis = item.style.width;
       item.dataset.seqIndex = i;
 
       var ws = document.createElement('span');
@@ -1056,7 +1063,12 @@ function toggleIPACard(cardId, mp3, wordCsv) {
 
   function setFocus(index) {
     Array.from(track.children).forEach(function(item, i) {
-      item.classList.toggle('is-focus', i === index);
+      var focus = i === index;
+      item.classList.toggle('is-focus', focus);
+      item.style.width = (focus ? FOCUS_W : WAIT_W) + 'px';
+      item.style.minWidth = item.style.width;
+      item.style.maxWidth = item.style.width;
+      item.style.flexBasis = item.style.width;
     });
   }
 
@@ -1082,7 +1094,10 @@ function toggleIPACard(cardId, mp3, wordCsv) {
     var next = cur + 1;
     setFocus(next);
     track.style.transition = 'transform .52s cubic-bezier(.22,.61,.36,1)';
-    track.style.transform = 'translateX(-' + (next * ITEM_W) + 'px)';
+    // Move the selected item exactly to the left focus origin.
+    // Waiting items stay compact; only the active item reserves the wide focus area.
+    var targetX = track.children[next].offsetLeft;
+    track.style.transform = 'translateX(-' + targetX + 'px)';
     setTimeout(function(){
       if (!isActive()) return;
       cur = next;
