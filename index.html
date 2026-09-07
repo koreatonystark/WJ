@@ -513,6 +513,8 @@ function parseWordRows(rows){
     logic:findHeaderIndex(h,[/^word logic/]), nuance:findHeaderIndex(h,[/^nuance/]), origin:findHeaderIndex(h,[/^origin/]),
     korean:findHeaderIndex(h,[/^korean\b/]), priority:findHeaderIndex(h,[/^grade 4 priority/]),
     afc:findHeaderIndex(h,[/^academic function/]), trel:findHeaderIndex(h,[/^state test relevance/]),
+    learn1:findHeaderIndex(h,[/^learning sentence 1/]), learn2:findHeaderIndex(h,[/^learning sentence 2/]), learn3:findHeaderIndex(h,[/^learning sentence 3/]),
+    review:findHeaderIndex(h,[/^review notes/]), sourceBasis:findHeaderIndex(h,[/^assessment source basis/]),
     exA:findHeaderIndex(h,[/^example a\b/]), exB:findHeaderIndex(h,[/^example b\b/]),
     exC:findHeaderIndex(h,[/^example c\b/]), exD:findHeaderIndex(h,[/^example d\b/]), ans:findHeaderIndex(h,[/^answer \/ thinking cue/])
   };
@@ -525,7 +527,7 @@ function parseWordRows(rows){
     var pri=g('priority'),stars=pri?(pri.match(/★/g)||[]).length:1;
     out.push({word:word,tier:g('tier'),level:g('level'),cat:g('cat'),subcat:g('subcat'),ipa:g('ipa'),
       def:g('def'),kid:g('kid'),logic:g('logic'),nuance:g('nuance'),origin:g('origin'),korean:g('korean'),
-      priority:pri,stars:stars,afc:g('afc'),trel:g('trel'),exA:g('exA'),exB:g('exB'),exC:g('exC'),exD:g('exD'),ans:g('ans')});
+      priority:pri,stars:stars,afc:g('afc'),trel:g('trel'),learn1:g('learn1'),learn2:g('learn2'),learn3:g('learn3'),review:g('review'),sourceBasis:g('sourceBasis'),exA:g('exA'),exB:g('exB'),exC:g('exC'),exD:g('exD'),ans:g('ans')});
   }
   return out;
 }
@@ -570,6 +572,7 @@ function loadAllSources(){
         var stars=r.priority?(r.priority.match(/★/g)||[]).length:1;
         allWords.push({word:r.word,tier:r.tier,level:r.level,cat:r.cat,subcat:r.subcat,korean:r.korean,priority:r.priority||'',stars:stars});
         WORD_DB[r.word]={ipa:r.ipa,def:r.def,kid:r.kid,logic:r.logic,nuance:r.nuance,origin:r.origin,trel:r.trel,
+          learn1:r.learn1,learn2:r.learn2,learn3:r.learn3,review:r.review,sourceBasis:r.sourceBasis,subcat:r.subcat,level:r.level,cat:r.cat,tier:r.tier,
           exA:r.exA,exB:r.exB,exC:r.exC,exD:r.exD,ans:r.ans,afc:r.afc,pri:r.priority||'',stars:stars,korean:r.korean};
       });
     }
@@ -946,51 +949,45 @@ function showWrong(word,ai,extraMsg){
   getWrongEx(word,ai).then(function(d){
     var fa=document.getElementById('fa');if(!fa)return;
     document.getElementById('headerScore').textContent=score+' pts';
-
     function block(label,text,cls){
       if(!text)return '';
       return '<div class="learn-block '+(cls||'')+'"><div class="dlabel">'+label+'</div><div class="learn-text">'+escHTML(text)+'</div></div>';
     }
-    function deepRow(label,text){
+    function sentenceBlock(label,text){
       if(!text)return '';
-      return '<div class="deep-row"><div class="deep-label">'+label+'</div><div class="deep-text">'+escHTML(text)+'</div></div>';
+      return '<div class="learn-block"><div class="dlabel">'+label+'</div><div class="learn-text dex" data-spoken="'+escHTML(text)+'">'+escHTML(text)+'</div></div>';
     }
-
     var examplesHTML='';
     if(d.examples.length){
-      examplesHTML='<div class="learn-block learn-examples"><div class="dlabel">Example Sentences</div><div id="dex">'
-        +d.examples.map(function(ex,i){return '<div class="dex" data-spoken="'+escHTML(ex)+'">'+(i+1)+'. '+escHTML(ex)+'</div>';}).join('')+'</div></div>';
+      examplesHTML='<div class="learn-block learn-examples"><div class="dlabel">Example Sentences / Test Prompt</div><div id="dex">'
+        +d.examples.map(function(ex,i){var labels=['A · Everyday / School','B · ELA / Literature','C · Science / Social Studies / Math','D · State-Test Thinking Prompt'];return '<div class="dex" data-spoken="'+escHTML(ex)+'"><strong>'+labels[i]+'</strong><br>'+escHTML(ex)+'</div>';}).join('')+'</div></div>';
     }
-
-    var deep='';
-    deep += deepRow('Word Structure',d.logic);
-    deep += deepRow('Origin / Etymology',d.origin);
-    deep += deepRow('Meaning Logic / Context Clues',d.meaningLogic);
-    deep += deepRow('Academic Function',d.academicFunction);
-    deep += deepRow('State Test / Academic Use',d.stateTest);
-    deep += deepRow('Answer / Thinking Strategy',d.answerStrategy);
-    if(d.priority) deep += '<div class="deep-row"><div class="deep-label">Priority</div><span class="priority-pill">'+escHTML(d.priority)+'</span></div>';
-
+    var meta=[word.tier||d.tier,word.level||d.level,word.cat||d.cat,d.subcat].filter(Boolean).map(escHTML).join(' &middot; ');
     fa.innerHTML='<div class="wrong-panel">'
-      +'<div class="wrong-head"><div class="wrong-head-row"><span class="wrong-word-big">'+escHTML(word.word)+'</span>'+(d.ipa?'<span class="wrong-ipa">'+escHTML(d.ipa)+'</span>':'')+'</div>'
-      +'<span class="wrong-meta">'+escHTML(word.tier||'')+(word.level?' &middot; '+escHTML(word.level):'')+(word.cat?' &middot; '+escHTML(word.cat):'')+'</span></div>'
-      +block('Definition',d.definition,'')
-      +block('Easy Explanation / Think',d.kid,'learn-hint')
+      +'<div class="wrong-head"><div class="wrong-head-row"><span class="wrong-word-big">'+escHTML(word.word)+'</span>'+(d.ipa?'<span class="wrong-ipa">'+escHTML(d.ipa)+'</span>':'')+'</div><span class="wrong-meta">'+meta+'</span></div>'
+      +block('Definition — Core Meaning',d.definition)
+      +block('Kid Explanation — Core Idea',d.kid,'learn-hint')
+      +block('Word Logic / Structure',d.logic)
       +block('Nuance & Usage',d.nuance,'learn-nuance')
-      +'<div class="learn-block"><div class="dlabel">Korean Meaning</div><div class="learn-text green">'+escHTML(d.korean||word.korean||'')+'</div></div>'
+      +block('Origin / Memory Hook',d.origin)
+      +sentenceBlock('Learning Sentence 1 — Meaning',d.learn1)
+      +sentenceBlock('Learning Sentence 2 — Context',d.learn2)
+      +sentenceBlock('Learning Sentence 3 — Nuance',d.learn3)
+      +block('Korean — Reference',d.korean||word.korean,'learn-korean')
+      +block('Review Notes',d.review)
+      +block('Grade 4 Priority',d.priority)
+      +block('Academic Function',d.academicFunction)
+      +block('State Test Relevance',d.stateTest)
       +examplesHTML
-      +(deep?'<details class="deep-learning"><summary>Deep Learning</summary><div class="deep-content">'+deep+'</div></details>':'')
+      +block('Answer / Thinking Cue',d.answerStrategy,'learn-hint')
+      +block('Assessment Source Basis',d.sourceBasis)
       +(extraMsg?'<div style="font-size:.76rem;color:var(--accent4);margin-top:10px">'+escHTML(extraMsg)+'</div>':'')
       +'<button class="next-btn" id="nb">Next Question &rarr;</button></div>';
-
     var nb=document.getElementById('nb');if(nb)nb.addEventListener('click',function(){qIdx++;showQ();});
     setTimeout(function(){speak(word.word,0.7);},350);
     var wwb=fa.querySelector('.wrong-word-big');
     if(wwb){wwb.style.cursor='pointer';wwb.title='Click to hear again';wwb.addEventListener('click',function(){speak(word.word,0.75);});}
-    fa.querySelectorAll('.dex').forEach(function(el){
-      el.style.cursor='pointer';el.title='Click to hear';
-      el.addEventListener('click',function(){speak(el.dataset.spoken||el.textContent.replace(/^\d+\.\s*/,''),0.8);});
-    });
+    fa.querySelectorAll('.dex').forEach(function(el){el.style.cursor='pointer';el.title='Click to hear';el.addEventListener('click',function(){speak(el.dataset.spoken||el.textContent,0.8);});});
   });
 }
 
@@ -1002,22 +999,13 @@ function getWrongEx(word, ai){
   var db=WORD_DB[word.word]||{};
   var examples=[];
   [db.exA,db.exB,db.exC,db.exD].forEach(function(ex){if(ex&&String(ex).trim())examples.push(String(ex).trim());});
-  if(ai&&ai.ex&&examples.indexOf(ai.ex)<0)examples.unshift(ai.ex);
-  if(!examples.length)examples.push('Try using "'+word.word+'" in a complete sentence.');
   return Promise.resolve({
-    ipa:db.ipa||(ai&&ai.ipa)||'',
-    definition:(ai&&ai.def)||db.def||db.kid||'No definition available.',
-    kid:db.kid||'',
-    nuance:db.nuance||'',
-    logic:db.logic||'',
-    origin:db.origin||'',
-    meaningLogic:db.trel||'',
-    academicFunction:db.afc||'',
-    stateTest:db.trel||'',
-    answerStrategy:db.ans||'',
-    priority:db.pri||'',
-    korean:db.korean||word.korean||'',
-    examples:examples.slice(0,4)
+    ipa:db.ipa||(ai&&ai.ipa)||'', definition:(ai&&ai.def)||db.def||db.kid||'No definition available.',
+    tier:db.tier||word.tier||'', level:db.level||word.level||'', cat:db.cat||word.cat||'', subcat:db.subcat||word.subcat||'',
+    kid:db.kid||'', logic:db.logic||'', nuance:db.nuance||'', origin:db.origin||'',
+    learn1:db.learn1||'', learn2:db.learn2||'', learn3:db.learn3||'', korean:db.korean||word.korean||'', review:db.review||'',
+    priority:db.pri||'', academicFunction:db.afc||'', stateTest:db.trel||'', answerStrategy:db.ans||'', sourceBasis:db.sourceBasis||'',
+    examples:examples
   });
 }
 
