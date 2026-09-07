@@ -136,6 +136,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-hint{font-size:.82rem;color:var(--muted);margin-bottom:18px;}
 .iq-options{display:flex;flex-wrap:wrap;gap:9px;}
 .iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
+.iq-opt.has-ipa{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:86px;line-height:1.05;}
+.iq-word-label{display:block;}
+.iq-word-ipa{display:block;font-family:'Courier New',monospace;font-size:.72rem;font-weight:500;color:var(--muted);letter-spacing:.015em;white-space:nowrap;}
+.iq-opt.correct .iq-word-ipa,.iq-opt.missed .iq-word-ipa{color:var(--accent3);opacity:.9;}
+.iq-opt.wrong .iq-word-ipa{color:var(--accent2);opacity:.9;}
 .iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
 .iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
 .iq-opt.correct{border-color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;color:var(--accent3)!important;}
@@ -1714,6 +1719,9 @@ function gradeSingleSelect(chosen, btn) {
     };
   });
 
+  // Once the answer/explanation is revealed, show each option's IPA underneath the word.
+  revealQuizWordIPAs();
+
   var descHL = item.desc.replace(/"([^"]+)"/g, '"<span style="color:var(--accent3);font-weight:700">$1</span>"');
   var fbEl = document.getElementById('iqFeedback');
 
@@ -1791,6 +1799,39 @@ function gradeSingleSelect(chosen, btn) {
       playNextSym();
     }, 400);
   }
+}
+
+function getQuizWordIPA(word){
+  // IPA example sheet already stores an IPA transcription for every sample word.
+  // Search all symbol groups because a word may appear under more than one sound.
+  for (var i=0;i<IPA_DATA.length;i++) {
+    var arr=IPA_DATA[i].words||[];
+    for (var j=0;j<arr.length;j++) {
+      if (arr[j].w===word && arr[j].ipa) return arr[j].ipa;
+    }
+  }
+  // Fallback to the main Word Database if this word also exists there.
+  if (WORD_DB[word] && WORD_DB[word].ipa) return WORD_DB[word].ipa;
+  return '';
+}
+
+function revealQuizWordIPAs(){
+  document.querySelectorAll('#iqOpts .iq-opt').forEach(function(b){
+    var word=b.dataset.val||'';
+    var ipa=getQuizWordIPA(word);
+    if (!ipa || b.querySelector('.iq-word-ipa')) return;
+    b.classList.add('has-ipa');
+    // Preserve the visible word as its own line, then add IPA below it.
+    var label=document.createElement('span');
+    label.className='iq-word-label';
+    label.textContent=word;
+    b.textContent='';
+    b.appendChild(label);
+    var ip=document.createElement('span');
+    ip.className='iq-word-ipa';
+    ip.textContent='['+ipa.replace(/^\[|\]$/g,'')+']';
+    b.appendChild(ip);
+  });
 }
 
 function gradeMultiSelect() {
