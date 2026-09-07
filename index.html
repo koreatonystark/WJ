@@ -310,6 +310,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* Small slots - fixed equal width */
 .ipa-slot-sm{flex-shrink:0;width:90px;min-width:90px;max-width:90px;overflow:hidden;}
 .ipa-slot-sm .ipa-slot-word{font-size:.95rem;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
+.ipa-slot-sm{display:flex;align-items:baseline;gap:4px;}
+.ipa-slot-sm .ipa-slot-pron{font-size:.68rem;max-width:48px;text-overflow:ellipsis;}
+.ipa-slot-big{align-items:baseline;}
 .ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
 </style>
 </head>
@@ -1034,7 +1037,7 @@ function toggleIPACard(cardId, mp3, wordCsv) {
       wspan.textContent = w;
       slot.appendChild(wspan);
 
-      if (s === 0 && d.ipa) {
+      if (d.ipa) {
         var pspan = document.createElement('span');
         pspan.className = 'ipa-slot-pron';
         pspan.innerHTML = '[' + boldIPA(d.ipa, d.bold) + ']';
@@ -1072,21 +1075,23 @@ function toggleIPACard(cardId, mp3, wordCsv) {
 
     var stageRect = stage.getBoundingClientRect();
     var wordEls = slots.map(function(slot){ return slot.querySelector('.ipa-slot-word'); });
+    var pronEls = slots.map(function(slot){ return slot.querySelector('.ipa-slot-pron'); });
     var wordRects = wordEls.map(function(el){ return el.getBoundingClientRect(); });
     var slotRects = slots.map(function(el){ return el.getBoundingClientRect(); });
     var movers = [];
 
-    // Hide only the real word text during animation. The slot layout stays fixed.
+    // Hide the real word+IPA pair during animation. The slot frames stay fixed.
     wordEls.forEach(function(el){ if (el) el.style.visibility = 'hidden'; });
-    var activePron = slots[0].querySelector('.ipa-slot-pron');
-    if (activePron) activePron.style.visibility = 'hidden';
+    pronEls.forEach(function(el){ if (el) el.style.visibility = 'hidden'; });
 
-    wordEls.forEach(function(el, i) {
+    slots.forEach(function(slot, i) {
+      var el = wordEls[i];
       if (!el) return;
       var r = wordRects[i];
       var mover = document.createElement('span');
       mover.className = 'ipa-word-mover';
-      mover.textContent = el.textContent;
+      mover.innerHTML = '<span class="ipa-mover-word"></span>' + (pronEls[i] ? '<span class="ipa-mover-pron">' + pronEls[i].innerHTML + '</span>' : '');
+      mover.querySelector('.ipa-mover-word').textContent = el.textContent;
       mover.style.position = 'absolute';
       mover.style.left = (r.left - stageRect.left) + 'px';
       // Anchor the glyph to its current bottom edge instead of its top edge.
@@ -1098,14 +1103,27 @@ function toggleIPACard(cardId, mp3, wordCsv) {
       mover.style.pointerEvents = 'none';
       mover.style.zIndex = '5';
       mover.style.lineHeight = '1';
-      mover.style.fontFamily = getComputedStyle(el).fontFamily;
-      mover.style.fontSize = getComputedStyle(el).fontSize;
-      mover.style.fontWeight = getComputedStyle(el).fontWeight;
-      mover.style.color = getComputedStyle(el).color;
+      mover.style.display = 'inline-flex';
+      mover.style.alignItems = 'baseline';
+      mover.style.gap = '8px';
+      var moverWord = mover.querySelector('.ipa-mover-word');
+      moverWord.style.fontFamily = getComputedStyle(el).fontFamily;
+      moverWord.style.fontSize = getComputedStyle(el).fontSize;
+      moverWord.style.fontWeight = getComputedStyle(el).fontWeight;
+      moverWord.style.color = getComputedStyle(el).color;
+      var moverPron = mover.querySelector('.ipa-mover-pron');
+      if (moverPron) {
+        moverPron.style.fontFamily = getComputedStyle(pronEls[i]).fontFamily;
+        moverPron.style.fontSize = getComputedStyle(pronEls[i]).fontSize;
+        moverPron.style.color = getComputedStyle(pronEls[i]).color;
+        moverPron.style.letterSpacing = getComputedStyle(pronEls[i]).letterSpacing;
+      }
       mover.style.transform = 'translateX(0)';
       mover.style.transformOrigin = 'left bottom';
       // Animate only horizontal travel + size/weight/color. No vertical property is animated.
-      mover.style.transition = 'transform .48s cubic-bezier(.22,.61,.36,1), font-size .48s cubic-bezier(.22,.61,.36,1), color .48s ease, font-weight .48s ease, opacity .48s ease';
+      mover.style.transition = 'transform .48s cubic-bezier(.22,.61,.36,1), opacity .48s ease';
+      moverWord.style.transition = 'font-size .48s cubic-bezier(.22,.61,.36,1), color .48s ease, font-weight .48s ease';
+      if (moverPron) moverPron.style.transition = 'font-size .48s cubic-bezier(.22,.61,.36,1), color .48s ease';
       stage.appendChild(mover);
       movers.push({el:mover, index:i});
     });
@@ -1124,9 +1142,17 @@ function toggleIPACard(cardId, mp3, wordCsv) {
             targetLeft = slotRects[i - 1].left - stageRect.left;
             if (i === 1) {
               // Same word, same continuous motion; font size grows only as it enters BIG slot.
-              m.el.style.fontSize = '1.85rem';
-              m.el.style.fontWeight = '800';
-              m.el.style.color = 'var(--accent2)';
+              var mw = m.el.querySelector('.ipa-mover-word');
+              var mp = m.el.querySelector('.ipa-mover-pron');
+              if (mw) {
+                mw.style.fontSize = '1.85rem';
+                mw.style.fontWeight = '800';
+                mw.style.color = 'var(--accent2)';
+              }
+              if (mp) {
+                mp.style.fontSize = '.82rem';
+                mp.style.color = 'var(--muted)';
+              }
             }
           }
           var currentLeft = wordRects[i].left - stageRect.left;
@@ -1248,7 +1274,7 @@ function showIPA(){
       slot.className=s===0?'ipa-slot ipa-slot-big':'ipa-slot ipa-slot-sm';
       var wspan=document.createElement('span');wspan.className='ipa-slot-word';wspan.textContent=w;
       slot.appendChild(wspan);
-      if(s===0&&d.ipa){var pspan=document.createElement('span');pspan.className='ipa-slot-pron';pspan.innerHTML='['+boldIPA(d.ipa,d.bold)+']';slot.appendChild(pspan);}
+      if(d.ipa){var pspan=document.createElement('span');pspan.className='ipa-slot-pron';pspan.innerHTML='['+boldIPA(d.ipa,d.bold)+']';slot.appendChild(pspan);}
       row.appendChild(slot);
     }
     stage.appendChild(row);
