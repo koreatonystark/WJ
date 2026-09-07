@@ -417,6 +417,72 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   100%{opacity:1;transform:translateX(0) scale(1);}
 }
 .ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
+
+/* IPA Guide Conveyor Belt */
+.ipa-word-stage{
+  min-height:80px;
+  overflow:hidden;
+  border-top:1px solid var(--border);
+  padding-top:10px;
+  margin-top:6px;
+  position:relative;
+}
+.ipa-conveyor{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  will-change:transform,opacity;
+}
+/* Small chips (background words) */
+.ipa-chip-sm{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  opacity:0.45;
+  flex-shrink:0;
+  transition:opacity .3s;
+}
+.ipa-chip-sm .ipa-chip-word{
+  font-size:.88rem;
+  font-weight:500;
+  color:var(--text);
+  font-family:'Nunito',sans-serif;
+}
+/* Big chip (current word) */
+.ipa-chip-big{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  flex-shrink:0;
+  min-width:120px;
+}
+.ipa-chip-big .ipa-chip-word{
+  font-size:1.9rem;
+  font-weight:800;
+  color:var(--accent2);
+  font-family:'Space Grotesk',sans-serif;
+  line-height:1.1;
+}
+.ipa-chip-pron{
+  font-size:.85rem;
+  color:var(--muted);
+  font-family:'Courier New',monospace;
+  letter-spacing:.04em;
+  margin-top:2px;
+}
+.ipa-chip-pron .ipa-bold{
+  color:var(--accent3);
+  font-weight:700;
+}
+/* Button playing state */
+.ipa-playing{
+  animation:ipaPulse 1.1s ease-in-out infinite!important;
+  box-shadow:0 0 0 3px var(--accent2)!important;
+}
+@keyframes ipaPulse{
+  0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 8px rgba(255,101,132,.3);}
+  50%{box-shadow:0 0 0 3px var(--accent2),0 0 20px rgba(255,101,132,.6);}
+}
 </style>
 </head>
 <body>
@@ -1298,71 +1364,117 @@ function toggleIPACard(cardId, mp3, wordCsv) {
   _activeCard = cardId;
   var btn = document.querySelector('#' + cardId + ' .ipa-sym-btn');
   if (btn) btn.classList.add('ipa-playing');
+
   var myId = ++_cardSeqId;
   var words = wordCsv.split(',').filter(Boolean);
-  var slide = document.getElementById(cardId + '-slide');
-  if (!slide) return;
+  if (!words.length) return;
 
-  // Word→IPA lookup
+  var stage = document.getElementById(cardId + '-stage');
+  if (!stage) return;
+
+  // Build word→ipa lookup
   var ipaMap = {};
   IPA_DATA.forEach(function(d) {
     (d.words||[]).forEach(function(w) {
-      if (!ipaMap[w.w]) ipaMap[w.w] = {ipa:w.ipa||'',bold:w.bold||''};
+      if (!ipaMap[w.w]) ipaMap[w.w] = {ipa:w.ipa||'', bold:w.bold||''};
     });
   });
 
   function isActive() { return myId === _cardSeqId && _activeCard === cardId; }
 
-  function renderSlide(w0, w1, w2) {
-    // w0: big center, w1+w2: small below
-    var d0 = ipaMap[w0]||{ipa:'',bold:''};
-    var p0 = d0.ipa ? '<span class="ipa-slide-pron">[' + boldIPA(d0.ipa,d0.bold) + ']</span>' : '';
-    var smalls = [w1,w2].filter(Boolean).map(function(w){
-      var d = ipaMap[w]||{ipa:'',bold:''};
-      var p = d.ipa ? '<span class="ipa-slide-sm-pron">['+boldIPA(d.ipa,d.bold)+']</span>' : '';
-      return '<span class="ipa-slide-sm-word" onclick="speak(\'' + w + '\', 0.5)">'+w+p+'</span>';
-    }).join('');
-    slide.innerHTML =
-      '<div class="ipa-slide-big">'+
-        '<span class="ipa-slide-word">'+w0+'</span>'+p0+
-      '</div>'+
-      (smalls ? '<div class="ipa-slide-smalls">'+smalls+'</div>' : '');
+  // Build conveyor: show N words as chips, current one (idx=1) is big
+  // All chips slide left together each step
+  var VISIBLE = 5; // how many words visible at once
+  var cur = 0;     // index of the "big" word in the words array
+
+  function renderConveyor() {
+    if (!isActive()) return;
+    stage.innerHTML = '';
+    var track = document.createElement('div');
+    track.className = 'ipa-conveyor';
+    // Show VISIBLE words: cur-1 left, cur center(big), cur+1..+3 right
+    var startIdx = cur - 1;
+    for (var i = startIdx; i < startIdx + VISIBLE; i++) {
+      var wi = ((i % words.length) + words.length) % words.length;
+      var w = words[wi];
+      var isBig = (i === cur);
+      var chip = document.createElement('div');
+      chip.className = 'ipa-chip' + (isBig ? ' ipa-chip-big' : ' ipa-chip-sm');
+      var wdata = ipaMap[w] || {ipa:'', bold:''};
+      var wordSpan = document.createElement('span');
+      wordSpan.className = 'ipa-chip-word';
+      wordSpan.textContent = w;
+      chip.appendChild(wordSpan);
+      if (isBig && wdata.ipa) {
+        var pronSpan = document.createElement('span');
+        pronSpan.className = 'ipa-chip-pron';
+        pronSpan.innerHTML = '[' + boldIPA(wdata.ipa, wdata.bold) + ']';
+        chip.appendChild(pronSpan);
+      }
+      track.appendChild(chip);
+    }
+    stage.appendChild(track);
+    // Animate track sliding in from right
+    track.style.transform = 'translateX(60px)';
+    track.style.opacity = '0';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        track.style.transition = 'transform 0.38s cubic-bezier(.22,.68,0,1.1), opacity 0.25s';
+        track.style.transform = 'translateX(0)';
+        track.style.opacity = '1';
+      });
+    });
   }
 
-  function showSet(i) {
-    if (!isActive()) { slide.style.opacity='0'; return; }
-    if (i >= words.length) { setTimeout(function(){if(isActive())showSet(0);},1800); return; }
-    var w0 = words[i];
-    var w1 = words[(i+1) % words.length];
-    var w2 = words[(i+2) % words.length];
-    renderSlide(w0, w1, w2);
-    slide.style.animation = 'none';
-    slide.style.opacity = '0';
-    void slide.offsetWidth;
-    slide.style.animation = 'ipaSlideIn 0.45s cubic-bezier(.22,.68,0,1.2) forwards';
-    speak(w0, 0.5);
-    var delay = Math.max(1500, w0.length * 90 + 1000);
-    setTimeout(function(){if(isActive())showSet(i+1);}, delay);
+  function step() {
+    if (!isActive()) return;
+    // Slide current track OUT to the left, then render next
+    var oldTrack = stage.querySelector('.ipa-conveyor');
+    if (oldTrack) {
+      oldTrack.style.transition = 'transform 0.32s ease-in, opacity 0.25s';
+      oldTrack.style.transform = 'translateX(-60px)';
+      oldTrack.style.opacity = '0';
+    }
+    cur = (cur + 1) % words.length;
+    setTimeout(function() {
+      if (!isActive()) return;
+      renderConveyor();
+      var w = words[cur];
+      speak(w, 0.5);
+      var delay = Math.max(1500, w.length * 80 + 1000);
+      setTimeout(step, delay);
+    }, 320);
+  }
+
+  // Play MP3 first, then start conveyor
+  function startConveyor() {
+    cur = 0;
+    renderConveyor();
+    speak(words[0], 0.5);
+    var delay = Math.max(1500, words[0].length * 80 + 1000);
+    setTimeout(step, delay);
   }
 
   if (mp3) {
     var a = new Audio(mp3); _ipaAudio = a;
-    a.onended = function(){ if(isActive()) setTimeout(function(){showSet(0);},200); };
-    a.onerror = function(){ if(isActive()) showSet(0); };
-    a.play().catch(function(){ if(isActive()) showSet(0); });
-  } else { showSet(0); }
+    a.onended = function() { if (isActive()) startConveyor(); };
+    a.onerror = function() { if (isActive()) startConveyor(); };
+    a.play().catch(function() { if (isActive()) startConveyor(); });
+  } else {
+    startConveyor();
+  }
 }
 
 function stopCardAnim() {
   _cardSeqId++;
-  if (_ipaAudio){ _ipaAudio.pause(); _ipaAudio.currentTime=0; _ipaAudio=null; }
+  if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
-  document.querySelectorAll('.ipa-word-slide').forEach(function(el){
-    el.innerHTML=''; el.style.opacity='0'; el.style.animation='none';
-  });
-  document.querySelectorAll('.ipa-playing').forEach(function(b){ b.classList.remove('ipa-playing'); });
+  document.querySelectorAll('.ipa-conveyor').forEach(function(el) { el.remove(); });
+  document.querySelectorAll('.ipa-playing').forEach(function(b) { b.classList.remove('ipa-playing'); });
   _activeCard = null;
 }
+
+
 
 function makeIPACards(items) {
   var h = '';
