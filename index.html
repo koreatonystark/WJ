@@ -302,13 +302,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .ipa-word-stage{overflow:hidden;border-top:1px solid var(--border);margin-top:6px;padding-top:8px;}
 .ipa-slots{display:flex;align-items:center;gap:0;}
 /* Big slot (leftmost) */
-.ipa-slot-big{display:flex;align-items:baseline;gap:8px;min-width:160px;padding-right:20px;border-right:1px solid var(--border);margin-right:20px;flex-shrink:0;overflow:hidden;}
-.ipa-slot-big .ipa-slot-word{font-size:1.85rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;white-space:nowrap;}
-.ipa-slot-pron{font-size:.82rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;}
+.ipa-slot-big{display:flex;align-items:baseline;gap:8px;width:180px;min-width:180px;max-width:180px;padding-right:18px;border-right:1px solid var(--border);margin-right:18px;flex-shrink:0;overflow:hidden;}
+.ipa-slot-big .ipa-slot-word{font-size:1.85rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;white-space:nowrap;overflow:hidden;}
+.ipa-slot-pron{font-size:.82rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;overflow:hidden;}
 .ipa-slot-pron .ipa-bold{color:var(--accent3);font-weight:700;}
-/* Small slots */
-.ipa-slot-sm{flex-shrink:0;padding:0 16px 0 0;}
-.ipa-slot-sm .ipa-slot-word{font-size:.95rem;font-weight:600;color:var(--muted);white-space:nowrap;}
+/* Small slots - fixed equal width */
+.ipa-slot-sm{flex-shrink:0;width:90px;min-width:90px;max-width:90px;overflow:hidden;}
+.ipa-slot-sm .ipa-slot-word{font-size:.95rem;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
 .ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
 </style>
 </head>
@@ -435,6 +435,23 @@ function parseCSV(txt){
   }return words;
 }
 function ssplit(line){var r=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(cur);cur='';}else cur+=ch;}r.push(cur);return r;}
+
+function parseCSVFull(txt){
+  var lines=txt.trim().split('\n'),res=[];
+  for(var i=1;i<lines.length;i++){
+    var cols=ssplit(lines[i]);if(cols.length<7)continue;
+    var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
+    var pri=c(cols[16]),stars=pri?(pri.match(/★/g)||[]).length:1;
+    res.push({
+      word:c(cols[0]),tier:c(cols[1]),level:c(cols[2]),cat:c(cols[3]),subcat:c(cols[4]),
+      ipa:c(cols[5]),def:c(cols[6]),kid:c(cols[7]),logic:c(cols[8]),nuance:c(cols[9]),
+      origin:c(cols[10]),korean:c(cols[14]),priority:pri,stars:stars,
+      afc:c(cols[17]),trel:c(cols[18]),
+      exA:c(cols[19]),exB:c(cols[20]),exC:c(cols[21]),exD:c(cols[22]),ans:c(cols[23])
+    });
+  }
+  return res;
+}
 
 function loadWords(){
   allWords=[];
@@ -1028,7 +1045,14 @@ function toggleIPACard(cardId, mp3, wordCsv) {
     var row   = stage.querySelector('.ipa-slots');
     if (!row) { onDone(); return; }
     var slots = Array.from(row.querySelectorAll('.ipa-slot'));
-    var slotW = slots.length > 1 ? slots[1].offsetLeft - slots[0].offsetLeft : 120;
+    // Use fixed slot widths from CSS: big=180+18gap, sm=90
+    var slotW = slots[0].classList.contains('ipa-slot-big') ? 216 : 108;
+    // Actually measure the first sm slot position relative to the row
+    if (slots.length > 1) {
+      var r0 = slots[0].getBoundingClientRect();
+      var r1 = slots[1].getBoundingClientRect();
+      slotW = Math.round(r1.left - r0.left);
+    }
 
     // Slide all slots left by slotW
     slots.forEach(function(s) {
