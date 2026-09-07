@@ -349,6 +349,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .review-filter.wrong-filter.active{background:var(--accent2);border-color:var(--accent2);}
 
 .record-row:hover .record-score{color:var(--accent2);}
+
+.iq-sym-speaker-hint{font-size:.85rem;opacity:.4;margin-left:4px;vertical-align:middle;}
 </style>
 </head>
 <body>
@@ -447,6 +449,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 var WORD_DB={};
 var IPA_MAP={};
 
+var PRO_CSV_URL=''; // Set to Google Sheets pro tab CSV URL
 var CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?output=csv';
 var MASTERY_THRESHOLD=20,MASTERY_CORRECT=5,QPR=10,TYPE_TIME=60,WMULT=1.5;
 var allWords=[],round=[],qIdx=0,score=0,rs={correct:0,wrong:0,bonus:0,nm:0},roundResults=[];
@@ -481,6 +484,34 @@ function parseCSV(txt){
 }
 function ssplit(line){var r=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(cur);cur='';}else cur+=ch;}r.push(cur);return r;}
 
+
+function loadIPA(){
+  if(!PRO_CSV_URL){return;}
+  fetch(PRO_CSV_URL)
+    .then(function(r){return r.ok?r.text():Promise.reject(r.status);})
+    .then(function(csv){
+      var lines=csv.split('\n');
+      if(lines.length<2)return;
+      IPA_DATA=[];
+      for(var i=1;i<lines.length;i++){
+        var cols=ssplit(lines[i]);
+        if(cols.length<5||!cols[0].trim())continue;
+        var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
+        var sym=c(cols[0]),mp3=c(cols[1]),img=c(cols[2]),src=c(cols[3]),desc=c(cols[4]);
+        var words=[];
+        for(var j=5;j<Math.min(cols.length,17);j++){
+          var w=c(cols[j]);if(w)words.push({w:w,ipa:'',bold:''});
+        }
+        // Determine category from symbol (vowels vs consonants)
+        var vowelSyms=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ'];
+        var cat=vowelSyms.indexOf(sym)>-1?'Vowel':'Consonant';
+        IPA_DATA.push({sym:sym,mp3:mp3,img:img,src:src,name:sym,cat:cat,desc:desc,words:words});
+      }
+      console.log('IPA_DATA loaded:',IPA_DATA.length,'symbols');
+    })
+    .catch(function(e){console.warn('IPA CSV failed:',e);});
+}
+
 function loadWords(){
   allWords=[];
   var TO=new Promise(function(_,rej){setTimeout(function(){rej('timeout');},10000);});
@@ -503,7 +534,12 @@ function loadWords(){
         });
       }
     })
-    .catch(function(e){console.warn('CSV load failed:',e);})
+    .catch(function(e){
+      console.warn('CSV load failed:',e);
+      // Show user-friendly message
+      var lt = document.getElementById('loadingText');
+      if(lt) lt.textContent = 'Could not load word data. Check connection and refresh.';
+    })
     .finally(function(){loadSt();showHome();});
 }
 function parseCSVFull(text){
@@ -691,8 +727,9 @@ function showReview(recIdx){
 function startRound(){clearTimer();gCount++;round=pickWords();qIdx=0;score=0;rs={correct:0,wrong:0,bonus:0,nm:0};roundResults=[];show('gameScreen');showQ();}
 function showQ(){
   if(qIdx>=round.length){endRound();return;}
-  answering=false;
   var w=round[qIdx];
+  if(!w||!w.word){endRound();return;}
+  answering=false;
   document.getElementById('progressFill').style.width=(qIdx/round.length*100)+'%';
   document.getElementById('qCounter').textContent=(qIdx+1)+' / '+round.length;
   document.getElementById('headerScore').textContent=score+' pts';
@@ -1025,47 +1062,7 @@ if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = function(){ window.speechSynthesis.getVoices(); };
 }
 
-var IPA_DATA = [
-  {sym:'i',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/i-gvz91l.mp3',name:'Long EE',cat:'Vowel',desc:'Like saying "ee" with lips spread wide. Very common in English.',words:[{w:'feet',ipa:'fiːt',bold:'i'},{w:'seat',ipa:'siːt',bold:'i'},{w:'happy',ipa:'hæpi',bold:'i'}]},
-  {sym:'ɪ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/small_cap_i-p6cj9p.mp3',name:'Short I',cat:'Vowel',desc:'A quick relaxed "ih" — shorter and more relaxed than long EE.',words:[{w:'sit',ipa:'sɪt',bold:'ɪ'},{w:'fish',ipa:'fɪʃ',bold:'ɪ'},{w:'big',ipa:'bɪɡ',bold:'ɪ'}]},
-  {sym:'eɪ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/e-qxx7n8.mp3',name:'AY (long A)',cat:'Vowel',desc:'Start with "eh" and glide to "ee" — like the letter name "A".',words:[{w:'late',ipa:'leɪt',bold:'eɪ'},{w:'say',ipa:'seɪ',bold:'eɪ'},{w:'break',ipa:'breɪk',bold:'eɪ'}]},
-  {sym:'ɛ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/epsilon-yoyztd.mp3',name:'Short E',cat:'Vowel',desc:'A short "eh" — mouth opens slightly, lips relaxed.',words:[{w:'let',ipa:'lɛt',bold:'ɛ'},{w:'best',ipa:'bɛst',bold:'ɛ'},{w:'bed',ipa:'bɛd',bold:'ɛ'}]},
-  {sym:'æ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/ash-qgmo8e.mp3',name:'Short A',cat:'Vowel',desc:'Open wide and say "aah" quickly — lips spread, jaw drops.',words:[{w:'cat',ipa:'kæt',bold:'æ'},{w:'mad',ipa:'mæd',bold:'æ'},{w:'bag',ipa:'bæɡ',bold:'æ'}]},
-  {sym:'ʌ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/mid_central-gqxn5h.mp3',name:'Short U (stressed)',cat:'Vowel',desc:'A short "uh" in the middle of the mouth — very common.',words:[{w:'but',ipa:'bʌt',bold:'ʌ'},{w:'trust',ipa:'trʌst',bold:'ʌ'},{w:'cup',ipa:'kʌp',bold:'ʌ'}]},
-  {sym:'ə',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/mid_central-gqxn5h.mp3',name:'Schwa (unstressed)',cat:'Vowel',desc:'The most common English vowel! A neutral "uh" in unstressed syllables.',words:[{w:'the',ipa:'ðə',bold:'ə'},{w:'comma',ipa:'kɒmə',bold:'ə'},{w:'about',ipa:'əbaʊt',bold:'ə'}]},
-  {sym:'u',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/u-1mr7xyn.mp3',name:'Long OO',cat:'Vowel',desc:'A long "oo" — lips form a small tight circle.',words:[{w:'goose',ipa:'ɡuːs',bold:'u'},{w:'rude',ipa:'ruːd',bold:'u'},{w:'blue',ipa:'bluː',bold:'u'}]},
-  {sym:'ʊ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/horseshoe-1inthj0.mp3',name:'Short OO',cat:'Vowel',desc:'A short relaxed "oo" — lips rounded but not as tight as long OO.',words:[{w:'foot',ipa:'fʊt',bold:'ʊ'},{w:'took',ipa:'tʊk',bold:'ʊ'},{w:'good',ipa:'ɡʊd',bold:'ʊ'}]},
-  {sym:'oʊ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/o-c3q2rv.mp3',name:'Long O',cat:'Vowel',desc:'Start with "oh" and glide lips forward — like the letter "O".',words:[{w:'boat',ipa:'boʊt',bold:'oʊ'},{w:'owe',ipa:'oʊ',bold:'oʊ'},{w:'no',ipa:'noʊ',bold:'oʊ'}]},
-  {sym:'ɔ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/open_o-1olavce.mp3',name:'AW sound',cat:'Vowel',desc:'A round "aw" — jaw drops, lips form a circle.',words:[{w:'frog',ipa:'frɔɡ',bold:'ɔ'},{w:'bought',ipa:'bɔːt',bold:'ɔ'},{w:'launch',ipa:'lɔːntʃ',bold:'ɔ'}]},
-  {sym:'ɑ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/ah-1f3x3pk.mp3',name:'AH sound',cat:'Vowel',desc:'A long open "aah" — mouth wide open, tongue low.',words:[{w:'not',ipa:'nɑt',bold:'ɑ'},{w:'father',ipa:'fɑːðər',bold:'ɑ'},{w:'car',ipa:'kɑːr',bold:'ɑ'}]},
-  {sym:'aɪ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/ai-vmgin8.mp3',name:'EYE sound',cat:'Vowel',desc:'Start wide open "ah" then glide to "ee" — like the letter "I".',words:[{w:'buy',ipa:'baɪ',bold:'aɪ'},{w:'aisle',ipa:'aɪl',bold:'aɪ'},{w:'fly',ipa:'flaɪ',bold:'aɪ'}]},
-  {sym:'aʊ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/ow-mmmc8y.mp3',name:'OW sound',cat:'Vowel',desc:'Start with open "ah" then round your lips into "oo".',words:[{w:'cow',ipa:'kaʊ',bold:'aʊ'},{w:'mouth',ipa:'maʊθ',bold:'aʊ'},{w:'out',ipa:'aʊt',bold:'aʊ'}]},
-  {sym:'ɔɪ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/vowels/oi-15ych4z.mp3',name:'OY sound',cat:'Vowel',desc:'Start with rounded "aw" then glide to "ee".',words:[{w:'soil',ipa:'sɔɪl',bold:'ɔɪ'},{w:'boy',ipa:'bɔɪ',bold:'ɔɪ'},{w:'coin',ipa:'kɔɪn',bold:'ɔɪ'}]},
-  {sym:'p',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/p-1it7yor.mp3',name:'P sound',cat:'Consonant',desc:'Lips press together, release a puff of air — no voice.',words:[{w:'pit',ipa:'pɪt',bold:'p'},{w:'lip',ipa:'lɪp',bold:'p'},{w:'spin',ipa:'spɪn',bold:'p'}]},
-  {sym:'b',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/b-1r9c1qm.mp3',name:'B sound',cat:'Consonant',desc:'Same as P but with your voice — lips together, then open.',words:[{w:'bit',ipa:'bɪt',bold:'b'},{w:'tub',ipa:'tʌb',bold:'b'},{w:'big',ipa:'bɪɡ',bold:'b'}]},
-  {sym:'t',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/t-1ygqg9g.mp3',name:'T sound',cat:'Consonant',desc:'Tongue tip taps the ridge behind upper teeth — quick, no voice.',words:[{w:'tip',ipa:'tɪp',bold:'t'},{w:'sit',ipa:'sɪt',bold:'t'},{w:'stop',ipa:'stɒp',bold:'t'}]},
-  {sym:'d',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/d-9gcnn8.mp3',name:'D sound',cat:'Consonant',desc:'Same as T but voiced — tongue taps with voice.',words:[{w:'dig',ipa:'dɪɡ',bold:'d'},{w:'sad',ipa:'sæd',bold:'d'},{w:'dog',ipa:'dɒɡ',bold:'d'}]},
-  {sym:'k',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/k-19h13fx.mp3',name:'K sound',cat:'Consonant',desc:'Back of tongue touches the soft palate — a click, no voice.',words:[{w:'cup',ipa:'kʌp',bold:'k'},{w:'sky',ipa:'skaɪ',bold:'k'},{w:'click',ipa:'klɪk',bold:'k'}]},
-  {sym:'ɡ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/g-yfu8hw.mp3',name:'G sound',cat:'Consonant',desc:'Same as K but voiced — back of tongue clicks with voice.',words:[{w:'guy',ipa:'ɡaɪ',bold:'ɡ'},{w:'bag',ipa:'bæɡ',bold:'ɡ'},{w:'go',ipa:'ɡoʊ',bold:'ɡ'}]},
-  {sym:'m',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/m-guw48u.mp3',name:'M sound',cat:'Consonant',desc:'Lips together, hum through your nose — voiced nasal.',words:[{w:'my',ipa:'maɪ',bold:'m'},{w:'jam',ipa:'dʒæm',bold:'m'},{w:'moon',ipa:'muːn',bold:'m'}]},
-  {sym:'n',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/n-1smc314.mp3',name:'N sound',cat:'Consonant',desc:'Tongue tip on ridge behind upper teeth, hum through nose.',words:[{w:'not',ipa:'nɒt',bold:'n'},{w:'ran',ipa:'ræn',bold:'n'},{w:'new',ipa:'njuː',bold:'n'}]},
-  {sym:'ŋ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/eng-k596t3.mp3',name:'NG sound',cat:'Consonant',desc:'Back of tongue on soft palate, hum through nose — only at end/middle of words.',words:[{w:'sing',ipa:'sɪŋ',bold:'ŋ'},{w:'finger',ipa:'fɪŋɡər',bold:'ŋ'},{w:'link',ipa:'lɪŋk',bold:'ŋ'}]},
-  {sym:'tʃ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/voiceless_affricate-1athyop.mp3',name:'CH sound',cat:'Consonant',desc:'Tongue presses then releases with a "shh" — no voice.',words:[{w:'check',ipa:'tʃɛk',bold:'tʃ'},{w:'etch',ipa:'ɛtʃ',bold:'tʃ'},{w:'chair',ipa:'tʃɛr',bold:'tʃ'}]},
-  {sym:'dʒ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/voiced_affricate-1f87c12.mp3',name:'J sound',cat:'Consonant',desc:'Same as CH but voiced — tongue presses then releases with buzz.',words:[{w:'just',ipa:'dʒʌst',bold:'dʒ'},{w:'giant',ipa:'dʒaɪənt',bold:'dʒ'},{w:'age',ipa:'eɪdʒ',bold:'dʒ'}]},
-  {sym:'f',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/f-1o300yb.mp3',name:'F sound',cat:'Consonant',desc:'Upper teeth touch lower lip, blow air — no voice.',words:[{w:'fish',ipa:'fɪʃ',bold:'f'},{w:'cuff',ipa:'kʌf',bold:'f'},{w:'fly',ipa:'flaɪ',bold:'f'}]},
-  {sym:'v',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/v-1byjed.mp3',name:'V sound',cat:'Consonant',desc:'Same as F but voiced — upper teeth on lower lip with buzz.',words:[{w:'vowel',ipa:'vaʊəl',bold:'v'},{w:'leave',ipa:'liːv',bold:'v'},{w:'very',ipa:'vɛri',bold:'v'}]},
-  {sym:'θ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/theta-ip7r5s.mp3',name:'TH (voiceless)',cat:'Consonant',desc:'Tongue tip between teeth, blow air — no voice. Think "think".',words:[{w:'thigh',ipa:'θaɪ',bold:'θ'},{w:'breath',ipa:'brɛθ',bold:'θ'},{w:'three',ipa:'θriː',bold:'θ'}]},
-  {sym:'ð',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/eth-icm6j7.mp3',name:'TH (voiced)',cat:'Consonant',desc:'Same as above but with voice. Think "the".',words:[{w:'thy',ipa:'ðaɪ',bold:'ð'},{w:'father',ipa:'fɑːðər',bold:'ð'},{w:'breathe',ipa:'briːð',bold:'ð'}]},
-  {sym:'s',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/s-uozw9d.mp3',name:'S sound',cat:'Consonant',desc:'Hiss like a snake — air flows over tongue tip, no voice.',words:[{w:'sip',ipa:'sɪp',bold:'s'},{w:'mass',ipa:'mæs',bold:'s'},{w:'see',ipa:'siː',bold:'s'}]},
-  {sym:'z',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/z-4qicum.mp3',name:'Z sound',cat:'Consonant',desc:'Buzz like a bee — same as S but with voice.',words:[{w:'zip',ipa:'zɪp',bold:'z'},{w:'jazz',ipa:'dʒæz',bold:'z'},{w:'is',ipa:'ɪz',bold:'z'}]},
-  {sym:'ʃ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/sh-fpj6ik.mp3',name:'SH sound',cat:'Consonant',desc:'"Shh!" — lips slightly rounded, air flows over tongue, no voice.',words:[{w:'shop',ipa:'ʃɒp',bold:'ʃ'},{w:'wish',ipa:'wɪʃ',bold:'ʃ'},{w:'she',ipa:'ʃiː',bold:'ʃ'}]},
-  {sym:'ʒ',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/zh-fy90bw.mp3',name:'ZH sound',cat:'Consonant',desc:'Like SH but voiced — a soft buzzing sound.',words:[{w:'genre',ipa:'ʒɒnrə',bold:'ʒ'},{w:'pleasure',ipa:'plɛʒər',bold:'ʒ'},{w:'beige',ipa:'beɪʒ',bold:'ʒ'}]},
-  {sym:'h',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/h-1mgl9zt.mp3',name:'H sound',cat:'Consonant',desc:'Just a breath of air from the throat — no special mouth shape.',words:[{w:'house',ipa:'haʊs',bold:'h'},{w:'ahead',ipa:'əhɛd',bold:'h'},{w:'hello',ipa:'hɛloʊ',bold:'h'}]},
-  {sym:'w',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/w-1dz44nh.mp3',name:'W sound',cat:'Consonant',desc:'Round lips like "oo" then quickly move into the next sound.',words:[{w:'wit',ipa:'wɪt',bold:'w'},{w:'swap',ipa:'swɒp',bold:'w'},{w:'we',ipa:'wiː',bold:'w'}]},
-  {sym:'j',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/j-x57k1g.mp3',name:'Y sound',cat:'Consonant',desc:'Start like "ee" then glide into the next vowel — the "y" in yes.',words:[{w:'yes',ipa:'jɛs',bold:'j'},{w:'young',ipa:'jʌŋ',bold:'j'},{w:'use',ipa:'juːz',bold:'j'}]},
-  {sym:'r',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/r-1xq1912.mp3',name:'R sound',cat:'Consonant',desc:'Curl tongue back slightly, lips rounded — tongue never touches the roof.',words:[{w:'rip',ipa:'rɪp',bold:'r'},{w:'write',ipa:'raɪt',bold:'r'},{w:'water',ipa:'wɔːtər',bold:'r'}]},
-  {sym:'l',mp3:'https://cdn.vocabulary.com/media/dictionary/ipa/consonants/l-1o1w14c.mp3',name:'L sound',cat:'Consonant',desc:'Tongue tip touches the ridge behind upper teeth, voice flows around sides.',words:[{w:'lap',ipa:'læp',bold:'l'},{w:'pull',ipa:'pʊl',bold:'l'},{w:'light',ipa:'laɪt',bold:'l'}]}
-];
+var IPA_DATA = [];
 
 var _ipaAudio = null;
 var _seqCancelled = false;  // global cancel flag for sequences
@@ -1673,6 +1670,7 @@ function showIQResult() {
     + '</div>';
 }
 loadWords();
+loadIPA();
 </script>
 <div id="ipaQuizScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:660px;width:100%;margin:0 auto;">
