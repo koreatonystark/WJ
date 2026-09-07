@@ -449,8 +449,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 var WORD_DB={};
 var IPA_MAP={};
 
-var PRO_CSV_URL=''; // Set to Google Sheets pro tab CSV URL
-var CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?output=csv';
+var PRO_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1930488780&single=true&output=csv';
+var PRO2_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1292431835&single=true&output=csv';
+var CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=543563696&single=true&output=csv';
 var MASTERY_THRESHOLD=20,MASTERY_CORRECT=5,QPR=10,TYPE_TIME=60,WMULT=1.5;
 var allWords=[],round=[],qIdx=0,score=0,rs={correct:0,wrong:0,bonus:0,nm:0},roundResults=[];
 var prog={},recs=[],gCount=0,filter='all',timer=null,answering=false,cache={};
@@ -484,6 +485,29 @@ function parseCSV(txt){
 }
 function ssplit(line){var r=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(cur);cur='';}else cur+=ch;}r.push(cur);return r;}
 
+
+
+function loadPro2(){
+  if(!PRO2_CSV_URL)return;
+  fetch(PRO2_CSV_URL)
+    .then(function(r){return r.ok?r.text():Promise.reject(r.status);})
+    .then(function(csv){
+      var lines=csv.split('\n');
+      if(lines.length<2)return;
+      // Clear existing words from all IPA_DATA entries
+      IPA_DATA.forEach(function(d){d.words=[];});
+      for(var i=1;i<lines.length;i++){
+        var cols=ssplit(lines[i]);
+        if(cols.length<4)continue;
+        var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
+        var sym=c(cols[0]),word=c(cols[2]),ipa=c(cols[3]),bold=c(cols[4]||'');
+        var entry=IPA_DATA.find(function(d){return d.sym===sym;});
+        if(entry)entry.words.push({w:word,ipa:ipa,bold:bold});
+      }
+      console.log('pro2 loaded: words added to IPA_DATA');
+    })
+    .catch(function(e){console.warn('pro2 CSV failed:',e);});
+}
 
 function loadIPA(){
   if(!PRO_CSV_URL){return;}
@@ -1671,6 +1695,7 @@ function showIQResult() {
 }
 loadWords();
 loadIPA();
+loadPro2();
 </script>
 <div id="ipaQuizScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:660px;width:100%;margin:0 auto;">
