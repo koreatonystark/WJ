@@ -90,7 +90,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .wrong-word-big{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;color:var(--accent2);display:block;margin-bottom:3px;}
 .wrong-meta{font-size:.7rem;color:var(--muted);}
 .dblock{margin-bottom:13px;padding-bottom:13px;border-bottom:1px solid var(--border);}
-.dblock:last-of-type{border-bottom:none;}
+.dblock:last-of-type{border-bottom:none;}\n.wrong-head{margin-bottom:12px;padding-bottom:11px;border-bottom:1px solid var(--border);}\n.wrong-head-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}\n.wrong-head-row .wrong-word-big{display:inline-block;margin:0;}\n.wrong-ipa{display:inline-block;font-size:1rem;color:var(--accent);font-family:'Courier New',monospace;letter-spacing:.04em;}\n.wrong-meta{display:block;margin-top:4px;font-size:.7rem;color:var(--muted);}\n.learn-block{margin-bottom:11px;padding:11px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;}\n.learn-block .dlabel{margin-bottom:5px;}\n.learn-text{font-size:.9rem;line-height:1.55;color:var(--text);white-space:pre-wrap;}\n.learn-text.muted{color:var(--muted);}\n.learn-text.green{color:var(--accent3);font-weight:700;font-size:.96rem;}\n.learn-hint{border-left:3px solid var(--accent3);background:rgba(67,233,123,.06);}\n.learn-nuance{border-left:3px solid var(--accent);}\n.learn-examples .dex{padding:7px 0;}\n.learn-examples .dex:first-child{padding-top:2px;}\n.deep-learning{margin-top:12px;border:1px solid var(--border);border-radius:11px;overflow:hidden;background:rgba(108,99,255,.035);}\n.deep-learning summary{list-style:none;cursor:pointer;padding:11px 13px;font-size:.8rem;font-weight:800;color:var(--accent);letter-spacing:.02em;display:flex;align-items:center;justify-content:space-between;user-select:none;}\n.deep-learning summary::-webkit-details-marker{display:none;}\n.deep-learning summary:after{content:'+';font-size:1.1rem;color:var(--muted);font-weight:600;}\n.deep-learning[open] summary:after{content:'−';}\n.deep-content{padding:0 13px 12px;}\n.deep-row{padding:9px 0;border-top:1px solid var(--border);}\n.deep-row:first-child{border-top:1px solid var(--border);}\n.deep-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800;margin-bottom:4px;}\n.deep-text{font-size:.84rem;line-height:1.55;color:var(--text);white-space:pre-wrap;}\n.priority-pill{display:inline-block;border:1px solid var(--gold);color:var(--gold);border-radius:20px;padding:3px 9px;font-size:.72rem;font-weight:800;}\n@media(max-width:480px){.wrong-panel{padding:14px}.learn-block{padding:9px 10px}.learn-text{font-size:.86rem}.deep-text{font-size:.82rem}}
 .dlabel{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px;font-weight:700;}
 .ddef{font-size:.96rem;font-weight:600;line-height:1.6;color:var(--text);min-height:20px;}
 .dex{font-size:.86rem;color:var(--muted);line-height:1.6;padding:4px 0;border-bottom:1px solid var(--border);min-height:18px;}
@@ -939,35 +939,58 @@ function showOK(p,word,bonus,ai,jm){
   document.getElementById('headerScore').textContent=score+' pts';
   fa.innerHTML='<div class="fb-correct"><span class="fb-word">Correct! "'+word.word+'"</span>'+(ai&&ai.ipa?'<div style="font-size:.8rem;color:var(--muted);margin-top:2px;font-family:serif">'+ai.ipa+'</div>':'')+(ai&&ai.def?'<div style="font-size:.81rem;margin-top:3px;opacity:.9;line-height:1.5">'+ai.def+'</div>':'')+'<div style="margin-top:4px"><span class="fb-pts">+'+p+' pts'+(bonus?' x1.5 Bonus!':'')+'</span></div>'+(jm?'<div style="color:var(--gold);font-size:.78rem;margin-top:4px;font-weight:700">Word mastered!</div>':'')+'</div>';
 }
+function escHTML(v){
+  return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+}
 function showWrong(word,ai,extraMsg){
   getWrongEx(word,ai).then(function(d){
     var fa=document.getElementById('fa');if(!fa)return;
     document.getElementById('headerScore').textContent=score+' pts';
-    fa.innerHTML='<div class="wrong-panel"><div style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)"><span class="wrong-word-big">'+word.word+'</span>'+( d.ipa ? '<span class="wrong-ipa">'+ d.ipa +'</span>' : '' )+'<span class="wrong-meta">'+word.tier+' &middot; '+word.cat+'</span></div><div class="dblock"><div class="dlabel">Definition</div><div class="ddef" id="ddef"></div></div><div class="dblock"><div class="dlabel">Example Sentences</div><div id="dex"><div class="shimmer" style="height:14px;width:86%;margin-bottom:4px"></div><div class="shimmer" style="height:14px;width:70%"></div></div></div><div class="dblock"><div class="dlabel">Korean Meaning</div><div class="dkorean">'+word.korean+'</div></div><button class="next-btn" id="nb">Next Question &rarr;</button></div>';
-    var dd=document.getElementById('ddef');if(dd)typeWrite(dd,d.definition,19);
-    var dx=document.getElementById('dex');
-    setTimeout(function(){
-      if(!dx)return;dx.innerHTML='';
-      d.examples.forEach(function(ex,i){
-        var div=document.createElement('div');div.className='dex';div.style.opacity='0';dx.appendChild(div);
-        setTimeout(function(){div.style.transition='opacity .3s';div.style.opacity='1';typeWriteHTML(div,(i+1)+'. '+boldWord(ex),16);},480+i*720);
-      });
-    },220);
-    var nb=document.getElementById('nb');if(nb)nb.addEventListener('click',function(){qIdx++;showQ();});
-    // Auto-speak the word when wrong panel appears
-    setTimeout(function(){speak(word.word, 0.7);}, 400);
-    // Make word clickable to re-speak
-    var wwb=fa.querySelector('.wrong-word-big');
-    if(wwb){wwb.style.cursor='pointer';wwb.title='Click to hear again';
-      wwb.addEventListener('click',function(){speak(word.word,0.75);});}
-    // Make example lines speakable after typewriter
-    setTimeout(function(){
-      fa.querySelectorAll('.dex').forEach(function(el){
-        el.style.cursor='pointer';el.title='Click to hear';
-        el.addEventListener('click',function(){speak(el.textContent.replace(/^\d+\.\s*/,''),0.8);});
-      });
-    }, 2800);
 
+    function block(label,text,cls){
+      if(!text)return '';
+      return '<div class="learn-block '+(cls||'')+'"><div class="dlabel">'+label+'</div><div class="learn-text">'+escHTML(text)+'</div></div>';
+    }
+    function deepRow(label,text){
+      if(!text)return '';
+      return '<div class="deep-row"><div class="deep-label">'+label+'</div><div class="deep-text">'+escHTML(text)+'</div></div>';
+    }
+
+    var examplesHTML='';
+    if(d.examples.length){
+      examplesHTML='<div class="learn-block learn-examples"><div class="dlabel">Example Sentences</div><div id="dex">'
+        +d.examples.map(function(ex,i){return '<div class="dex" data-spoken="'+escHTML(ex)+'">'+(i+1)+'. '+escHTML(ex)+'</div>';}).join('')+'</div></div>';
+    }
+
+    var deep='';
+    deep += deepRow('Word Structure',d.logic);
+    deep += deepRow('Origin / Etymology',d.origin);
+    deep += deepRow('Meaning Logic / Context Clues',d.meaningLogic);
+    deep += deepRow('Academic Function',d.academicFunction);
+    deep += deepRow('State Test / Academic Use',d.stateTest);
+    deep += deepRow('Answer / Thinking Strategy',d.answerStrategy);
+    if(d.priority) deep += '<div class="deep-row"><div class="deep-label">Priority</div><span class="priority-pill">'+escHTML(d.priority)+'</span></div>';
+
+    fa.innerHTML='<div class="wrong-panel">'
+      +'<div class="wrong-head"><div class="wrong-head-row"><span class="wrong-word-big">'+escHTML(word.word)+'</span>'+(d.ipa?'<span class="wrong-ipa">'+escHTML(d.ipa)+'</span>':'')+'</div>'
+      +'<span class="wrong-meta">'+escHTML(word.tier||'')+(word.level?' &middot; '+escHTML(word.level):'')+(word.cat?' &middot; '+escHTML(word.cat):'')+'</span></div>'
+      +block('Definition',d.definition,'')
+      +block('Easy Explanation / Think',d.kid,'learn-hint')
+      +block('Nuance & Usage',d.nuance,'learn-nuance')
+      +'<div class="learn-block"><div class="dlabel">Korean Meaning</div><div class="learn-text green">'+escHTML(d.korean||word.korean||'')+'</div></div>'
+      +examplesHTML
+      +(deep?'<details class="deep-learning"><summary>Deep Learning</summary><div class="deep-content">'+deep+'</div></details>':'')
+      +(extraMsg?'<div style="font-size:.76rem;color:var(--accent4);margin-top:10px">'+escHTML(extraMsg)+'</div>':'')
+      +'<button class="next-btn" id="nb">Next Question &rarr;</button></div>';
+
+    var nb=document.getElementById('nb');if(nb)nb.addEventListener('click',function(){qIdx++;showQ();});
+    setTimeout(function(){speak(word.word,0.7);},350);
+    var wwb=fa.querySelector('.wrong-word-big');
+    if(wwb){wwb.style.cursor='pointer';wwb.title='Click to hear again';wwb.addEventListener('click',function(){speak(word.word,0.75);});}
+    fa.querySelectorAll('.dex').forEach(function(el){
+      el.style.cursor='pointer';el.title='Click to hear';
+      el.addEventListener('click',function(){speak(el.dataset.spoken||el.textContent.replace(/^\d+\.\s*/,''),0.8);});
+    });
   });
 }
 
@@ -976,18 +999,25 @@ function showWrong(word,ai,extraMsg){
 // Build the wrong-answer detail panel from the already-loaded Word Database.
 // This replaces the old remote-AI helper that was removed during the data-loader rewrite.
 function getWrongEx(word, ai){
-  var db = WORD_DB[word.word] || {};
-  var definition = (ai && ai.def) || db.def || db.kid || 'No definition available.';
-  var examples = [];
-  [db.exA, db.exB, db.exC, db.exD].forEach(function(ex){
-    if (ex && String(ex).trim()) examples.push(String(ex).trim());
-  });
-  if (ai && ai.ex && examples.indexOf(ai.ex) < 0) examples.unshift(ai.ex);
-  if (!examples.length) examples.push('Try using "' + word.word + '" in a complete sentence.');
+  var db=WORD_DB[word.word]||{};
+  var examples=[];
+  [db.exA,db.exB,db.exC,db.exD].forEach(function(ex){if(ex&&String(ex).trim())examples.push(String(ex).trim());});
+  if(ai&&ai.ex&&examples.indexOf(ai.ex)<0)examples.unshift(ai.ex);
+  if(!examples.length)examples.push('Try using "'+word.word+'" in a complete sentence.');
   return Promise.resolve({
-    ipa: db.ipa || (ai && ai.ipa) || '',
-    definition: definition,
-    examples: examples.slice(0, 4)
+    ipa:db.ipa||(ai&&ai.ipa)||'',
+    definition:(ai&&ai.def)||db.def||db.kid||'No definition available.',
+    kid:db.kid||'',
+    nuance:db.nuance||'',
+    logic:db.logic||'',
+    origin:db.origin||'',
+    meaningLogic:db.trel||'',
+    academicFunction:db.afc||'',
+    stateTest:db.trel||'',
+    answerStrategy:db.ans||'',
+    priority:db.pri||'',
+    korean:db.korean||word.korean||'',
+    examples:examples.slice(0,4)
   });
 }
 
