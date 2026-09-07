@@ -288,35 +288,87 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .review-filter.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
 .review-filter.wrong-filter.active{background:var(--accent2);border-color:var(--accent2);}
 
-/* IPA Guide - clean two-row analog tuner */
-.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:12px 14px;margin-bottom:9px;display:grid;grid-template-columns:70px minmax(0,1fr);grid-template-rows:64px auto;column-gap:14px;row-gap:7px;align-items:center;min-height:112px;}
+
+/* IPA Guide */
+.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:8px;display:flex;gap:14px;align-items:center;}
+.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:12px;padding:0;cursor:pointer;font-size:1.4rem;font-weight:400;font-family:'Nunito',sans-serif;flex-shrink:0;width:58px;height:58px;display:flex;align-items:center;justify-content:center;transition:all .18s;line-height:1;}
+.ipa-sym-btn:active{transform:scale(.97);}
+.ipa-sym-btn.vowel{color:#1a9e5c;border-color:#1a9e5c;}
+.ipa-sym-btn.vowel:hover{background:#1a9e5c;color:#fff;transform:scale(1.05);}
+.ipa-sym-btn.consonant{color:#3b82f6;border-color:#3b82f6;}
+.ipa-sym-btn.consonant:hover{background:#3b82f6;color:#fff;transform:scale(1.05);}
+.ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.ipa-desc-main{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.4;}
+.ipa-desc-main .ipa-sound{color:var(--accent3);font-weight:700;}
+.ipa-words-list{display:flex;flex-wrap:wrap;gap:4px 16px;}
+.ipa-word-entry{display:inline-flex;align-items:baseline;gap:4px;font-size:.86rem;cursor:pointer;padding:2px 4px;border-radius:6px;transition:background .15s;}
+.ipa-word-entry:hover{background:var(--surface2);}
+.ipa-word-text{font-weight:400;color:var(--text);}
+.ipa-word-pron{color:var(--muted);font-family:'Courier New',monospace;font-size:.8rem;}
+.ipa-word-pron .ipa-bold{color:var(--accent);font-weight:800;font-family:'Courier New',monospace;}
+@keyframes blink{0%,100%{opacity:0;}50%{opacity:1;}}
+.home-boxes{display:flex;gap:10px;width:100%;max-width:440px;margin-top:8px;}
+.home-box-btn{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.home-box-btn:hover{border-color:var(--accent);background:rgba(108,99,255,.08);}
+.home-box-icon{font-size:1.5rem;line-height:1;}
+.home-box-label{font-size:.9rem;font-weight:700;color:var(--text);}
+.home-box-sub{font-size:.72rem;color:var(--muted);}
+.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:14px;}
+.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:14px;}
+.iq-badge-1{background:rgba(108,99,255,.2);color:var(--accent);}
+.iq-badge-2{background:rgba(247,151,30,.2);color:var(--accent4);}
+.iq-badge-3{background:rgba(67,233,123,.2);color:var(--accent3);}
+.iq-question{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:6px;}
+.iq-question .iq-sym{font-size:1.6rem;color:var(--accent);font-family:'Courier New',monospace;margin-right:8px;}
+.iq-question .iq-sound{color:var(--accent3);font-weight:800;}
+.iq-hint{font-size:.82rem;color:var(--muted);margin-bottom:18px;}
+.iq-options{display:flex;flex-wrap:wrap;gap:9px;}
+.iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
+.iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
+.iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
+.iq-opt.correct{border-color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;color:var(--accent3)!important;}
+.iq-opt.wrong{border-color:var(--accent2)!important;background:rgba(255,101,132,.15)!important;color:var(--accent2)!important;}
+.iq-opt.missed{border-color:var(--accent3)!important;background:rgba(67,233,123,.08)!important;color:var(--accent3)!important;opacity:.7;}
+.iq-opt:disabled{cursor:default;}
+.iq-sym-opt{min-width:52px;text-align:center;font-family:'Courier New',monospace;font-size:1.1rem;}
+.iq-feedback{margin-top:14px;border-radius:12px;padding:12px 16px;font-size:.88rem;line-height:1.5;}
+.iq-feedback.correct{background:rgba(67,233,123,.1);border:1px solid rgba(67,233,123,.3);color:var(--accent3);}
+.iq-feedback.wrong{background:rgba(255,101,132,.1);border:1px solid rgba(255,101,132,.3);color:var(--accent2);}
+.iq-next-btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;border:none;border-radius:11px;padding:13px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.iq-opt.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.25)!important;color:#1a9e5c!important;transform:scale(1.12);transition:all .15s;}
+.iq-all-syms-panel{background:var(--surface2);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+.iq-syms-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-bottom:8px;}
+.iq-sym-grid{display:flex;flex-wrap:wrap;gap:7px;}
+.iq-sym-grid-btn{background:var(--surface);border:2px solid var(--border);border-radius:9px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:400;font-family:'Nunito',sans-serif;cursor:pointer;color:var(--text);transition:all .15s;}
+.iq-sym-grid-btn:hover{border-color:var(--accent);color:var(--accent);}
+.iq-sym-grid-btn.iq-sym-answer{border-color:var(--accent3)!important;color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;font-weight:800;}
+.iq-sym-grid-btn.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.3)!important;color:#1a9e5c!important;transform:scale(1.18);box-shadow:0 0 12px rgba(26,158,92,.4);}
+.iq-opt.iq-word-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.2)!important;color:#1a9e5c!important;transform:scale(1.1);box-shadow:0 0 10px rgba(26,158,92,.3);transition:all .15s;}
+.iq-score-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px;font-size:.85rem;}
+.iq-score-num{font-weight:800;color:var(--gold);}
+.tw-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .6s step-end infinite;margin-left:1px;}
+
+
+/* IPA Guide Conveyor */
+.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
 .ipa-card:hover{border-color:rgba(108,99,255,.3);}
-.ipa-sym-btn{grid-column:1;grid-row:1;background:var(--surface2);border:2px solid currentColor;border-radius:13px;padding:0;cursor:pointer;font-size:1.62rem;font-family:'Courier New',monospace;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;justify-self:center;align-self:center;}
+.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:0;cursor:pointer;font-size:1.6rem;font-family:'Courier New',monospace;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .ipa-sym-btn.vowel{color:var(--accent3);}.ipa-sym-btn.consonant{color:var(--accent);}
-.ipa-sym-btn:hover{transform:scale(1.04);}
+.ipa-sym-btn:hover{transform:scale(1.07);}
 .ipa-playing{animation:ipaPulse 1.1s ease-in-out infinite!important;box-shadow:0 0 0 3px var(--accent2)!important;}
 @keyframes ipaPulse{0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 8px rgba(255,101,132,.3);}50%{box-shadow:0 0 0 3px var(--accent2),0 0 20px rgba(255,101,132,.6);}}
-.ipa-word-stage{grid-column:2;grid-row:1;overflow:hidden;position:relative;height:64px;min-width:0;}
-.ipa-tuner-track{display:flex;align-items:center;gap:0;position:absolute;left:0;top:0;height:64px;white-space:nowrap;will-change:transform;}
-.ipa-tuner-item{width:104px;min-width:104px;max-width:104px;flex:0 0 104px;display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:visible;height:64px;}
-.ipa-tuner-item:first-child{width:228px;min-width:228px;max-width:228px;flex-basis:228px;}
-.ipa-tuner-word{font-size:.92rem;font-weight:600;color:var(--muted);line-height:1;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease,font-weight .52s ease;transform-origin:left center;}
-.ipa-tuner-pron{font-size:.68rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.02em;line-height:1;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease,font-weight .52s ease;transform-origin:left center;}
-.ipa-tuner-pron .ipa-bold{color:var(--accent3);font-weight:700;}
-.ipa-tuner-item.is-focus .ipa-tuner-word{font-size:1.82rem;font-weight:800;color:var(--accent2);font-family:'Space Grotesk',sans-serif;}
-.ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:1.18rem;font-weight:700;color:var(--text);}
-.ipa-desc-main{grid-column:1 / -1;grid-row:2;font-size:.88rem;font-weight:600;color:var(--text);line-height:1.35;padding:6px 4px 0;border-top:1px solid var(--border);min-height:27px;display:flex;align-items:flex-start;}
-.ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 8px;}
-@media(max-width:560px){
-  .ipa-card{grid-template-columns:60px minmax(0,1fr);grid-template-rows:58px auto;padding:10px 11px;column-gap:10px;row-gap:6px;min-height:104px;}
-  .ipa-sym-btn{width:56px;height:56px;font-size:1.48rem;}
-  .ipa-word-stage,.ipa-tuner-track,.ipa-tuner-item{height:58px;}
-  .ipa-tuner-item{width:92px;min-width:92px;max-width:92px;flex-basis:92px;}
-  .ipa-tuner-item:first-child{width:202px;min-width:202px;max-width:202px;flex-basis:202px;}
-  .ipa-tuner-item.is-focus .ipa-tuner-word{font-size:1.62rem;}
-  .ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:1.05rem;}
-  .ipa-desc-main{font-size:.83rem;}
-}
+.ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.ipa-desc-main{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.55;}
+.ipa-word-stage{height:50px;overflow:hidden;border-top:1px solid var(--border);margin-top:8px;padding-top:6px;}
+.ipa-strip{display:flex;align-items:center;gap:20px;will-change:transform;}
+.ipa-chip{display:inline-flex;align-items:baseline;gap:8px;flex-shrink:0;}
+.ipa-chip-big .ipa-chip-word{font-size:1.85rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;white-space:nowrap;}
+.ipa-chip-pron{font-size:.82rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;}
+.ipa-chip-pron .ipa-bold{color:var(--accent3);font-weight:700;}
+.ipa-chip-sm .ipa-chip-word{font-size:.92rem;font-weight:500;color:var(--muted);white-space:nowrap;}
+.ipa-section-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+  font-weight:700;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+
 </style>
 </head>
 <body>
@@ -443,31 +495,6 @@ function parseCSV(txt){
 }
 function ssplit(line){var r=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(cur);cur='';}else cur+=ch;}r.push(cur);return r;}
 
-// RFC-style CSV parser: preserves commas, escaped quotes, and line breaks inside quoted cells.
-// This avoids losing MP3/source fields when the pronunciation sheet contains multi-line descriptions.
-function parseCSVRows(txt){
-  var rows=[], row=[], cur='', q=false;
-  txt=(txt||'').replace(/^\uFEFF/,'');
-  for(var i=0;i<txt.length;i++){
-    var ch=txt[i];
-    if(ch==='"'){
-      if(q && txt[i+1]==='"'){cur+='"';i++;}
-      else q=!q;
-    } else if(ch===',' && !q){
-      row.push(cur);cur='';
-    } else if((ch==='\n' || ch==='\r') && !q){
-      if(ch==='\r' && txt[i+1]==='\n')i++;
-      row.push(cur);cur='';
-      if(row.some(function(v){return v!=='';}))rows.push(row);
-      row=[];
-    } else {
-      cur+=ch;
-    }
-  }
-  if(cur!=='' || row.length){row.push(cur);rows.push(row);}
-  return rows;
-}
-
 function parseCSVFull(txt){
   var lines=txt.trim().split('\n'),res=[];
   for(var i=1;i<lines.length;i++){
@@ -506,29 +533,28 @@ function loadWords(){
 function loadIPA(){
   if(!PRO_CSV_URL)return;
   fetch(PRO_CSV_URL).then(function(r){return r.ok?r.text():Promise.reject(r.status);}).then(function(csv){
-    var rows=parseCSVRows(csv);IPA_DATA=[];
-    for(var i=1;i<rows.length;i++){
-      var cols=rows[i];if(cols.length<5||!(cols[0]||'').trim())continue;
+    var lines=csv.split('\n');IPA_DATA=[];
+    for(var i=1;i<lines.length;i++){
+      var cols=ssplit(lines[i]);if(cols.length<5||!cols[0].trim())continue;
       var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
       var sym=c(cols[0]),mp3=c(cols[1]),img=c(cols[2]),src=c(cols[3]),desc=c(cols[4]);
       var vowelSyms=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ'];
       IPA_DATA.push({sym:sym,mp3:mp3,img:img,src:src,name:sym,cat:vowelSyms.indexOf(sym)>-1?'Vowel':'Consonant',desc:desc,words:[]});
     }
-    console.log('IPA:',IPA_DATA.length,'missing mp3:',IPA_DATA.filter(function(d){return !d.mp3;}).map(function(d){return d.sym;}));
+    console.log('IPA:',IPA_DATA.length);
     loadPro2();
   }).catch(function(e){console.warn('IPA:',e);});
 }
 function loadPro2(){
   if(!PRO2_CSV_URL)return;
   fetch(PRO2_CSV_URL).then(function(r){return r.ok?r.text():Promise.reject(r.status);}).then(function(csv){
-    var rows=parseCSVRows(csv);
-    if(!rows.length)return;
-    var hdrs=rows[0].map(function(h){return (h||'').trim().toLowerCase().replace(/^"|"$/g,'');});
+    var lines=csv.split('\n');
+    var hdrs=ssplit(lines[0]).map(function(h){return h.trim().toLowerCase().replace(/^"|"$/g,'');});
     var ci={sym:0,word:2,ipa:3,bold:4};
     hdrs.forEach(function(h,i){if(h==='symbol')ci.sym=i;else if(h==='word')ci.word=i;else if(h==='ipa')ci.ipa=i;else if(h==='bold')ci.bold=i;});
     IPA_DATA.forEach(function(d){d.words=[];});
-    for(var i=1;i<rows.length;i++){
-      var cols=rows[i];if(cols.length<3)continue;
+    for(var i=1;i<lines.length;i++){
+      var cols=ssplit(lines[i]);if(cols.length<3)continue;
       var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
       var sym=c(cols[ci.sym]),word=c(cols[ci.word]),ipa=c(cols[ci.ipa]||''),bold=c(cols[ci.bold]||'');
       if(!sym||!word)continue;
@@ -1045,8 +1071,8 @@ function toggleIPACard(cardId, mp3, wordCsv) {
   if (!stage) return;
   var cur = 0;
   var spokenCount = 0;
-  var WAIT_W = window.matchMedia('(max-width:560px)').matches ? 92 : 104;
-  var FOCUS_W = window.matchMedia('(max-width:560px)').matches ? 202 : 228;
+  var WAIT_W = window.matchMedia('(max-width:560px)').matches ? 102 : 112;
+  var FOCUS_W = window.matchMedia('(max-width:560px)').matches ? 188 : 205;
 
   function isActive() { return myId === _cardSeqId; }
 
@@ -1186,6 +1212,7 @@ function stopCardAnim() {
 
 
 
+
 function makeIPACards(items){
   var h='';
   items.forEach(function(item,idx){
@@ -1195,12 +1222,14 @@ function makeIPACards(items){
     var catCls=item.cat==='Vowel'?'vowel':'consonant';
     h+='<div class="ipa-card" id="'+cardId+'">'
       +'<button class="ipa-sym-btn '+catCls+'" data-card="'+cardId+'" data-mp3="'+(item.mp3||'')+'" data-words="'+wordList+'">'+item.sym+'</button>'
-      +'<div class="ipa-word-stage" id="'+cardId+'-stage"></div>'
+      +'<div class="ipa-body">'
       +'<div class="ipa-desc-main">'+descHL+'</div>'
-      +'</div>';
+      +'<div class="ipa-word-stage" id="'+cardId+'-stage"></div>'
+      +'</div></div>';
   });
   return h;
 }
+
 function showIPA(){
   show('ipaScreen');
   stopCardAnim();
