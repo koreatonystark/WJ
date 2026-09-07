@@ -165,7 +165,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-sym-grid-btn:hover{border-color:var(--accent);color:var(--accent);}
 .iq-sym-grid-btn.iq-sym-answer{border-color:var(--accent3)!important;color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;font-weight:800;}
 .iq-sym-grid-btn.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.3)!important;color:#1a9e5c!important;transform:scale(1.18);box-shadow:0 0 12px rgba(26,158,92,.4);}
-.iq-opt.iq-word-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.2)!important;color:#1a9e5c!important;transform:scale(1.1);box-shadow:0 0 10px rgba(26,158,92,.3);transition:all .15s;}
+.iq-opt.iq-word-playing{border-color:#facc15!important;background:rgba(250,204,21,.18)!important;color:#fde68a!important;transform:scale(1.12);box-shadow:0 0 0 3px rgba(250,204,21,.18),0 0 18px rgba(250,204,21,.45)!important;transition:all .15s;position:relative;z-index:2;}
+.iq-opt.iq-word-playing::after{content:"▶";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:.8rem;color:#facc15;font-weight:900;}
+.iq-opt.iq-word-playing .iq-word-ipa{color:#fde68a!important;}
 .iq-score-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px;font-size:.85rem;}
 .iq-score-num{font-weight:800;color:var(--gold);}
 .tw-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .6s step-end infinite;margin-left:1px;}
@@ -262,7 +264,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .iq-sym-grid-btn:hover{border-color:var(--accent);color:var(--accent);}
 .iq-sym-grid-btn.iq-sym-answer{border-color:var(--accent3)!important;color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;font-weight:800;}
 .iq-sym-grid-btn.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.3)!important;color:#1a9e5c!important;transform:scale(1.18);box-shadow:0 0 12px rgba(26,158,92,.4);}
-.iq-opt.iq-word-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.2)!important;color:#1a9e5c!important;transform:scale(1.1);box-shadow:0 0 10px rgba(26,158,92,.3);transition:all .15s;}
+.iq-opt.iq-word-playing{border-color:#facc15!important;background:rgba(250,204,21,.18)!important;color:#fde68a!important;transform:scale(1.12);box-shadow:0 0 0 3px rgba(250,204,21,.18),0 0 18px rgba(250,204,21,.45)!important;transition:all .15s;position:relative;z-index:2;}
+.iq-opt.iq-word-playing::after{content:"▶";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:.8rem;color:#facc15;font-weight:900;}
+.iq-opt.iq-word-playing .iq-word-ipa{color:#fde68a!important;}
 .iq-score-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px;font-size:.85rem;}
 .iq-score-num{font-weight:800;color:var(--gold);}
 .tw-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .6s step-end infinite;margin-left:1px;}
@@ -465,7 +469,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div style="max-width:700px;width:100%;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v28</span></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v29</span></div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
       </div>
       <button class="btn-s" id="ipaBackBtn">&#8592; Back</button>
@@ -1369,9 +1373,14 @@ function speakWordsSequence(words, rate, onComplete) {
     if (_seqCancelled) return;
     if (i >= words.length) { finishSequence(); return; }
     var w = words[i++];
-    // Highlight the matching word button
-    var btn = document.querySelector('.iq-opt[data-val="' + w + '"]');
-    if (btn) btn.classList.add('iq-word-playing');
+    // Highlight exactly the word being spoken. Clear any stale highlight first.
+    document.querySelectorAll('.iq-opt.iq-word-playing').forEach(function(x){ x.classList.remove('iq-word-playing'); });
+    var btn = document.querySelector('.iq-opt[data-val="' + w.replace(/"/g,'\"') + '"]');
+    if (btn) {
+      btn.classList.add('iq-word-playing');
+      btn.setAttribute('aria-current','true');
+      try { btn.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'}); } catch(e) {}
+    }
     var utt = new SpeechSynthesisUtterance(w);
     utt.lang = 'en-US';
     utt.rate = rate;
@@ -1380,12 +1389,12 @@ function speakWordsSequence(words, rate, onComplete) {
            || voices.find(function(v){ return v.lang.startsWith('en'); });
     if (v) utt.voice = v;
     utt.onend = function() {
-      if (btn) btn.classList.remove('iq-word-playing');
-      if (!_seqCancelled) setTimeout(next, 250);
+      if (btn) { btn.classList.remove('iq-word-playing'); btn.removeAttribute('aria-current'); }
+      if (!_seqCancelled) setTimeout(next, 300);
     };
     utt.onerror = function() {
-      if (btn) btn.classList.remove('iq-word-playing');
-      if (!_seqCancelled) setTimeout(next, 250);
+      if (btn) { btn.classList.remove('iq-word-playing'); btn.removeAttribute('aria-current'); }
+      if (!_seqCancelled) setTimeout(next, 300);
     };
     window.speechSynthesis.speak(utt);
   }
@@ -1899,23 +1908,49 @@ function renderIQQuestion() {
     var quizData=getQuizIPAData();
     if(!quizData.length){area.innerHTML='<div class="iq-feedback wrong">IPA audio data is still loading or incomplete. Please return and try again.</div>';return;}
     var correct = quizData[Math.floor(Math.random() * quizData.length)];
-    var correctWords = correct.words.map(function(w){ return w.w; });
-    // Get 7 total words: correct ones + distractors
-    var allOtherWords = [];
-    quizData.forEach(function(item) {
-      if (item.sym !== correct.sym) {
-        item.words.forEach(function(wobj){ allOtherWords.push(wobj.w); });
-      }
+    var allCorrectWords = Array.from(new Set(correct.words.map(function(w){ return w.w; }).filter(Boolean)));
+
+    // Harder multi-select design: never fill every choice with a correct answer.
+    // Usually 2-4 correct words + 3-5 distractors, shuffled each time.
+    var correctCount = Math.min(allCorrectWords.length, 2 + Math.floor(Math.random()*3));
+    if (correctCount < 1) correctCount = 1;
+    var chosenCorrect = pickRandom(allCorrectWords, correctCount);
+
+    // Prefer distractors from acoustically / visually confusable General-American sounds.
+    var confusing = {
+      'i':['ɪ','eɪ'], 'ɪ':['i','ɛ'], 'eɪ':['ɛ','i'], 'ɛ':['æ','ɪ'], 'æ':['ɛ','ʌ'],
+      'ʌ':['ə','ɑ'], 'ə':['ʌ','ɝ'], 'ɑ':['ɔ','ʌ'], 'ɔ':['ɑ','oʊ'], 'ʊ':['u','ʌ'],
+      'u':['ʊ','oʊ'], 'oʊ':['ɔ','u'], 'aɪ':['eɪ','ɔɪ'], 'aʊ':['oʊ','ɑ'], 'ɔɪ':['aɪ','ɔ'],
+      'ɝ':['r','ə'], 'p':['b','f'], 'b':['p','v'], 't':['d','tʃ'], 'd':['t','dʒ'],
+      'k':['g'], 'g':['k'], 'f':['v','θ'], 'v':['f','ð'], 'θ':['ð','f'], 'ð':['θ','v'],
+      's':['z','ʃ'], 'z':['s','ʒ'], 'ʃ':['s','tʃ','ʒ'], 'ʒ':['ʃ','dʒ','z'],
+      'tʃ':['ʃ','dʒ','t'], 'dʒ':['ʒ','tʃ','d'], 'm':['n'], 'n':['m','ŋ'], 'ŋ':['n'],
+      'l':['r'], 'r':['l','w','ɝ'], 'w':['r','j'], 'j':['w'], 'h':['f']
+    };
+    var preferredSyms = confusing[correct.sym] || [];
+    var preferredWords = [];
+    var otherWords = [];
+    quizData.forEach(function(qitem){
+      if(qitem.sym===correct.sym) return;
+      (qitem.words||[]).forEach(function(wobj){
+        if(!wobj || !wobj.w || chosenCorrect.indexOf(wobj.w)>=0) return;
+        if(preferredSyms.indexOf(qitem.sym)>=0) preferredWords.push(wobj.w);
+        else otherWords.push(wobj.w);
+      });
     });
-    var distractorWords = pickRandom(allOtherWords, Math.max(0, 7 - correctWords.length));
-    var allOpts = shuffleArr(correctWords.concat(distractorWords)).slice(0, 7);
-    // Ensure at least 2 correct answers are in options
-    var correctInOpts = allOpts.filter(function(w){ return correctWords.indexOf(w) >= 0; });
-    if (correctInOpts.length === 0) { allOpts[0] = correctWords[0]; allOpts = shuffleArr(allOpts); }
+    preferredWords = Array.from(new Set(preferredWords));
+    otherWords = Array.from(new Set(otherWords));
+    var distractorCount = 7 - chosenCorrect.length;
+    var distractorWords = pickRandom(preferredWords, Math.min(distractorCount, preferredWords.length));
+    if(distractorWords.length < distractorCount){
+      var remaining = otherWords.filter(function(w){ return distractorWords.indexOf(w)<0; });
+      distractorWords = distractorWords.concat(pickRandom(remaining, distractorCount-distractorWords.length));
+    }
+    var allOpts = shuffleArr(chosenCorrect.concat(distractorWords)).slice(0,7);
 
     iqCurrent.correct = correct.sym;
     iqCurrent.correctItem = correct;
-    iqCurrent.correctWords = correctWords.filter(function(w){ return allOpts.indexOf(w) >= 0; });
+    iqCurrent.correctWords = chosenCorrect.filter(function(w){ return allOpts.indexOf(w) >= 0; });
     iqCurrent.selected = [];
 
     var catColor = correct.cat === 'Vowel' ? '#1a9e5c' : '#3b82f6';
