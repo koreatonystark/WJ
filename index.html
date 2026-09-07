@@ -1370,27 +1370,37 @@ function makeIPACards(items) {
     var cardId = 'ipacard-' + idx;
     var wordList = item.words.map(function(w){ return w.w; }).join(',');
     var descHL = (item.desc||'').replace(/"([^"]+)"/g, '"<span class="ipa-sound">$1</span>"');
+    var catCls = item.cat === 'Vowel' ? 'vowel' : 'consonant';
     h += '<div class="ipa-card" id="' + cardId + '">'
-      + '<button class="ipa-sym-btn '+(item.cat==='Vowel'?'vowel':'consonant')+'" '
-      + 'onclick="toggleIPACard(''+cardId+'',''+item.mp3+'',''+wordList+'')">'
-      + item.sym + '</button>'
+      + '<button class="ipa-sym-btn ' + catCls + '"'
+      + ' data-card="' + cardId + '"'
+      + ' data-mp3="' + (item.mp3||'') + '"'
+      + ' data-words="' + wordList + '">'
+      + item.sym
+      + '</button>'
       + '<div class="ipa-body">'
       + '<div class="ipa-desc-main">' + descHL + '</div>'
-      + '<div class="ipa-word-stage" id="'+cardId+'-stage">'
-      + '<div class="ipa-word-slide" id="'+cardId+'-slide"></div>'
-      + '</div>'
-      + '</div></div>';
+      + '<div class="ipa-word-stage" id="' + cardId + '-stage">'
+      + '<div class="ipa-word-slide" id="' + cardId + '-slide"></div>'
+      + '</div></div></div>';
   });
   return h;
 }
 
 function showIPA() {
   show('ipaScreen');
+  stopCardAnim();
   var vowels = IPA_DATA.filter(function(d){ return d.cat === 'Vowel'; });
   var consonants = IPA_DATA.filter(function(d){ return d.cat === 'Consonant'; });
   var html = '<div class="ipa-section-title">Vowels</div>' + makeIPACards(vowels)
            + '<div class="ipa-section-title" style="margin-top:20px">Consonants</div>' + makeIPACards(consonants);
   document.getElementById('ipaContent').innerHTML = html;
+  // Attach click listeners via data attributes (avoids quote-escaping issues)
+  document.querySelectorAll('#ipaContent .ipa-sym-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      toggleIPACard(this.dataset.card, this.dataset.mp3, this.dataset.words);
+    });
+  });
 }
 
 // ═══════════════════════════════════════════
