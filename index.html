@@ -298,21 +298,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 @keyframes ipaPulse{0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 8px rgba(255,101,132,.3);}50%{box-shadow:0 0 0 3px var(--accent2),0 0 20px rgba(255,101,132,.6);}}
 .ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
 .ipa-desc-main{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.55;}
-/* Slot row */
-.ipa-word-stage{overflow:hidden;border-top:1px solid var(--border);margin-top:6px;padding-top:8px;position:relative;contain:layout paint;}
-.ipa-slots{display:flex;align-items:baseline;gap:0;width:100%;position:relative;}
-.ipa-slide-ghost{position:absolute;z-index:5;pointer-events:none;margin:0!important;will-change:transform,opacity;}
-/* Big slot (leftmost) */
-.ipa-slot-big{display:flex;align-items:baseline;gap:8px;width:180px;min-width:180px;max-width:180px;padding-right:18px;border-right:1px solid var(--border);margin-right:18px;flex-shrink:0;overflow:hidden;}
-.ipa-slot-big .ipa-slot-word{font-size:1.85rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;white-space:nowrap;overflow:hidden;}
-.ipa-slot-pron{font-size:.82rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;overflow:hidden;}
-.ipa-slot-pron .ipa-bold{color:var(--accent3);font-weight:700;}
-/* Small slots - fixed equal width */
-.ipa-slot-sm{flex-shrink:0;width:90px;min-width:90px;max-width:90px;overflow:hidden;}
-.ipa-slot-sm .ipa-slot-word{font-size:.95rem;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
-.ipa-slot-sm{display:flex;align-items:baseline;gap:4px;}
-.ipa-slot-sm .ipa-slot-pron{font-size:.68rem;max-width:48px;text-overflow:ellipsis;}
-.ipa-slot-big{align-items:baseline;}
+/* Analog tuner row: one continuous strip. Only the stage's outer RIGHT edge clips overflow. */
+.ipa-word-stage{overflow:hidden;border-top:1px solid var(--border);margin-top:6px;padding-top:8px;position:relative;height:44px;}
+.ipa-tuner-track{display:flex;align-items:baseline;gap:0;position:absolute;left:0;bottom:4px;white-space:nowrap;will-change:transform;}
+.ipa-tuner-item{width:148px;min-width:148px;max-width:148px;flex:0 0 148px;display:flex;align-items:baseline;gap:5px;white-space:nowrap;overflow:visible;}
+.ipa-tuner-word{font-size:.95rem;font-weight:600;color:var(--muted);line-height:1;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease,font-weight .52s ease;}
+.ipa-tuner-pron{font-size:.68rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease;}
+.ipa-tuner-pron .ipa-bold{color:var(--accent3);font-weight:700;}
+.ipa-tuner-item.is-focus .ipa-tuner-word{font-size:1.85rem;font-weight:800;color:var(--accent2);font-family:'Space Grotesk',sans-serif;}
+.ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:.82rem;}
+.ipa-word-stage::after{content:'';position:absolute;left:164px;top:8px;bottom:2px;width:1px;background:var(--border);pointer-events:none;}
 .ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 10px;}
 </style>
 </head>
@@ -1005,50 +1000,60 @@ function toggleIPACard(cardId, mp3, wordCsv) {
   var words = wordCsv.split(',').filter(Boolean);
   if (!words.length) return;
 
-  // Build IPA lookup used only for the active (large) word.
   var ipaMap = {};
   IPA_DATA.forEach(function(d) {
     (d.words || []).forEach(function(w) {
-      if (!ipaMap[w.w]) ipaMap[w.w] = { ipa: w.ipa || '', bold: w.bold || '' };
+      if (!ipaMap[w.w]) ipaMap[w.w] = { ipa:w.ipa || '', bold:w.bold || '' };
     });
   });
 
-  var SLOTS = 4;
+  var stage = document.getElementById(cardId + '-stage');
+  if (!stage) return;
   var cur = 0;
   var spokenCount = 0;
+  var ITEM_W = 148;
 
   function isActive() { return myId === _cardSeqId; }
 
-  function renderStatic(stage) {
+  function buildTrack() {
     stage.innerHTML = '';
-    var row = document.createElement('div');
-    row.className = 'ipa-slots';
-
-    for (var s = 0; s < SLOTS; s++) {
-      var wi = (cur + s) % words.length;
-      var w = words[wi];
+    var track = document.createElement('div');
+    track.className = 'ipa-tuner-track';
+    // Keep extra words already waiting offscreen on the right.
+    // They enter naturally as the SAME strip moves left; nothing is added mid-animation.
+    var repeatCount = words.length + 5;
+    for (var i = 0; i < repeatCount; i++) {
+      var w = words[i % words.length];
       var d = ipaMap[w] || { ipa:'', bold:'' };
-      var slot = document.createElement('div');
-      slot.className = s === 0 ? 'ipa-slot ipa-slot-big' : 'ipa-slot ipa-slot-sm';
-      slot.dataset.slotIdx = s;
+      var item = document.createElement('div');
+      item.className = 'ipa-tuner-item' + (i === 0 ? ' is-focus' : '');
+      item.dataset.seqIndex = i;
 
-      var wspan = document.createElement('span');
-      wspan.className = 'ipa-slot-word';
-      wspan.textContent = w;
-      slot.appendChild(wspan);
+      var ws = document.createElement('span');
+      ws.className = 'ipa-tuner-word';
+      ws.textContent = w;
+      item.appendChild(ws);
 
       if (d.ipa) {
-        var pspan = document.createElement('span');
-        pspan.className = 'ipa-slot-pron';
-        pspan.innerHTML = '[' + boldIPA(d.ipa, d.bold) + ']';
-        slot.appendChild(pspan);
+        var ps = document.createElement('span');
+        ps.className = 'ipa-tuner-pron';
+        ps.innerHTML = '[' + boldIPA(d.ipa, d.bold) + ']';
+        item.appendChild(ps);
       }
-      row.appendChild(slot);
+      track.appendChild(item);
     }
-    stage.appendChild(row);
+    stage.appendChild(track);
+    return track;
   }
 
-  // Speak a word and call done only after TTS really finishes.
+  var track = buildTrack();
+
+  function setFocus(index) {
+    Array.from(track.children).forEach(function(item, i) {
+      item.classList.toggle('is-focus', i === index);
+    });
+  }
+
   function speakCardWord(word, done) {
     if (!isActive() || !window.speechSynthesis) { done(); return; }
     var utt = new SpeechSynthesisUtterance(word);
@@ -1064,115 +1069,20 @@ function toggleIPACard(cardId, mp3, wordCsv) {
     window.speechSynthesis.speak(utt);
   }
 
-  // Move the visible WORDS themselves one slot to the left.
-  // Slot frames never move. Small words keep the same size while moving;
-  // only the word entering the large slot grows continuously during travel.
-  function animateOneSlot(stage, done) {
-    var row = stage.querySelector('.ipa-slots');
-    if (!row) { done(); return; }
-    var slots = Array.from(row.querySelectorAll('.ipa-slot'));
-    if (slots.length < 2) { done(); return; }
-
-    var stageRect = stage.getBoundingClientRect();
-    var wordEls = slots.map(function(slot){ return slot.querySelector('.ipa-slot-word'); });
-    var pronEls = slots.map(function(slot){ return slot.querySelector('.ipa-slot-pron'); });
-    var wordRects = wordEls.map(function(el){ return el.getBoundingClientRect(); });
-    var slotRects = slots.map(function(el){ return el.getBoundingClientRect(); });
-    var movers = [];
-
-    // Hide the real word+IPA pair during animation. The slot frames stay fixed.
-    wordEls.forEach(function(el){ if (el) el.style.visibility = 'hidden'; });
-    pronEls.forEach(function(el){ if (el) el.style.visibility = 'hidden'; });
-
-    slots.forEach(function(slot, i) {
-      var el = wordEls[i];
-      if (!el) return;
-      var r = wordRects[i];
-      var mover = document.createElement('span');
-      mover.className = 'ipa-word-mover';
-      mover.innerHTML = '<span class="ipa-mover-word"></span>' + (pronEls[i] ? '<span class="ipa-mover-pron">' + pronEls[i].innerHTML + '</span>' : '');
-      mover.querySelector('.ipa-mover-word').textContent = el.textContent;
-      mover.style.position = 'absolute';
-      mover.style.left = (r.left - stageRect.left) + 'px';
-      // Anchor the glyph to its current bottom edge instead of its top edge.
-      // This keeps the word on one horizontal baseline while font-size grows.
-      mover.style.bottom = (stageRect.bottom - r.bottom) + 'px';
-      mover.style.margin = '0';
-      mover.style.padding = '0';
-      mover.style.whiteSpace = 'nowrap';
-      mover.style.pointerEvents = 'none';
-      mover.style.zIndex = '5';
-      mover.style.lineHeight = '1';
-      mover.style.display = 'inline-flex';
-      mover.style.alignItems = 'baseline';
-      mover.style.gap = '8px';
-      var moverWord = mover.querySelector('.ipa-mover-word');
-      moverWord.style.fontFamily = getComputedStyle(el).fontFamily;
-      moverWord.style.fontSize = getComputedStyle(el).fontSize;
-      moverWord.style.fontWeight = getComputedStyle(el).fontWeight;
-      moverWord.style.color = getComputedStyle(el).color;
-      var moverPron = mover.querySelector('.ipa-mover-pron');
-      if (moverPron) {
-        moverPron.style.fontFamily = getComputedStyle(pronEls[i]).fontFamily;
-        moverPron.style.fontSize = getComputedStyle(pronEls[i]).fontSize;
-        moverPron.style.color = getComputedStyle(pronEls[i]).color;
-        moverPron.style.letterSpacing = getComputedStyle(pronEls[i]).letterSpacing;
-      }
-      mover.style.transform = 'translateX(0)';
-      mover.style.transformOrigin = 'left bottom';
-      // Animate only horizontal travel + size/weight/color. No vertical property is animated.
-      mover.style.transition = 'transform .48s cubic-bezier(.22,.61,.36,1), opacity .48s ease';
-      moverWord.style.transition = 'font-size .48s cubic-bezier(.22,.61,.36,1), color .48s ease, font-weight .48s ease';
-      if (moverPron) moverPron.style.transition = 'font-size .48s cubic-bezier(.22,.61,.36,1), color .48s ease';
-      stage.appendChild(mover);
-      movers.push({el:mover, index:i});
-    });
-
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        movers.forEach(function(m){
-          var i = m.index;
-          var targetLeft;
-          if (i === 0) {
-            // Current large word exits left without shrinking.
-            targetLeft = slotRects[0].left - stageRect.left - Math.max(110, wordRects[0].width + 28);
-            m.el.style.opacity = '0';
-          } else {
-            // Move to the exact left edge of the previous slot.
-            targetLeft = slotRects[i - 1].left - stageRect.left;
-            if (i === 1) {
-              // Same word, same continuous motion; font size grows only as it enters BIG slot.
-              var mw = m.el.querySelector('.ipa-mover-word');
-              var mp = m.el.querySelector('.ipa-mover-pron');
-              if (mw) {
-                mw.style.fontSize = '1.85rem';
-                mw.style.fontWeight = '800';
-                mw.style.color = 'var(--accent2)';
-              }
-              if (mp) {
-                mp.style.fontSize = '.82rem';
-                mp.style.color = 'var(--muted)';
-              }
-            }
-          }
-          var currentLeft = wordRects[i].left - stageRect.left;
-          m.el.style.transform = 'translateX(' + (targetLeft - currentLeft) + 'px)';
-        });
-
-        setTimeout(function(){
-          if (!isActive()) return;
-          movers.forEach(function(m){ if (m.el.parentNode) m.el.remove(); });
-          cur = (cur + 1) % words.length;
-          renderStatic(stage);
-          done();
-        }, 500);
-      });
-    });
+  // Radio-dial behavior: one already-rendered line translates left by one fixed interval.
+  // The next word grows during that same motion. No per-word hiding, no re-render, no pop-in.
+  function slideOne(done) {
+    if (!isActive()) return;
+    var next = cur + 1;
+    setFocus(next);
+    track.style.transition = 'transform .52s cubic-bezier(.22,.61,.36,1)';
+    track.style.transform = 'translateX(-' + (next * ITEM_W) + 'px)';
+    setTimeout(function(){
+      if (!isActive()) return;
+      cur = next;
+      done();
+    }, 540);
   }
-
-  var stage = document.getElementById(cardId + '-stage');
-  if (!stage) return;
-  renderStatic(stage);
 
   function finishSequence() {
     if (!isActive()) return;
@@ -1182,7 +1092,7 @@ function toggleIPACard(cardId, mp3, wordCsv) {
 
   function speakCurrentThenAdvance() {
     if (!isActive()) return;
-    speakCardWord(words[cur], function(){
+    speakCardWord(words[cur % words.length], function(){
       if (!isActive()) return;
       spokenCount++;
       if (spokenCount >= words.length) {
@@ -1191,15 +1101,14 @@ function toggleIPACard(cardId, mp3, wordCsv) {
       }
       setTimeout(function(){
         if (!isActive()) return;
-        animateOneSlot(stage, function(){
+        slideOne(function(){
           if (!isActive()) return;
-          setTimeout(speakCurrentThenAdvance, 120);
+          setTimeout(speakCurrentThenAdvance, 100);
         });
-      }, 300);
+      }, 260);
     });
   }
 
-  // Required order: IPA MP3 first -> sample word TTS sequence second.
   function startWords() {
     if (!isActive()) return;
     speakCurrentThenAdvance();
@@ -1215,15 +1124,15 @@ function toggleIPACard(cardId, mp3, wordCsv) {
     startWords();
   }
 }
-
 function stopCardAnim() {
   _cardSeqId++;
   if (_ipaAudio) { _ipaAudio.pause(); _ipaAudio.currentTime = 0; _ipaAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
-  // Never blank the sample words. Remove only temporary animation layers
-  // and reveal the fixed slot contents again.
-  document.querySelectorAll('.ipa-word-mover,.ipa-slide-ghost').forEach(function(el){ el.remove(); });
-  document.querySelectorAll('.ipa-slot-word,.ipa-slot-pron').forEach(function(el){ el.style.visibility = ''; });
+  document.querySelectorAll('.ipa-tuner-track').forEach(function(track) {
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0)';
+    Array.from(track.children).forEach(function(item, i){ item.classList.toggle('is-focus', i === 0); });
+  });
   document.querySelectorAll('.ipa-playing').forEach(function(b) { b.classList.remove('ipa-playing'); });
   _activeCard = null;
 }
@@ -1259,25 +1168,23 @@ function showIPA(){
       toggleIPACard(this.dataset.card,this.dataset.mp3,this.dataset.words);
     });
   });
-  // Build IPA lookup once
+  // Build IPA lookup once and render the same continuous tuner strip on page load.
   var ipaMap={};
   IPA_DATA.forEach(function(d){(d.words||[]).forEach(function(w){if(!ipaMap[w.w])ipaMap[w.w]={ipa:w.ipa||'',bold:w.bold||''};});});
-  // Render static slots for each card on load
   document.querySelectorAll('.ipa-word-stage').forEach(function(stage){
     var btn=stage.closest('.ipa-card').querySelector('.ipa-sym-btn');
     var wList=(btn.dataset.words||'').split(',').filter(Boolean);
     if(!wList.length)return;
-    var row=document.createElement('div');row.className='ipa-slots';
-    for(var s=0;s<4;s++){
-      var wi=s%wList.length; var w=wList[wi]; var d=ipaMap[w]||{ipa:'',bold:''};
-      var slot=document.createElement('div');
-      slot.className=s===0?'ipa-slot ipa-slot-big':'ipa-slot ipa-slot-sm';
-      var wspan=document.createElement('span');wspan.className='ipa-slot-word';wspan.textContent=w;
-      slot.appendChild(wspan);
-      if(d.ipa){var pspan=document.createElement('span');pspan.className='ipa-slot-pron';pspan.innerHTML='['+boldIPA(d.ipa,d.bold)+']';slot.appendChild(pspan);}
-      row.appendChild(slot);
+    var track=document.createElement('div'); track.className='ipa-tuner-track';
+    var repeatCount=wList.length+5;
+    for(var i=0;i<repeatCount;i++){
+      var w=wList[i%wList.length]; var d=ipaMap[w]||{ipa:'',bold:''};
+      var item=document.createElement('div'); item.className='ipa-tuner-item'+(i===0?' is-focus':'');
+      var ws=document.createElement('span'); ws.className='ipa-tuner-word'; ws.textContent=w; item.appendChild(ws);
+      if(d.ipa){var ps=document.createElement('span'); ps.className='ipa-tuner-pron'; ps.innerHTML='['+boldIPA(d.ipa,d.bold)+']'; item.appendChild(ps);}
+      track.appendChild(item);
     }
-    stage.appendChild(row);
+    stage.appendChild(track);
   });
 }
 
