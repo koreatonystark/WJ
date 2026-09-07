@@ -494,17 +494,27 @@ function loadPro2(){
     .then(function(csv){
       var lines=csv.split('\n');
       if(lines.length<2)return;
+      // Parse header row to find column indices dynamically
+      var hdrs=ssplit(lines[0]).map(function(h){return h.trim().toLowerCase().replace(/^"|"$/g,'');});
+      var ci={sym:0,word:2,ipa:3,bold:4}; // defaults
+      hdrs.forEach(function(h,i){
+        if(h==='symbol')ci.sym=i;
+        else if(h==='word')ci.word=i;
+        else if(h==='ipa')ci.ipa=i;
+        else if(h==='bold')ci.bold=i;
+      });
       // Clear existing words from all IPA_DATA entries
       IPA_DATA.forEach(function(d){d.words=[];});
       for(var i=1;i<lines.length;i++){
         var cols=ssplit(lines[i]);
-        if(cols.length<4)continue;
+        if(cols.length<3)continue;
         var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
-        var sym=c(cols[0]),word=c(cols[2]),ipa=c(cols[3]),bold=c(cols[4]||'');
+        var sym=c(cols[ci.sym]),word=c(cols[ci.word]),ipa=c(cols[ci.ipa]||''),bold=c(cols[ci.bold]||'');
+        if(!sym||!word)continue;
         var entry=IPA_DATA.find(function(d){return d.sym===sym;});
         if(entry)entry.words.push({w:word,ipa:ipa,bold:bold});
       }
-      console.log('pro2 loaded: words added to IPA_DATA');
+      console.log('pro2 loaded:',IPA_DATA.reduce(function(n,d){return n+d.words.length;},0),'words');
     })
     .catch(function(e){console.warn('pro2 CSV failed:',e);});
 }
@@ -1224,7 +1234,7 @@ function showIPA() {
         var pronDisplay = boldIPA(wobj.ipa, wobj.bold);
         return '<div class="ipa-word-entry" onclick="speak(\'' + wobj.w + '\', 0.45)" title="Click to hear">'
           + '<span class="ipa-word-text">' + wobj.w + '</span>'
-          + '<span class="ipa-word-pron">[' + pronDisplay + ']</span>'
+          + (pronDisplay ? '<span class="ipa-word-pron">[' + pronDisplay + ']</span>' : '')
           + '</div>';
       }).join('');
       var descHL = item.desc.replace(/"([^"]+)"/g, '"<span class="ipa-sound">$1</span>"');
