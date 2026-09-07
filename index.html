@@ -371,6 +371,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 /* WJ Interactive American IPA Explorer */
 .ipa-explorer{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:18px}.ipa-ex-grid{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 15px}.ipa-ex-key{width:44px;height:44px;border-radius:50%;border:0;color:#fff;font:700 1.05rem 'Nunito',sans-serif;cursor:pointer;transition:.15s}.ipa-ex-key.vowel{background:#e84b38}.ipa-ex-key.consonant{background:#1385bd}.ipa-ex-key.active{outline:3px solid var(--text);outline-offset:2px;transform:scale(1.08)}.ipa-ex-key.no-local{opacity:.56}.ipa-ex-layout{display:grid;grid-template-columns:minmax(220px,.9fr) minmax(260px,1.1fr);gap:18px;align-items:center}.ipa-mouth{position:relative;min-height:245px;border-radius:18px;background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center}.ipa-mouth-svg{width:90%;max-width:330px;height:220px}.ipa-ex-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:56px;border:0;background:transparent;color:var(--text);font-size:2.2rem;cursor:pointer}.ipa-ex-prev{left:5px}.ipa-ex-next{right:5px}.ipa-ex-symplay{position:absolute;right:14px;bottom:12px;min-width:48px;height:48px;padding:0 13px;border-radius:24px;border:0;background:var(--accent);color:white;font-size:1.05rem;cursor:pointer}.ipa-ex-symplay.fallback{background:var(--surface);border:1px solid var(--accent4);color:var(--accent4)}.ipa-ex-symbol{font:800 3rem 'Space Grotesk',sans-serif;margin-bottom:2px}.ipa-ex-name{font-size:.8rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.07em}.ipa-ex-example{font-size:1.55rem;font-weight:800;margin:12px 0 2px;cursor:pointer}.ipa-ex-example-ipa{font-family:'Courier New',monospace;color:var(--accent2);margin-bottom:12px}.ipa-ex-desc{line-height:1.6;font-size:.92rem}.ipa-ex-tip{margin-top:10px;padding:9px 11px;border-left:3px solid var(--accent3);background:rgba(67,233,123,.06);font-size:.82rem;color:var(--muted)}.ipa-audio-note{font-size:.72rem;color:var(--accent4);margin-top:6px}.mouth-label{font:800 13px 'Nunito',sans-serif;fill:currentColor}.mouth-sub{font:700 11px 'Nunito',sans-serif;fill:var(--muted)}@media(max-width:650px){.ipa-ex-layout{grid-template-columns:1fr}.ipa-mouth{min-height:210px}.ipa-mouth-svg{height:190px}}
+
+/* v24: phonetic names + Merriam-Webster bridge */
+.ipa-notation-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:5px 0 2px}.ipa-notation-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:8px;background:rgba(108,99,255,.08);border:1px solid var(--border);font-size:.75rem;color:var(--muted)}.ipa-notation-pill strong{color:var(--text);font-weight:800}.ipa-notation-pill.same{border-color:rgba(67,233,123,.35);background:rgba(67,233,123,.06)}.ipa-name-friendly{font-size:.86rem;color:var(--text);font-weight:800;margin-top:2px}.ipa-name-tech{font-size:.72rem;color:var(--muted);margin-top:2px}.mw-key{margin:12px 0 4px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.018);overflow:hidden}.mw-key summary{cursor:pointer;padding:10px 12px;font-size:.78rem;font-weight:800;color:var(--accent);user-select:none}.mw-key-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;padding:0 10px 10px}.mw-key-item{padding:7px 8px;border-radius:8px;background:var(--surface2);font-size:.74rem;color:var(--muted)}.mw-key-item b{color:var(--text)}.ipa-card-meta{grid-column:1 / -1;font-size:.7rem;color:var(--muted);padding:0 4px 2px;display:flex;gap:8px;flex-wrap:wrap}.ipa-card-meta b{color:var(--text)}
 </style>
 </head>
 <body>
@@ -452,7 +455,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div style="max-width:700px;width:100%;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v24</span></div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
       </div>
       <button class="btn-s" id="ipaBackBtn">&#8592; Back</button>
@@ -791,6 +794,22 @@ function loadAllSources(){
     });
 
     IPA_DATA=Object.keys(bySym).map(function(k){return bySym[k];});
+
+    // WJ is a General American English guide.  Source sheets can contain
+    // extra IPA symbols used by other dialects or by broader phonetic charts
+    // (for example /ɒ/).  Do not leak those into the American learner UI.
+    // Keep only the sound inventory WJ intentionally teaches.
+    var AMERICAN_IPA_ORDER=[
+      'i','ɪ','eɪ','ɛ','æ','ə','ʌ','ɑ','u','ʊ','oʊ','ɔ','aɪ','aʊ','ɔɪ','ɝ','ɚ',
+      'p','b','t','d','k','g','f','v','θ','ð','s','z','ʃ','ʒ','h','tʃ','dʒ','m','n','ŋ','l','r','w','j'
+    ];
+    var AMERICAN_IPA_SET={}; AMERICAN_IPA_ORDER.forEach(function(x){AMERICAN_IPA_SET[x]=true;});
+    IPA_DATA=IPA_DATA.filter(function(d){
+      if(!d||!d.sym)return false;
+      if(d.sym==='ɡ')d.sym='g';
+      return !!AMERICAN_IPA_SET[d.sym];
+    });
+
     // Prefer our own GitHub-hosted audio for every sound we have locally.
     // Keep the sheet URL only as metadata/fallback for sounds that are not in the local pack.
     IPA_DATA.forEach(function(d){
@@ -803,14 +822,16 @@ function loadAllSources(){
         d.mp3=''; d.audioSource='word-fallback';
       }
     });
-    // Keep a predictable teaching order when the sound master sheet provides one.
-    var order=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɝ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ','p','b','t','d','k','g','f','v','θ','ð','s','z','ʃ','ʒ','h','tʃ','dʒ','m','n','ŋ','l','r','w','j'];
+    // Keep the same General American teaching order in every screen.
+    var order=AMERICAN_IPA_ORDER;
     IPA_DATA.sort(function(a,b){var ia=order.indexOf(a.sym),ib=order.indexOf(b.sym);if(ia<0)ia=999;if(ib<0)ib=999;return ia-ib||a.sym.localeCompare(b.sym);});
 
     DATA_STATUS.wordCount=allWords.length;
     DATA_STATUS.ipaCount=IPA_DATA.length;
     DATA_STATUS.playableIPA=IPA_DATA.filter(function(d){return d.audioSource==='local'&&isUsableAudioSource(d.mp3);}).length;
     DATA_STATUS.exampleCount=IPA_DATA.reduce(function(n,d){return n+(d.words||[]).length;},0);
+    var excludedIPA=Object.keys(bySym).filter(function(k){var x=(k==='ɡ'?'g':k);return !AMERICAN_IPA_SET[x];});
+    if(excludedIPA.length)console.info('Excluded non-WJ / non-General-American IPA symbols:',excludedIPA);
     console.table(DATA_STATUS.sheets);
     console.log('Words:',DATA_STATUS.wordCount,'IPA:',DATA_STATUS.ipaCount,'Playable IPA:',DATA_STATUS.playableIPA,'Examples:',DATA_STATUS.exampleCount);
     console.log('Local IPA audio:',IPA_DATA.filter(function(d){return d.audioSource==='local';}).length,'/',IPA_DATA.length,'— folder: audio/ipa/');
@@ -1586,6 +1607,61 @@ function stopCardAnim() {
 
 
 
+var WJ_GA_ALLOWED=['i','ɪ','eɪ','ɛ','æ','ə','ʌ','ɑ','u','ʊ','oʊ','ɔ','aɪ','aʊ','ɔɪ','ɝ','ɚ','p','b','t','d','k','g','f','v','θ','ð','s','z','ʃ','ʒ','h','tʃ','dʒ','m','n','ŋ','l','r','w','j'];
+var WJ_GA_SET={};WJ_GA_ALLOWED.forEach(function(x){WJ_GA_SET[x]=true;});
+// Learner-friendly names and Merriam-Webster pronunciation-key bridge.
+// M-W values follow Merriam-Webster's own pronunciation key; they are not IPA.
+var IPA_LEARNER_META={
+'i':{friendly:'Long E sound',technical:'close front unrounded vowel',mw:'ē'},
+'ɪ':{friendly:'Short I sound',technical:'near-close near-front unrounded vowel',mw:'i'},
+'eɪ':{friendly:'Long A sound',technical:'FACE diphthong',mw:'ā'},
+'ɛ':{friendly:'Short E sound',technical:'open-mid front unrounded vowel',mw:'e'},
+'æ':{friendly:'Short A sound',technical:'near-open front unrounded vowel',mw:'a'},
+'ə':{friendly:'Schwa',technical:'mid central unstressed vowel',mw:'ə',same:true},
+'ʌ':{friendly:'STRUT / stressed UH sound',technical:'stressed central vowel (traditionally /ʌ/)',mw:'ə',note:'M-W uses ə with stress marking rather than a separate ʌ symbol.'},
+'ɑ':{friendly:'AH sound',technical:'open back unrounded vowel',mw:'ä'},
+'u':{friendly:'OO sound',technical:'close back rounded vowel',mw:'ü'},
+'ʊ':{friendly:'Short OO sound',technical:'near-close near-back rounded vowel',mw:'u̇'},
+'oʊ':{friendly:'Long O sound',technical:'GOAT diphthong',mw:'ō'},
+'ɔ':{friendly:'AW sound',technical:'open-mid back rounded vowel',mw:'ȯ'},
+'aɪ':{friendly:'Long I sound',technical:'PRICE diphthong',mw:'ī'},
+'aʊ':{friendly:'OW sound',technical:'MOUTH diphthong',mw:'au̇'},
+'ɔɪ':{friendly:'OY sound',technical:'CHOICE diphthong',mw:'ȯi'},
+'ɝ':{friendly:'Stressed R-colored vowel',technical:'r-colored stressed central vowel',mw:'ər'},
+'ɚ':{friendly:'R-colored schwa',technical:'unstressed r-colored central vowel',mw:'ər'},
+'p':{friendly:'P sound',technical:'voiceless bilabial stop',mw:'p',same:true},
+'b':{friendly:'B sound',technical:'voiced bilabial stop',mw:'b',same:true},
+'t':{friendly:'T sound',technical:'voiceless alveolar stop',mw:'t',same:true},
+'d':{friendly:'D sound',technical:'voiced alveolar stop',mw:'d',same:true},
+'k':{friendly:'K sound',technical:'voiceless velar stop',mw:'k',same:true},
+'g':{friendly:'G sound',technical:'voiced velar stop',mw:'g',same:true},
+'f':{friendly:'F sound',technical:'voiceless labiodental fricative',mw:'f',same:true},
+'v':{friendly:'V sound',technical:'voiced labiodental fricative',mw:'v',same:true},
+'θ':{friendly:'Unvoiced TH sound',technical:'voiceless dental fricative',mw:'th'},
+'ð':{friendly:'Voiced TH sound',technical:'voiced dental fricative',mw:'t͟h'},
+'s':{friendly:'S sound',technical:'voiceless alveolar fricative',mw:'s',same:true},
+'z':{friendly:'Z sound',technical:'voiced alveolar fricative',mw:'z',same:true},
+'ʃ':{friendly:'SH sound',technical:'voiceless postalveolar fricative',mw:'sh'},
+'ʒ':{friendly:'ZH sound',technical:'voiced postalveolar fricative',mw:'zh'},
+'h':{friendly:'H sound',technical:'voiceless glottal fricative',mw:'h',same:true},
+'tʃ':{friendly:'CH sound',technical:'voiceless postalveolar affricate',mw:'ch'},
+'dʒ':{friendly:'J sound',technical:'voiced postalveolar affricate',mw:'j'},
+'m':{friendly:'M sound',technical:'bilabial nasal',mw:'m',same:true},
+'n':{friendly:'N sound',technical:'alveolar nasal',mw:'n',same:true},
+'ŋ':{friendly:'NG / Eng sound',technical:'velar nasal',mw:'ŋ',same:true},
+'l':{friendly:'L sound',technical:'alveolar lateral approximant',mw:'l',same:true},
+'r':{friendly:'American R sound',technical:'postalveolar approximant /ɹ/',mw:'r',same:true},
+'w':{friendly:'W sound',technical:'labial-velar approximant',mw:'w',same:true},
+'j':{friendly:'Y sound',technical:'palatal approximant /j/',mw:'y'}
+};
+function learnerMeta(sym){return IPA_LEARNER_META[sym]||{friendly:'',technical:'',mw:''};}
+function mwInlineHTML(sym){var m=learnerMeta(sym);if(!m.mw)return '';return '<span class="ipa-notation-pill'+(m.same?' same':'')+'"><span>M-W</span><strong>'+m.mw+'</strong>'+(m.same?'<span>same symbol</span>':'')+'</span>'; }
+
+function sanitizeGeneralAmericanIPA(){
+  if(!Array.isArray(IPA_DATA))return;
+  IPA_DATA=IPA_DATA.map(function(d){if(d&&d.sym==='ɡ')d.sym='g';return d;}).filter(function(d){return d&&WJ_GA_SET[d.sym];});
+}
+
 var _ipaExplorerIndex=0,_ipaExplorerWordIndex=0;
 function ipaMouthType(sym){
   if(['i','ɪ','eɪ','ɛ'].indexOf(sym)>=0)return 'smile';
@@ -1631,7 +1707,7 @@ function renderIPAExplorer(){
  if(_ipaExplorerIndex>=IPA_DATA.length)_ipaExplorerIndex=0;var item=IPA_DATA[_ipaExplorerIndex],words=item.words||[],w=words.length?words[_ipaExplorerWordIndex%words.length]:null;
  host.querySelectorAll('.ipa-ex-key').forEach(function(b){b.classList.toggle('active',b.dataset.sym===item.sym);});
  document.getElementById('ipaExMouth').innerHTML=ipaMouthSVG(item.sym);
- document.getElementById('ipaExSymbol').textContent='/'+item.sym+'/';document.getElementById('ipaExName').textContent=item.name||item.cat||'';
+ document.getElementById('ipaExSymbol').textContent='/'+item.sym+'/';var lm=learnerMeta(item.sym);document.getElementById('ipaExName').innerHTML='<div class="ipa-name-friendly">'+(lm.friendly||item.name||item.cat||'')+'</div><div class="ipa-name-tech">'+(lm.technical||'')+'</div><div class="ipa-notation-row"><span class="ipa-notation-pill"><span>IPA</span><strong>/'+item.sym+'/</strong></span>'+mwInlineHTML(item.sym)+'</div>'+(lm.note?'<div class="ipa-audio-note">'+lm.note+'</div>':'');
  document.getElementById('ipaExDesc').textContent=item.desc||'';document.getElementById('ipaExExample').textContent=w?w.w:'No example';document.getElementById('ipaExExampleIPA').textContent=w&&w.ipa?'['+w.ipa.replace(/^\[|\]$/g,'')+']':'';
  var tip=ipaMouthType(item.sym);document.getElementById('ipaExTip').textContent=(item.cat==='Vowel'?'Copy the lip shape first, then listen and repeat.':'Copy the mouth shape first. For tongue sounds, use the label as a simple position clue.');
  var btn=host.querySelector('.ipa-ex-symplay');
@@ -1639,9 +1715,10 @@ function renderIPAExplorer(){
  else {btn.textContent='🔊 word';btn.classList.add('fallback');btn.title='No local isolated MP3 — plays the example word';document.getElementById('ipaExAudioNote').textContent='No isolated local MP3 for /'+item.sym+'/ — speaker plays the example word instead.';}
 }
 function buildIPAExplorer(){
+ sanitizeGeneralAmericanIPA();
  var host=document.getElementById('ipaExplorer');if(!host)return;
  var keys=IPA_DATA.map(function(d,i){return '<button class="ipa-ex-key '+(d.cat==='Vowel'?'vowel':'consonant')+(d.audioSource==='local'?'':' no-local')+'" data-i="'+i+'" data-sym="'+d.sym+'" title="'+(d.audioSource==='local'?'Local isolated MP3':'Example-word audio fallback')+'">'+d.sym+'</button>';}).join('');
- host.innerHTML='<div class="ipa-section-title">American IPA Sound Explorer</div><div class="ipa-ex-grid">'+keys+'</div><div class="ipa-ex-layout"><div class="ipa-mouth"><div id="ipaExMouth"></div><button class="ipa-ex-nav ipa-ex-prev" title="Previous example">‹</button><button class="ipa-ex-nav ipa-ex-next" title="Next example">›</button><button class="ipa-ex-symplay" title="Play sound">🔊</button></div><div><div id="ipaExSymbol" class="ipa-ex-symbol"></div><div id="ipaExName" class="ipa-ex-name"></div><div id="ipaExExample" class="ipa-ex-example" title="Click to hear word"></div><div id="ipaExExampleIPA" class="ipa-ex-example-ipa"></div><div id="ipaExDesc" class="ipa-ex-desc"></div><div id="ipaExTip" class="ipa-ex-tip"></div><div id="ipaExAudioNote" class="ipa-audio-note"></div></div></div>';
+ host.innerHTML='<div class="ipa-section-title">General American Sound Explorer</div><div style="font-size:.78rem;color:var(--muted);margin-top:-4px">IPA is the main system. M-W shows Merriam-Webster&apos;s pronunciation-key symbol for the same sound.</div><div class="ipa-ex-grid">'+keys+'</div><div class="ipa-ex-layout"><div class="ipa-mouth"><div id="ipaExMouth"></div><button class="ipa-ex-nav ipa-ex-prev" title="Previous example">‹</button><button class="ipa-ex-nav ipa-ex-next" title="Next example">›</button><button class="ipa-ex-symplay" title="Play sound">🔊</button></div><div><div id="ipaExSymbol" class="ipa-ex-symbol"></div><div id="ipaExName" class="ipa-ex-name"></div><div id="ipaExExample" class="ipa-ex-example" title="Click to hear word"></div><div id="ipaExExampleIPA" class="ipa-ex-example-ipa"></div><div id="ipaExDesc" class="ipa-ex-desc"></div><div id="ipaExTip" class="ipa-ex-tip"></div><div id="ipaExAudioNote" class="ipa-audio-note"></div></div></div><details class="mw-key"><summary>Dictionary Key — IPA ↔ Merriam-Webster</summary><div class="mw-key-grid">'+IPA_DATA.map(function(d){var m=learnerMeta(d.sym);return '<div class="mw-key-item"><b>/'+d.sym+'/</b> → M-W <b>'+(m.mw||'—')+'</b><br>'+(m.friendly||'')+'</div>';}).join('')+'</div></details>';
  host.querySelectorAll('.ipa-ex-key').forEach(function(b){b.onclick=function(){_ipaExplorerIndex=+this.dataset.i;_ipaExplorerWordIndex=0;renderIPAExplorer();playIPAExplorerItem(IPA_DATA[_ipaExplorerIndex]);};});
  host.querySelector('.ipa-ex-prev').onclick=function(){var d=IPA_DATA[_ipaExplorerIndex],n=(d.words||[]).length;if(n){_ipaExplorerWordIndex=(_ipaExplorerWordIndex-1+n)%n;renderIPAExplorer();}};
  host.querySelector('.ipa-ex-next').onclick=function(){var d=IPA_DATA[_ipaExplorerIndex],n=(d.words||[]).length;if(n){_ipaExplorerWordIndex=(_ipaExplorerWordIndex+1)%n;renderIPAExplorer();}};
@@ -1660,11 +1737,13 @@ function makeIPACards(items){
       +'<button class="ipa-sym-btn '+catCls+'" data-card="'+cardId+'" data-mp3="'+(item.mp3||'')+'" data-words="'+wordList+'">'+item.sym+'</button>'
       +'<div class="ipa-word-stage" id="'+cardId+'-stage"></div>'
       +'<div class="ipa-desc-main">'+descHL+'</div>'
+      +'<div class="ipa-card-meta"><span><b>'+((learnerMeta(item.sym).friendly)||'')+'</b></span><span>IPA /'+item.sym+'/</span><span>M-W <b>'+((learnerMeta(item.sym).mw)||'—')+'</b>'+((learnerMeta(item.sym).same)?' (same symbol)':'')+'</span></div>'
       +'</div>';
   });
   return h;
 }
 function showIPA(){
+  sanitizeGeneralAmericanIPA();
   show('ipaScreen');
   stopCardAnim();
   var vowels=IPA_DATA.filter(function(d){return d.cat==='Vowel';});
