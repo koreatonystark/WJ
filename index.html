@@ -308,6 +308,25 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .review-filter.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
 .review-filter.wrong-filter.active{background:var(--accent2);border-color:var(--accent2);}
 
+
+/* Game history: full question + explanation review */
+.review-question{margin:8px 0 10px;padding:10px 12px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);}
+.review-qtype{font-size:.64rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.review-prompt{font-size:.84rem;line-height:1.55;color:var(--text);font-weight:700;}
+.review-context{font-size:.78rem;line-height:1.5;color:var(--muted);font-style:italic;margin-top:4px;}
+.review-answerline{display:grid;grid-template-columns:92px 1fr;gap:8px;margin:7px 0;font-size:.8rem;line-height:1.45;}
+.review-answerlabel{font-size:.64rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px;}
+.review-answer.user-wrong{color:var(--accent2);font-weight:800}.review-answer.user-ok{color:var(--accent3);font-weight:800}.review-answer.correct{color:var(--accent3);font-weight:800}
+.review-choices{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.review-choice{padding:5px 9px;border:1px solid var(--border);border-radius:8px;font-size:.74rem;background:var(--surface)}
+.review-choice.correct{border-color:var(--accent3);color:var(--accent3);font-weight:800}.review-choice.selected-wrong{border-color:var(--accent2);color:var(--accent2);font-weight:800;text-decoration:line-through}
+.review-sentences{display:grid;gap:5px;margin-top:7px}.review-sentence{font-size:.78rem;line-height:1.45;color:var(--text);padding:6px 8px;background:rgba(255,255,255,.025);border-radius:7px}
+.review-explain-title{font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--accent2);margin:12px 0 6px;padding-top:10px;border-top:1px solid var(--border)}
+.review-detail-grid{display:grid;gap:7px}.review-detail{padding:8px 10px;border-radius:8px;background:rgba(108,99,255,.06);border-left:3px solid var(--accent);font-size:.79rem;line-height:1.5;color:var(--text)}
+.review-detail b{display:block;color:var(--muted);font-size:.61rem;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+.review-card-header::after{content:'▾';color:var(--muted);font-size:.85rem;margin-left:4px}.review-card.is-open .review-card-header::after{content:'▴'}
+.review-open-round{width:min(760px,94vw);margin:10px auto 0;display:flex;justify-content:center}.review-open-round .btn-s{border-color:rgba(108,99,255,.55);color:var(--text)}
+@media(max-width:520px){.review-answerline{grid-template-columns:1fr;gap:2px}.review-answerlabel{padding-top:0}}
+
 /* IPA Guide - clean two-row analog tuner */
 .ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:12px 14px;margin-bottom:9px;display:grid;grid-template-columns:70px minmax(0,1fr);grid-template-rows:64px auto;column-gap:14px;row-gap:7px;align-items:center;min-height:112px;}
 .ipa-card:hover{border-color:rgba(108,99,255,.3);}
@@ -462,6 +481,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="result-breakdown" id="resultBreakdown"></div>
   <div id="masteredMsg" style="color:var(--accent3);font-size:.86rem;margin-bottom:3px;"></div>
   <div id="memoryReview" class="memory-review"></div>
+  <div class="review-open-round"><button class="btn-s" id="reviewRoundBtn">&#128196; Review the 10 Questions</button></div>
   <div class="result-btns">
     <button class="btn-p" id="playAgainBtn">Play Again &#128640;</button>
     <button class="btn-s" id="homeBtn">Home</button>
@@ -471,7 +491,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div style="max-width:700px;width:100%;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v30</span></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v31</span></div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
       </div>
       <button class="btn-s" id="ipaBackBtn">&#8592; Back</button>
@@ -905,8 +925,8 @@ function showHome(){
   var top=Math.max.apply(null,recs.map(function(r){return r.score;}));
   var recTotal=recs.length;
   el.innerHTML=recent.map(function(r,i){var recIdx=recTotal-1-i;var hw=r.words&&r.words.length>0;
-    return '<div class="record-row" style="cursor:'+(hw?'pointer':'default')+'"'+(hw?' onclick="showReview('+recIdx+')"':'')+'>'+
-    '<div><span class="record-score">'+r.score+' pts</span>'+(r.score===top&&i===0?'<span class="new-badge">NEW</span>':'')+(hw?'<span style="font-size:.68rem;color:var(--accent);margin-left:8px;font-weight:700">&#128196; Review</span>':'')+'</div><div style="font-size:.74rem;color:var(--muted)">'+r.correct+' correct / '+r.wrong+' missed'+(r.nm?' / +'+r.nm+' mastered':'')+'</div><div style="font-size:.71rem;color:var(--muted)">'+r.date+'</div></div>';}).join('');
+    return '<div class="record-row" style="cursor:'+(hw?'pointer':'default')+'"'+(hw?' onclick="showReview('+recIdx+',\'homeScreen\')"':'')+'>'+
+    '<div><span class="record-score">'+r.score+' pts</span>'+(r.score===top&&i===0?'<span class="new-badge">NEW</span>':'')+(hw?'<span style="font-size:.68rem;color:var(--accent);margin-left:8px;font-weight:700">&#128196; Questions + Explanations</span>':'')+'</div><div style="font-size:.74rem;color:var(--muted)">'+r.correct+' correct / '+r.wrong+' missed'+(r.nm?' / +'+r.nm+' mastered':'')+'</div><div style="font-size:.71rem;color:var(--muted)">'+r.date+'</div></div>';}).join('');
 }
 
 document.addEventListener('DOMContentLoaded',function(){
@@ -914,6 +934,8 @@ document.getElementById('filterTier').addEventListener('click',function(e){var b
 document.getElementById('startBtn').addEventListener('click',startRound);
 document.getElementById('playAgainBtn').addEventListener('click',startRound);
 document.getElementById('homeBtn').addEventListener('click',showHome);
+var rrb=document.getElementById('reviewRoundBtn');if(rrb)rrb.addEventListener('click',function(){if(recs.length)showReview(recs.length-1,'resultScreen');});
+var rvb=document.getElementById('reviewBackBtn');if(rvb)rvb.addEventListener('click',function(){stopBlockTTS();var dest=window._reviewReturnScreen||'homeScreen';if(dest==='homeScreen')showHome();else show(dest);});
 document.getElementById('masteredBtn').addEventListener('click',showMastered);
 document.getElementById('masteredBackBtn').addEventListener('click',showHome);
 document.getElementById('restoreAllBtn').addEventListener('click',restoreAll);
@@ -968,48 +990,50 @@ function pickWords(){
 }
 function fbPick(pool){var wt=[];pool.forEach(function(w){var r=missed(w)?3:1;for(var i=0;i<r;i++)wt.push(w);});var p=[],u={},tr=0;while(p.length<QPR&&tr<2000){var w=wt[Math.floor(Math.random()*wt.length)];if(!u[w.word]){p.push(w);u[w.word]=true;}tr++;}return p;}
 
-function showReview(recIdx){
+function showReview(recIdx,returnId){
   var rec=recs[recIdx];if(!rec)return;
+  window._reviewReturnScreen=returnId||'homeScreen';
   show('reviewScreen');
   document.getElementById('reviewMeta').textContent=rec.date+'  |  '+rec.score+' pts  |  '+rec.correct+' correct / '+rec.wrong+' missed';
   var words=rec.words||[];
-  if(!words.length){document.getElementById('reviewList').innerHTML='<div style="color:var(--muted);text-align:center;padding:30px">No word data.</div>';return;}
+  if(!words.length){document.getElementById('reviewList').innerHTML='<div style="color:var(--muted);text-align:center;padding:30px">No question data was saved for this older record.</div>';return;}
   var curFilter='all';
+  function qTypeLabel(t){return t==='mc'?'Choose the Word':t==='ty'?'Type the Word':t==='sent'?'Fill in the Blank':'Word Review';}
+  function detail(label,text){if(!text)return '';return '<div class="review-detail tts-readable" data-tts="'+escHTML(text)+'"><b>'+label+'</b>'+escHTML(text)+'</div>';}
   function renderReview(){
     var filtered=curFilter==='wrong'?words.filter(function(r){return !r.ok;}):curFilter==='correct'?words.filter(function(r){return r.ok;}):words;
     var list=document.getElementById('reviewList');
-    // Filter row
     var fr=document.createElement('div');fr.className='review-filter-row';
     ['all','wrong','correct'].forEach(function(f){
-      var btn=document.createElement('button');
-      btn.className='review-filter'+(f===curFilter?' active':'')+(f==='wrong'&&f===curFilter?' wrong-filter':'');
+      var btn=document.createElement('button');btn.className='review-filter'+(f===curFilter?' active':'')+(f==='wrong'&&f===curFilter?' wrong-filter':'');
       var wf=f==='wrong'?words.filter(function(r){return !r.ok;}):f==='correct'?words.filter(function(r){return r.ok;}):words;
-      btn.textContent=(f==='all'?'All':f==='wrong'?'✗ Missed':'✓ Correct')+' ('+wf.length+')';
-      btn.addEventListener('click',function(){curFilter=f;renderReview();});
-      fr.appendChild(btn);
+      btn.textContent=(f==='all'?'All':f==='wrong'?'✗ Missed':'✓ Correct')+' ('+wf.length+')';btn.addEventListener('click',function(){curFilter=f;renderReview();});fr.appendChild(btn);
     });
-    list.innerHTML='';
-    list.appendChild(fr);
-    // Word cards
-    filtered.forEach(function(r,i){
-      var w=r.word;var db=WORD_DB[w.word]||{};
-      var stars=db.stars||1;var starStr='';for(var s=0;s<stars;s++)starStr+='★';
-      var card=document.createElement('div');
-      card.className='review-card '+(r.ok?'correct-card':'wrong-card');
+    list.innerHTML='';list.appendChild(fr);
+    filtered.forEach(function(r){
+      var w=r.word||{};var word=w.word||'';var db=WORD_DB[word]||{};
+      var stars=db.stars||1,starStr='';for(var ss=0;ss<stars;ss++)starStr+='★';
+      var card=document.createElement('div');card.className='review-card '+(r.ok?'correct-card':'wrong-card')+(r.ok?'':' is-open');
       var header=document.createElement('div');header.className='review-card-header';
-      header.innerHTML='<div><div class="review-word">'+w.word+'</div>'
-        +'<div style="display:flex;gap:8px;align-items:center;margin-top:2px">'
-        +'<span class="review-stars">'+starStr+'</span>'
-        +(db.ipa?'<span style="font-size:.78rem;color:var(--muted);font-family:serif">'+db.ipa+'</span>':'')
-        +'</div></div>'
+      var qNo=(typeof r.qNo==='number'?r.qNo+1:(words.indexOf(r)+1));
+      header.innerHTML='<div style="min-width:0"><div style="font-size:.65rem;color:var(--muted);font-weight:800;margin-bottom:2px">QUESTION '+qNo+' · '+qTypeLabel(r.type)+'</div><div class="review-word">'+escHTML(word)+'</div>'
+        +'<div style="display:flex;gap:8px;align-items:center;margin-top:2px"><span class="review-stars">'+starStr+'</span>'+(db.ipa?'<span style="font-size:.78rem;color:var(--muted);font-family:serif">['+escHTML(String(db.ipa).replace(/^\[|\]$/g,''))+']</span>':'')+'</div></div>'
         +'<span class="review-result '+(r.ok?'ok':'miss')+'">'+(r.ok?'✓ Correct':'✗ Missed')+'</span>';
-      var body=document.createElement('div');body.className='review-body';body.id='rb'+i;
-      body.innerHTML=(db.def?'<div class="review-def">'+db.def+'</div>':'')
-        +(db.kid?'<div class="review-kid">💡 '+db.kid+'</div>':'')
-        +(db.exA?'<div class="review-ex-label">Everyday</div><div class="review-ex">'+db.exA+'</div>':'')
-        +(db.exB?'<div class="review-ex-label" style="margin-top:6px">ELA</div><div class="review-ex">'+db.exB+'</div>':'');
-      header.addEventListener('click',function(){body.classList.toggle('open');});
+      var body=document.createElement('div');body.className='review-body'+(r.ok?'':' open');
+      var qhtml='<div class="review-question"><div class="review-qtype">Original Question</div>';
+      if(r.type==='mc') qhtml+='<div class="review-prompt">Which word matches this description?</div>'+(r.prompt?'<div class="review-context">'+escHTML(r.prompt)+'</div>':'')+(r.context?'<div class="review-context">'+escHTML(r.context)+'</div>':'');
+      else if(r.type==='ty') qhtml+='<div class="review-prompt">Type the correct English word.</div>'+(r.prompt?'<div class="review-context">'+escHTML(r.prompt)+'</div>':'')+(r.context?'<div class="review-context">'+escHTML(r.context)+'</div>':'');
+      else if(r.type==='sent'){qhtml+='<div class="review-prompt">Read the sentences and find the missing word.</div>';if(r.sentences&&r.sentences.length)qhtml+='<div class="review-sentences">'+r.sentences.map(function(x){return '<div class="review-sentence">'+escHTML(x)+'</div>';}).join('')+'</div>';}
+      else qhtml+='<div class="review-prompt">'+escHTML(word)+'</div>';
+      if(r.choices&&r.choices.length)qhtml+='<div class="review-choices">'+r.choices.map(function(c){var cls='review-choice';if(c===r.correct)cls+=' correct';if(c===r.selected&&r.selected!==r.correct)cls+=' selected-wrong';return '<span class="'+cls+'">'+escHTML(c)+'</span>';}).join('')+'</div>';
+      qhtml+='<div class="review-answerline"><div class="review-answerlabel">Your answer</div><div class="review-answer '+(r.ok?'user-ok':'user-wrong')+'">'+escHTML(r.selected||'(no answer)')+'</div></div>';
+      qhtml+='<div class="review-answerline"><div class="review-answerlabel">Correct answer</div><div class="review-answer correct">'+escHTML(r.correct||word)+'</div></div></div>';
+      var explain='<div class="review-explain-title">Explanation / Memory Review</div><div class="review-detail-grid">';
+      explain+=detail('Definition',db.def||'');explain+=detail('Easy explanation / Think',db.kid||'');explain+=detail('Everyday / School example',db.exA||'');explain+=detail('ELA / Literature example',db.exB||'');explain+=detail('Science / Social Studies / Math example',db.exC||'');explain+=detail('Word structure',db.logic||'');explain+=detail('Nuance & usage',db.nuance||'');explain+=detail('Origin / memory hook',db.origin||'');explain+=detail('Meaning logic',db.learn1||'');explain+=detail('Context',db.learn2||'');explain+=detail('Nuance check',db.learn3||'');explain+=detail('Grade 4 priority',db.pri||'');explain+=detail('Academic function',db.afc||'');explain+=detail('State test relevance',db.trel||'');explain+=detail('Review notes',db.review||'');explain+=detail('Answer strategy',db.ans||'');explain+='</div>';
+      body.innerHTML=qhtml+explain;
+      header.addEventListener('click',function(){body.classList.toggle('open');card.classList.toggle('is-open',body.classList.contains('open'));});
       card.appendChild(header);card.appendChild(body);list.appendChild(card);
+      body.querySelectorAll('.tts-readable').forEach(function(el){el.style.cursor='pointer';el.title='Click to read aloud; click again to stop';el.addEventListener('click',function(){toggleBlockTTS(el,el.dataset.tts||el.textContent);});});
     });
   }
   renderReview();
@@ -1103,7 +1127,7 @@ function renderQ(word,type){
     var opts=shuf([word].concat(dist));
     getAI(word).then(function(ai){
       area.innerHTML='<div class="game-card"><span class="badge badge-mc">&#128214; Choose the Word</span>'+bb+meta+'<div class="qlabel">Which word matches this description?</div><div class="def-box"><div class="def-text">'+ai.def+'</div><div class="ex-text">'+ai.ex+'</div></div><div class="options-grid" id="og">'+opts.map(function(o){return '<button class="option-btn" data-w="'+o.word+'">'+o.word+'</button>';}).join('')+'</div><div class="feedback-area" id="fa"></div></div>';
-      document.getElementById('og').addEventListener('click',function(e){var b=e.target.closest('.option-btn');if(!b||answering)return;doMC(word,b.dataset.w,bonus,ai);});
+      document.getElementById('og').addEventListener('click',function(e){var b=e.target.closest('.option-btn');if(!b||answering)return;doMC(word,b.dataset.w,bonus,ai,opts);});
     });
   }else if(type==='ty'){
     area.innerHTML='<div class="game-card"><span class="badge badge-type">&#9000; Type the Word</span>'+bb+meta+'<div class="qlabel">Type the correct English word - 60 seconds!</div><div class="def-box" id="db"><div class="shimmer" style="width:76%"></div><div class="shimmer" style="width:66%"></div></div><div class="timer-container"><svg class="timer-ring" width="64" height="64"><circle cx="32" cy="32" r="27" fill="none" stroke="var(--border)" stroke-width="6"/><circle id="tc" cx="32" cy="32" r="27" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="'+circ+'" stroke-dashoffset="0"/></svg><div class="timer-text" id="tn">60</div></div><input class="type-input" id="ti" placeholder="Type the word here..." autocomplete="off" autocorrect="off" spellcheck="false" autofocus><button class="submit-btn" id="sb">Submit</button><div class="feedback-area" id="fa"></div></div>';
@@ -1125,26 +1149,27 @@ function renderQ(word,type){
     if(!sents.length)sents=['"'+word.word+'" is used in a sentence with ___.'];
     var sa=document.getElementById('sa');if(sa)sa.innerHTML=sents.map(function(s){return '<div class="sentence-item">'+s.replace(/___/g,'<span class="blank"></span>')+'</div>';}).join('');
     var wc=document.getElementById('wc');
-    if(wc){wc.style.opacity='1';wc.style.pointerEvents='';wc.innerHTML=choices.map(function(w2){return '<button class="word-chip" data-w="'+w2.word+'">'+w2.word+'</button>';}).join('');wc.addEventListener('click',function(e){var ch=e.target.closest('.word-chip');if(!ch||answering)return;doSent(word,ch.dataset.w,bonus,sents);});}
+    if(wc){wc.style.opacity='1';wc.style.pointerEvents='';wc.innerHTML=choices.map(function(w2){return '<button class="word-chip" data-w="'+w2.word+'">'+w2.word+'</button>';}).join('');wc.addEventListener('click',function(e){var ch=e.target.closest('.word-chip');if(!ch||answering)return;doSent(word,ch.dataset.w,bonus,sents,choices);});}
   })();
   }
 }
 
+function recordRoundResult(data){if(typeof roundResults==='undefined')return;data=data||{};data.qNo=qIdx;roundResults.push(data);}
 // HANDLERS
-function doMC(word,chosen,bonus,ai){
-  answering=true;var ok=chosen===word.word;var p=pts(ok,bonus,'mc',word);var jm=upProg(word,ok);if(ok)score+=p;
+function doMC(word,chosen,bonus,ai,opts){
+  answering=true;var ok=chosen===word.word;var p=pts(ok,bonus,'mc',word);var jm=upProg(word,ok);if(ok)score+=p;recordRoundResult({word:word,ok:ok,type:'mc',prompt:(ai&&ai.def)||'',context:(ai&&ai.ex)||'',selected:chosen,correct:word.word,choices:(opts||[]).map(function(x){return x.word;})});
   document.querySelectorAll('.option-btn').forEach(function(b){b.disabled=true;if(b.dataset.w===word.word)b.classList.add('correct');else if(b.dataset.w===chosen&&!ok)b.classList.add('wrong');});
   if(ok){showOK(p,word,bonus,ai,jm);setTimeout(function(){qIdx++;showQ();},1900);}else{cryEmoji();showWrong(word,null);}
 }
 function doType(word,bonus,timeout,ai){
   if(answering)return;clearTimer();answering=true;
   var inp=document.getElementById('ti');var val=inp?inp.value.trim().toLowerCase():'';
-  var ok=val===word.word.toLowerCase();var p=pts(ok,bonus,'ty',word);var jm=upProg(word,ok);if(ok)score+=p;
+  var ok=val===word.word.toLowerCase();var p=pts(ok,bonus,'ty',word);var jm=upProg(word,ok);if(ok)score+=p;recordRoundResult({word:word,ok:ok,type:'ty',prompt:(ai&&ai.def)||'',context:(ai&&ai.ex)||'',selected:val,correct:word.word,choices:[]});
   if(inp){inp.disabled=true;inp.classList.add(ok?'correct-input':'wrong-input');}
   if(ok){showOK(p,word,bonus,ai,jm);setTimeout(function(){qIdx++;showQ();},1900);}else{cryEmoji();showWrong(word,ai,timeout?'Time up! The word was:':null);}
 }
-function doSent(word,chosen,bonus,sents){
-  answering=true;var ok=chosen===word.word;var p=pts(ok,bonus,'sent',word);var jm=upProg(word,ok);if(ok)score+=p;
+function doSent(word,chosen,bonus,sents,choices){
+  answering=true;var ok=chosen===word.word;var p=pts(ok,bonus,'sent',word);var jm=upProg(word,ok);if(ok)score+=p;recordRoundResult({word:word,ok:ok,type:'sent',sentences:(sents||[]).slice(),selected:chosen,correct:word.word,choices:(choices||[]).map(function(x){return x.word;})});
   var sa=document.getElementById('sa');if(sa)sa.innerHTML=sents.map(function(s){return '<div class="sentence-item">'+s.replace(/___/g,'<strong style="color:var(--accent3)">'+word.word+'</strong>')+'</div>';}).join('');
   document.querySelectorAll('.word-chip').forEach(function(ch){ch.disabled=true;if(ch.dataset.w===word.word)ch.classList.add('correct');else if(ch.dataset.w===chosen&&!ok)ch.classList.add('wrong');});
   if(ok){showOK(p,word,bonus,null,jm);setTimeout(function(){qIdx++;showQ();},2200);}else{cryEmoji();showWrong(word,null);}
@@ -1154,7 +1179,6 @@ function upProg(word,ok){
   if(ok){p.correct++;p.lastCorrectGame=gCount;rs.correct++;if(p.correct===MASTERY_CORRECT){jm=true;rs.nm++;}}
   else{p.wrong++;rs.wrong++;}
   if(missed(word)&&ok)rs.bonus++;
-  if(typeof roundResults!=='undefined')roundResults.push({word:word,ok:ok});
   return jm;
 }
 function showOK(p,word,bonus,ai,jm){
