@@ -370,7 +370,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 
 /* WJ Interactive American IPA Explorer */
-.ipa-explorer{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:18px}.ipa-ex-grid{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 15px}.ipa-ex-key{width:44px;height:44px;border-radius:50%;border:0;color:#fff;font:700 1.05rem 'Nunito',sans-serif;cursor:pointer;transition:.15s}.ipa-ex-key.vowel{background:#e84b38}.ipa-ex-key.consonant{background:#1385bd}.ipa-ex-key.active{outline:3px solid var(--text);outline-offset:2px;transform:scale(1.08)}.ipa-ex-layout{display:grid;grid-template-columns:minmax(220px,.9fr) minmax(260px,1.1fr);gap:18px;align-items:center}.ipa-mouth{position:relative;min-height:250px;border-radius:18px;background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center}.ipa-face-svg{width:92%;max-width:360px;height:235px}.ipa-ex-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:56px;border:0;background:transparent;color:var(--text);font-size:2.2rem;cursor:pointer}.ipa-ex-prev{left:5px}.ipa-ex-next{right:5px}.ipa-ex-symplay{position:absolute;right:14px;bottom:12px;width:48px;height:48px;border-radius:50%;border:0;background:var(--accent);color:white;font-size:1.25rem;cursor:pointer}.ipa-ex-symbol{font:800 3rem 'Space Grotesk',sans-serif;margin-bottom:2px}.ipa-ex-name{font-size:.8rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.07em}.ipa-ex-example{font-size:1.55rem;font-weight:800;margin:12px 0 2px;cursor:pointer}.ipa-ex-example-ipa{font-family:'Courier New',monospace;color:var(--accent2);margin-bottom:12px}.ipa-ex-desc{line-height:1.6;font-size:.92rem}.ipa-ex-tip{margin-top:10px;padding:9px 11px;border-left:3px solid var(--accent3);background:rgba(67,233,123,.06);font-size:.82rem;color:var(--muted)}@media(max-width:650px){.ipa-ex-layout{grid-template-columns:1fr}.ipa-mouth{min-height:210px}.ipa-face-svg{height:195px}}
+.ipa-explorer{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:18px}.ipa-ex-grid{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 15px}.ipa-ex-key{width:44px;height:44px;border-radius:50%;border:0;color:#fff;font:700 1.05rem 'Nunito',sans-serif;cursor:pointer;transition:.15s}.ipa-ex-key.vowel{background:#e84b38}.ipa-ex-key.consonant{background:#1385bd}.ipa-ex-key.active{outline:3px solid var(--text);outline-offset:2px;transform:scale(1.08)}.ipa-ex-key.no-local{opacity:.56}.ipa-ex-layout{display:grid;grid-template-columns:minmax(220px,.9fr) minmax(260px,1.1fr);gap:18px;align-items:center}.ipa-mouth{position:relative;min-height:245px;border-radius:18px;background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center}.ipa-mouth-svg{width:90%;max-width:330px;height:220px}.ipa-ex-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:56px;border:0;background:transparent;color:var(--text);font-size:2.2rem;cursor:pointer}.ipa-ex-prev{left:5px}.ipa-ex-next{right:5px}.ipa-ex-symplay{position:absolute;right:14px;bottom:12px;min-width:48px;height:48px;padding:0 13px;border-radius:24px;border:0;background:var(--accent);color:white;font-size:1.05rem;cursor:pointer}.ipa-ex-symplay.fallback{background:var(--surface);border:1px solid var(--accent4);color:var(--accent4)}.ipa-ex-symbol{font:800 3rem 'Space Grotesk',sans-serif;margin-bottom:2px}.ipa-ex-name{font-size:.8rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.07em}.ipa-ex-example{font-size:1.55rem;font-weight:800;margin:12px 0 2px;cursor:pointer}.ipa-ex-example-ipa{font-family:'Courier New',monospace;color:var(--accent2);margin-bottom:12px}.ipa-ex-desc{line-height:1.6;font-size:.92rem}.ipa-ex-tip{margin-top:10px;padding:9px 11px;border-left:3px solid var(--accent3);background:rgba(67,233,123,.06);font-size:.82rem;color:var(--muted)}.ipa-audio-note{font-size:.72rem;color:var(--accent4);margin-top:6px}.mouth-label{font:800 13px 'Nunito',sans-serif;fill:currentColor}.mouth-sub{font:700 11px 'Nunito',sans-serif;fill:var(--muted)}@media(max-width:650px){.ipa-ex-layout{grid-template-columns:1fr}.ipa-mouth{min-height:210px}.ipa-mouth-svg{height:190px}}
 </style>
 </head>
 <body>
@@ -795,8 +795,13 @@ function loadAllSources(){
     // Keep the sheet URL only as metadata/fallback for sounds that are not in the local pack.
     IPA_DATA.forEach(function(d){
       var local=getLocalIPAAudio(d.sym);
-      if(local){ d.remoteMp3=d.mp3||''; d.mp3=local; d.audioSource='local'; }
-      else { d.audioSource=d.mp3?'sheet':'missing'; }
+      d.remoteMp3=d.mp3||'';
+      if(local){ d.mp3=local; d.audioSource='local'; }
+      else {
+        // Do not hot-link old third-party audio. Guide falls back to the example word TTS,
+        // and IPA Quiz excludes symbols without our own local MP3.
+        d.mp3=''; d.audioSource='word-fallback';
+      }
     });
     // Keep a predictable teaching order when the sound master sheet provides one.
     var order=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɝ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ','p','b','t','d','k','g','f','v','θ','ð','s','z','ʃ','ʒ','h','tʃ','dʒ','m','n','ŋ','l','r','w','j'];
@@ -804,13 +809,13 @@ function loadAllSources(){
 
     DATA_STATUS.wordCount=allWords.length;
     DATA_STATUS.ipaCount=IPA_DATA.length;
-    DATA_STATUS.playableIPA=IPA_DATA.filter(function(d){return isUsableAudioSource(d.mp3);}).length;
+    DATA_STATUS.playableIPA=IPA_DATA.filter(function(d){return d.audioSource==='local'&&isUsableAudioSource(d.mp3);}).length;
     DATA_STATUS.exampleCount=IPA_DATA.reduce(function(n,d){return n+(d.words||[]).length;},0);
     console.table(DATA_STATUS.sheets);
     console.log('Words:',DATA_STATUS.wordCount,'IPA:',DATA_STATUS.ipaCount,'Playable IPA:',DATA_STATUS.playableIPA,'Examples:',DATA_STATUS.exampleCount);
     console.log('Local IPA audio:',IPA_DATA.filter(function(d){return d.audioSource==='local';}).length,'/',IPA_DATA.length,'— folder: audio/ipa/');
-    var missing=IPA_DATA.filter(function(d){return !isUsableAudioSource(d.mp3);}).map(function(d){return d.sym;});
-    if(missing.length)console.warn('IPA symbols with no usable local or sheet MP3:',missing);
+    var missing=IPA_DATA.filter(function(d){return d.audioSource!=='local';}).map(function(d){return d.sym;});
+    if(missing.length)console.warn('IPA symbols without local isolated MP3 (Guide uses example-word TTS; Quiz excludes them):',missing);
     console.table(IPA_DATA.map(function(d){return {symbol:d.sym,source:d.audioSource||'',mp3:!!d.mp3,usable:isUsableAudioSource(d.mp3),path:d.mp3||'',remote:d.remoteMp3||''};}));
     loadSt();showHome();
   });
@@ -827,7 +832,7 @@ function getAI(word){
 }
 
 function getQuizIPAData(){
-  return IPA_DATA.filter(function(d){return d&&d.sym&&isUsableAudioSource(d.mp3)&&(d.words||[]).length>0;});
+  return IPA_DATA.filter(function(d){return d&&d.sym&&d.audioSource==='local'&&isUsableAudioSource(d.mp3)&&(d.words||[]).length>0;});
 }
 function loadWords(){return loadAllSources();}
 function loadIPA(){return Promise.resolve();}
@@ -1582,24 +1587,44 @@ function stopCardAnim() {
 
 
 var _ipaExplorerIndex=0,_ipaExplorerWordIndex=0;
-function ipaArt(sym){
- var vowels=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɝ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ'];
- var front=['i','ɪ','eɪ','ɛ','æ'], back=['ɑ','ɔ','ʊ','u'];
- var rounded=['u','ʊ','ɔ','ɝ'];
- var place={p:'lips',b:'lips',m:'lips',f:'lipteeth',v:'lipteeth','θ':'teeth','ð':'teeth',t:'ridge',d:'ridge',s:'ridge',z:'ridge',n:'ridge',l:'ridge',r:'ridge','ʃ':'backridge','ʒ':'backridge','tʃ':'backridge','dʒ':'backridge',j:'palate',k:'velar',g:'velar','ŋ':'velar',h:'glottis',w:'lips'};
- if(vowels.indexOf(sym)>=0){return {vowel:true,x:front.indexOf(sym)>=0?108:(back.indexOf(sym)>=0?190:150),y:['i','u'].indexOf(sym)>=0?105:(['æ','ɑ'].indexOf(sym)>=0?160:132),round:rounded.indexOf(sym)>=0};}
- return {vowel:false,place:place[sym]||'ridge'};
+function ipaMouthType(sym){
+  if(['i','ɪ','eɪ','ɛ'].indexOf(sym)>=0)return 'smile';
+  if(['æ','ɑ','ʌ'].indexOf(sym)>=0)return 'open';
+  if(['ə','ɜ'].indexOf(sym)>=0)return 'relaxed';
+  if(['ɔ','ʊ','u','oʊ','ɔɪ','w'].indexOf(sym)>=0)return 'round';
+  if(['aɪ','aʊ'].indexOf(sym)>=0)return 'openmove';
+  if(['ɝ','ɚ','r','ɹ'].indexOf(sym)>=0)return 'r';
+  if(['p','b','m'].indexOf(sym)>=0)return 'closed';
+  if(['f','v'].indexOf(sym)>=0)return 'bite';
+  if(['θ','ð'].indexOf(sym)>=0)return 'tongueout';
+  if(['ʃ','ʒ','tʃ','dʒ'].indexOf(sym)>=0)return 'sh';
+  if(['t','d','s','z','n','l'].indexOf(sym)>=0)return 'tongueup';
+  if(['k','g','ɡ','ŋ'].indexOf(sym)>=0)return 'back';
+  if(sym==='j')return 'smile';
+  return 'relaxed';
 }
 function ipaMouthSVG(sym){
- var a=ipaArt(sym),tx=150,ty=135; if(a.vowel){tx=a.x;ty=a.y;} else {var pos={lips:[58,140],lipteeth:[72,132],teeth:[82,122],ridge:[105,103],backridge:[125,100],palate:[150,100],velar:[185,108],glottis:[218,135]};var q=pos[a.place]||pos.ridge;tx=q[0];ty=q[1];}
- return '<svg class="ipa-face-svg" viewBox="0 0 280 210" aria-label="original articulation diagram">'+
- '<path d="M35 110 Q70 55 145 55 Q220 55 245 105 Q230 150 190 174 Q120 192 55 155 Z" fill="none" stroke="currentColor" stroke-width="3" opacity=".75"/>'+
- '<path d="M55 132 Q88 112 124 124 Q164 143 211 123" fill="none" stroke="currentColor" stroke-width="3"/>'+
- '<path d="M70 119 Q112 91 177 101 Q205 106 220 123" fill="none" stroke="currentColor" stroke-width="2" opacity=".55"/>'+
- '<path d="M72 142 Q118 165 190 143 Q150 174 88 157 Z" fill="rgba(255,101,132,.18)" stroke="currentColor" stroke-width="2"/>'+
- '<ellipse cx="'+tx+'" cy="'+ty+'" rx="12" ry="9" fill="var(--accent2)" opacity=".9"/>'+
- '<line x1="'+tx+'" y1="'+ty+'" x2="'+(tx+28)+'" y2="'+(ty-28)+'" stroke="var(--accent2)" stroke-width="2"/>'+
- '<text x="'+(tx+32)+'" y="'+(ty-31)+'" fill="currentColor" font-size="13">'+sym+'</text></svg>';
+  var t=ipaMouthType(sym), lip='#ff7592', dark='#331a25', tooth='#fff9ef', tongue='#ff8aa2';
+  var mouth='';
+  if(t==='closed') mouth='<path d="M70 112 Q140 93 210 112 Q140 126 70 112Z" fill="'+lip+'"/><path d="M78 112 Q140 108 202 112" fill="none" stroke="'+dark+'" stroke-width="4"/>';
+  else if(t==='smile') mouth='<path d="M62 105 Q140 78 218 105 Q198 144 140 148 Q82 144 62 105Z" fill="'+lip+'"/><path d="M80 108 Q140 92 200 108 Q185 128 140 131 Q95 128 80 108Z" fill="'+dark+'"/><path d="M86 108 Q140 98 194 108 Q140 118 86 108Z" fill="'+tooth+'"/>';
+  else if(t==='open'||t==='openmove') mouth='<path d="M72 96 Q140 70 208 96 Q218 146 140 164 Q62 146 72 96Z" fill="'+lip+'"/><ellipse cx="140" cy="121" rx="51" ry="32" fill="'+dark+'"/><path d="M95 105 Q140 95 185 105 L180 116 Q140 109 100 116Z" fill="'+tooth+'"/><path d="M104 139 Q140 124 176 139 Q140 153 104 139Z" fill="'+tongue+'"/>';
+  else if(t==='round') mouth='<ellipse cx="140" cy="118" rx="50" ry="45" fill="'+lip+'"/><ellipse cx="140" cy="118" rx="27" ry="31" fill="'+dark+'"/><ellipse cx="140" cy="129" rx="18" ry="10" fill="'+tongue+'"/>';
+  else if(t==='r') mouth='<path d="M76 101 Q140 78 204 101 Q214 142 140 151 Q66 142 76 101Z" fill="'+lip+'"/><ellipse cx="140" cy="120" rx="39" ry="23" fill="'+dark+'"/><path d="M108 129 Q140 105 172 129 Q140 119 108 129Z" fill="'+tongue+'"/>';
+  else if(t==='bite') mouth='<path d="M72 103 Q140 81 208 103 Q195 144 140 148 Q85 144 72 103Z" fill="'+lip+'"/><path d="M88 105 Q140 94 192 105 L186 120 Q140 113 94 120Z" fill="'+tooth+'"/><path d="M95 126 Q140 120 185 126 Q170 141 140 143 Q110 141 95 126Z" fill="'+tongue+'"/>';
+  else if(t==='tongueout') mouth='<path d="M70 102 Q140 79 210 102 Q198 145 140 149 Q82 145 70 102Z" fill="'+lip+'"/><path d="M88 104 Q140 93 192 104 L188 116 Q140 111 92 116Z" fill="'+tooth+'"/><path d="M112 119 Q140 112 168 119 Q163 143 140 151 Q117 143 112 119Z" fill="'+tongue+'"/>';
+  else if(t==='sh') mouth='<path d="M73 101 Q140 78 207 101 Q214 142 140 150 Q66 142 73 101Z" fill="'+lip+'"/><ellipse cx="140" cy="120" rx="38" ry="22" fill="'+dark+'"/><path d="M108 132 Q140 115 172 132 Q140 144 108 132Z" fill="'+tongue+'"/>';
+  else if(t==='tongueup') mouth='<path d="M70 101 Q140 79 210 101 Q198 145 140 150 Q82 145 70 101Z" fill="'+lip+'"/><ellipse cx="140" cy="120" rx="43" ry="25" fill="'+dark+'"/><path d="M102 106 Q140 98 178 106 L174 115 Q140 110 106 115Z" fill="'+tooth+'"/><path d="M112 125 Q140 99 168 125 Q140 119 112 125Z" fill="'+tongue+'"/>';
+  else if(t==='back') mouth='<path d="M72 98 Q140 75 208 98 Q215 146 140 154 Q65 146 72 98Z" fill="'+lip+'"/><ellipse cx="140" cy="121" rx="45" ry="28" fill="'+dark+'"/><path d="M98 106 Q140 97 182 106 L178 115 Q140 110 102 115Z" fill="'+tooth+'"/><path d="M126 139 Q153 112 183 131 Q157 146 126 139Z" fill="'+tongue+'"/>';
+  else mouth='<path d="M70 103 Q140 83 210 103 Q197 143 140 148 Q83 143 70 103Z" fill="'+lip+'"/><ellipse cx="140" cy="120" rx="40" ry="21" fill="'+dark+'"/>';
+  var labels={smile:'Spread / smile',open:'Open wide',openmove:'Open → move',relaxed:'Relaxed',round:'Round lips',r:'R-colored',closed:'Lips together',bite:'Teeth + lower lip',tongueout:'Tongue between teeth',sh:'Small rounded opening',tongueup:'Tongue near upper ridge',back:'Back of tongue'};
+  return '<svg class="ipa-mouth-svg" viewBox="0 0 280 210" role="img" aria-label="simple mouth shape for '+sym+'">'+mouth+'<text x="140" y="188" text-anchor="middle" class="mouth-label">'+(labels[t]||'Relaxed')+'</text><text x="140" y="203" text-anchor="middle" class="mouth-sub">/'+sym+'/</text></svg>';
+}
+function playIPAExplorerItem(item){
+  if(!item)return;
+  if(item.audioSource==='local'&&item.mp3){playIPA(item.mp3);return;}
+  var words=item.words||[],w=words.length?words[_ipaExplorerWordIndex%words.length]:null;
+  if(w) speak(w.w,0.55);
 }
 function renderIPAExplorer(){
  var host=document.getElementById('ipaExplorer');if(!host||!IPA_DATA.length)return;
@@ -1608,16 +1633,19 @@ function renderIPAExplorer(){
  document.getElementById('ipaExMouth').innerHTML=ipaMouthSVG(item.sym);
  document.getElementById('ipaExSymbol').textContent='/'+item.sym+'/';document.getElementById('ipaExName').textContent=item.name||item.cat||'';
  document.getElementById('ipaExDesc').textContent=item.desc||'';document.getElementById('ipaExExample').textContent=w?w.w:'No example';document.getElementById('ipaExExampleIPA').textContent=w&&w.ipa?'['+w.ipa.replace(/^\[|\]$/g,'')+']':'';
- document.getElementById('ipaExTip').textContent=ipaArt(item.sym).vowel?'Watch the tongue position and lip shape. Keep the sound voiced and smooth.':'The red marker shows the main place of articulation. Compare it with nearby consonants.';
+ var tip=ipaMouthType(item.sym);document.getElementById('ipaExTip').textContent=(item.cat==='Vowel'?'Copy the lip shape first, then listen and repeat.':'Copy the mouth shape first. For tongue sounds, use the label as a simple position clue.');
+ var btn=host.querySelector('.ipa-ex-symplay');
+ if(item.audioSource==='local'){btn.textContent='🔊';btn.classList.remove('fallback');btn.title='Play isolated sound';document.getElementById('ipaExAudioNote').textContent='';}
+ else {btn.textContent='🔊 word';btn.classList.add('fallback');btn.title='No local isolated MP3 — plays the example word';document.getElementById('ipaExAudioNote').textContent='No isolated local MP3 for /'+item.sym+'/ — speaker plays the example word instead.';}
 }
 function buildIPAExplorer(){
  var host=document.getElementById('ipaExplorer');if(!host)return;
- var keys=IPA_DATA.map(function(d,i){return '<button class="ipa-ex-key '+(d.cat==='Vowel'?'vowel':'consonant')+'" data-i="'+i+'" data-sym="'+d.sym+'">'+d.sym+'</button>';}).join('');
- host.innerHTML='<div class="ipa-section-title">American IPA Sound Explorer</div><div class="ipa-ex-grid">'+keys+'</div><div class="ipa-ex-layout"><div class="ipa-mouth"><div id="ipaExMouth"></div><button class="ipa-ex-nav ipa-ex-prev" title="Previous example">‹</button><button class="ipa-ex-nav ipa-ex-next" title="Next example">›</button><button class="ipa-ex-symplay" title="Play sound">🔊</button></div><div><div id="ipaExSymbol" class="ipa-ex-symbol"></div><div id="ipaExName" class="ipa-ex-name"></div><div id="ipaExExample" class="ipa-ex-example" title="Click to hear word"></div><div id="ipaExExampleIPA" class="ipa-ex-example-ipa"></div><div id="ipaExDesc" class="ipa-ex-desc"></div><div id="ipaExTip" class="ipa-ex-tip"></div></div></div>';
- host.querySelectorAll('.ipa-ex-key').forEach(function(b){b.onclick=function(){_ipaExplorerIndex=+this.dataset.i;_ipaExplorerWordIndex=0;renderIPAExplorer();var d=IPA_DATA[_ipaExplorerIndex];if(d&&d.mp3)playIPA(d.mp3);};});
+ var keys=IPA_DATA.map(function(d,i){return '<button class="ipa-ex-key '+(d.cat==='Vowel'?'vowel':'consonant')+(d.audioSource==='local'?'':' no-local')+'" data-i="'+i+'" data-sym="'+d.sym+'" title="'+(d.audioSource==='local'?'Local isolated MP3':'Example-word audio fallback')+'">'+d.sym+'</button>';}).join('');
+ host.innerHTML='<div class="ipa-section-title">American IPA Sound Explorer</div><div class="ipa-ex-grid">'+keys+'</div><div class="ipa-ex-layout"><div class="ipa-mouth"><div id="ipaExMouth"></div><button class="ipa-ex-nav ipa-ex-prev" title="Previous example">‹</button><button class="ipa-ex-nav ipa-ex-next" title="Next example">›</button><button class="ipa-ex-symplay" title="Play sound">🔊</button></div><div><div id="ipaExSymbol" class="ipa-ex-symbol"></div><div id="ipaExName" class="ipa-ex-name"></div><div id="ipaExExample" class="ipa-ex-example" title="Click to hear word"></div><div id="ipaExExampleIPA" class="ipa-ex-example-ipa"></div><div id="ipaExDesc" class="ipa-ex-desc"></div><div id="ipaExTip" class="ipa-ex-tip"></div><div id="ipaExAudioNote" class="ipa-audio-note"></div></div></div>';
+ host.querySelectorAll('.ipa-ex-key').forEach(function(b){b.onclick=function(){_ipaExplorerIndex=+this.dataset.i;_ipaExplorerWordIndex=0;renderIPAExplorer();playIPAExplorerItem(IPA_DATA[_ipaExplorerIndex]);};});
  host.querySelector('.ipa-ex-prev').onclick=function(){var d=IPA_DATA[_ipaExplorerIndex],n=(d.words||[]).length;if(n){_ipaExplorerWordIndex=(_ipaExplorerWordIndex-1+n)%n;renderIPAExplorer();}};
  host.querySelector('.ipa-ex-next').onclick=function(){var d=IPA_DATA[_ipaExplorerIndex],n=(d.words||[]).length;if(n){_ipaExplorerWordIndex=(_ipaExplorerWordIndex+1)%n;renderIPAExplorer();}};
- host.querySelector('.ipa-ex-symplay').onclick=function(){var d=IPA_DATA[_ipaExplorerIndex];if(d&&d.mp3)playIPA(d.mp3);};
+ host.querySelector('.ipa-ex-symplay').onclick=function(){playIPAExplorerItem(IPA_DATA[_ipaExplorerIndex]);};
  host.querySelector('.ipa-ex-example').onclick=function(){var d=IPA_DATA[_ipaExplorerIndex],w=(d.words||[])[_ipaExplorerWordIndex%Math.max(1,(d.words||[]).length)];if(w)speak(w.w,0.55);};renderIPAExplorer();
 }
 
