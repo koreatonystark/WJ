@@ -1281,9 +1281,7 @@ function playIPAThenWords(mp3Url, wordsCsv) {
     });
   }
 
-  var symAudio = new Audio(mp3Url);
-  _ipaAudio = symAudio;
-  symAudio.onended = function() {
+  function beginWords() {
     if (_seqCancelled) return;
     var i = 0;
     function nextWord() {
@@ -1309,9 +1307,15 @@ function playIPAThenWords(mp3Url, wordsCsv) {
       window.speechSynthesis.speak(utt);
     }
     setTimeout(nextWord, 250);
-  };
-  symAudio.onerror = function() {};
-  symAudio.play().catch(function() {});
+  }
+  if (mp3Url) {
+    playAudioWithFallback(mp3Url,{
+      onended: beginWords,
+      onerror: function(e){ console.warn('IPA symbol audio failed; continuing with word TTS:',mp3Url,e); beginWords(); }
+    });
+  } else {
+    beginWords();
+  }
 }
 
 function boldIPA(pron, bold) {
@@ -1773,18 +1777,15 @@ function gradeSingleSelect(chosen, btn) {
         }
         if (!mp3) { setTimeout(playNextSym, 200); return; }
         btn.classList.add('iq-playing');
-        var a = new Audio(mp3); _ipaAudio = a;
-        a.onended = function() {
-          if (btn) btn.classList.remove('iq-playing');
-          if (!_seqCancelled) setTimeout(playNextSym, 180);
-        };
-        a.onerror = function() {
-          if (btn) btn.classList.remove('iq-playing');
-          if (!_seqCancelled) setTimeout(playNextSym, 300);
-        };
-        a.play().catch(function() {
-          if (btn) btn.classList.remove('iq-playing');
-          if (!_seqCancelled) setTimeout(playNextSym, 300);
+        playAudioWithFallback(mp3,{
+          onended:function(){
+            if (btn) btn.classList.remove('iq-playing');
+            if (!_seqCancelled) setTimeout(playNextSym,180);
+          },
+          onerror:function(){
+            if (btn) btn.classList.remove('iq-playing');
+            if (!_seqCancelled) setTimeout(playNextSym,300);
+          }
         });
       }
       playNextSym();
@@ -1860,9 +1861,10 @@ function gradeMultiSelect() {
       _seqCancelled = false;
       var allWords = Array.from(document.querySelectorAll('#iqOpts .iq-opt')).map(function(b){ return b.dataset.val; });
       if (item.mp3) {
-        var a = new Audio(item.mp3); _ipaAudio = a;
-        a.onended = function() { if (!_seqCancelled) speakWordsSequence(allWords, 0.6); };
-        a.play().catch(function() { speakWordsSequence(allWords, 0.6); });
+        playAudioWithFallback(item.mp3,{
+          onended:function(){ if (!_seqCancelled) speakWordsSequence(allWords,0.6); },
+          onerror:function(){ if (!_seqCancelled) speakWordsSequence(allWords,0.6); }
+        });
       } else { speakWordsSequence(allWords, 0.6); }
     }, 400);
   }
@@ -1884,11 +1886,10 @@ function playSymbolsSequence() {
     }
     if (!mp3) { setTimeout(next, 200); return; }
     b.classList.add('iq-playing');
-    var audio = new Audio(mp3);
-    _ipaAudio = audio;
-    audio.onended = function() { b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next, 180); };
-    audio.onerror = function() { b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next, 300); };
-    audio.play().catch(function() { b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next, 300); });
+    playAudioWithFallback(mp3,{
+      onended:function(){ b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next,180); },
+      onerror:function(){ b.classList.remove('iq-playing'); if (!_seqCancelled) setTimeout(next,300); }
+    });
   }
   next();
 }
@@ -1903,19 +1904,15 @@ function playSymbolsSequenceGrid() {
     var btn = document.querySelector('.iq-sym-grid-btn[data-sym="' + item.sym + '"]');
     if (!item.mp3) { setTimeout(playNext, 200); return; }
     if (btn) btn.classList.add('iq-playing');
-    var audio = new Audio(item.mp3);
-    _ipaAudio = audio;
-    audio.onended = function() {
-      if (btn) btn.classList.remove('iq-playing');
-      if (!_seqCancelled) setTimeout(playNext, 180);
-    };
-    audio.onerror = function() {
-      if (btn) btn.classList.remove('iq-playing');
-      if (!_seqCancelled) setTimeout(playNext, 300);
-    };
-    audio.play().catch(function() {
-      if (btn) btn.classList.remove('iq-playing');
-      if (!_seqCancelled) setTimeout(playNext, 300);
+    playAudioWithFallback(item.mp3,{
+      onended:function(){
+        if (btn) btn.classList.remove('iq-playing');
+        if (!_seqCancelled) setTimeout(playNext,180);
+      },
+      onerror:function(){
+        if (btn) btn.classList.remove('iq-playing');
+        if (!_seqCancelled) setTimeout(playNext,300);
+      }
     });
   }
   playNext();
