@@ -1320,7 +1320,7 @@ function toggleIPACard(cardId, mp3, wordCsv) {
     var smalls = [w1,w2].filter(Boolean).map(function(w){
       var d = ipaMap[w]||{ipa:'',bold:''};
       var p = d.ipa ? '<span class="ipa-slide-sm-pron">['+boldIPA(d.ipa,d.bold)+']</span>' : '';
-      return '<span class="ipa-slide-sm-word" onclick="speak(''+w+'',0.5)">'+w+p+'</span>';
+      return '<span class="ipa-slide-sm-word" onclick="speak(\'' + w + '\', 0.5)">'+w+p+'</span>';
     }).join('');
     slide.innerHTML =
       '<div class="ipa-slide-big">'+
