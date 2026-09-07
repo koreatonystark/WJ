@@ -362,6 +362,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .tts-readable.tts-playing{box-shadow:inset 3px 0 0 var(--accent3);background:rgba(67,233,123,.09)!important;}
 .source-link{color:var(--accent3);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;overflow-wrap:anywhere;}
 .source-link:hover{opacity:.82;}
+
+.source-box .source-line{display:block;margin:0 0 8px 0;line-height:1.5;overflow-wrap:anywhere;word-break:break-word;}
+.source-box .source-line:last-child{margin-bottom:0;}
+.source-link{overflow-wrap:anywhere;word-break:break-word;}
+.iq-word-ipa{display:block;margin-top:3px;font-family:'Courier New',monospace;font-size:.74rem;font-weight:600;line-height:1;color:var(--muted);white-space:nowrap;}
+
 </style>
 </head>
 <body>
@@ -626,11 +632,28 @@ function detectSheetRole(rows){
   if(has(/^word$/)&&has(/^tier$/)&&has(/^definition\b/))return 'words';
   if(has(/^symbol$/)&&has(/^word$/)&&has(/^ipa$/))return 'ipaExamples';
   if(has(/^symbol$/)&&(has(/^mp3$/)||has(/audio|sound.*url|mp3.*url/)))return 'ipaSounds';
-  // Some pronunciation sheets use generic headers; detect by data shape as a fallback.
-  var sample=rows.slice(1,12);
-  var urlInCol1=sample.filter(function(r){return r.length>1&&looksLikeUrl(r[1]);}).length;
-  if(urlInCol1>=2 && sample.some(function(r){return cleanCell(r[0]).length<=4;}))return 'ipaSounds';
+  var sample=rows.slice(1,Math.min(rows.length,20));
+  var symbolSet={'i':1,'ɪ':1,'eɪ':1,'ɛ':1,'æ':1,'ɑ':1,'ʌ':1,'ə':1,'ɜ':1,'ɝ':1,'ɔ':1,'ʊ':1,'u':1,'aɪ':1,'aʊ':1,'ɔɪ':1,'p':1,'b':1,'t':1,'d':1,'k':1,'g':1,'ɡ':1,'f':1,'v':1,'θ':1,'ð':1,'s':1,'z':1,'ʃ':1,'ʒ':1,'h':1,'tʃ':1,'dʒ':1,'m':1,'n':1,'ŋ':1,'l':1,'r':1,'w':1,'j':1};
+  var maxCols=0;sample.forEach(function(r){if(r.length>maxCols)maxCols=r.length;});
+  var symCol=-1,urlCol=-1,bestSym=0,bestUrl=0;
+  for(var c=0;c<maxCols;c++){
+    var sc=0,uc=0;
+    sample.forEach(function(r){var v=cleanCell(r[c]);if(symbolSet[v])sc++;if(looksLikeUrl(v))uc++;});
+    if(sc>bestSym){bestSym=sc;symCol=c;} if(uc>bestUrl){bestUrl=uc;urlCol=c;}
+  }
+  if(bestSym>=3 && bestUrl>=3 && symCol>=0 && urlCol>=0 && symCol!==urlCol)return 'ipaSounds';
   return 'other';
+}
+function inferSoundColumns(rows){
+  if(!rows||rows.length<2)return null;
+  var symbolSet={'i':1,'ɪ':1,'eɪ':1,'ɛ':1,'æ':1,'ɑ':1,'ʌ':1,'ə':1,'ɜ':1,'ɝ':1,'ɔ':1,'ʊ':1,'u':1,'aɪ':1,'aʊ':1,'ɔɪ':1,'p':1,'b':1,'t':1,'d':1,'k':1,'g':1,'ɡ':1,'f':1,'v':1,'θ':1,'ð':1,'s':1,'z':1,'ʃ':1,'ʒ':1,'h':1,'tʃ':1,'dʒ':1,'m':1,'n':1,'ŋ':1,'l':1,'r':1,'w':1,'j':1};
+  var sample=rows.slice(1,Math.min(rows.length,30)),maxCols=0;sample.forEach(function(r){maxCols=Math.max(maxCols,r.length);});
+  var si=-1,ui=-1,bs=0,bu=0;
+  for(var c=0;c<maxCols;c++){
+    var sc=0,uc=0;sample.forEach(function(r){var v=cleanCell(r[c]);if(symbolSet[v])sc++;if(looksLikeUrl(v))uc++;});
+    if(sc>bs){bs=sc;si=c;} if(uc>bu){bu=uc;ui=c;}
+  }
+  return (bs>=3&&bu>=3&&si>=0&&ui>=0&&si!==ui)?{symbol:si,url:ui}:null;
 }
 
 function loadAllSources(){
@@ -679,18 +702,23 @@ function loadAllSources(){
     sheets.forEach(function(sh){
       if(!sh.rows.length)return;
       var h=sh.rows[0];
+      var inferred=(sh.role==='ipaSounds')?inferSoundColumns(sh.rows):null;
       var is= findHeaderIndex(h,['symbol',/^ipa symbol$/]);
+      if(is<0 && inferred)is=inferred.symbol;
       if(is<0 && sh.role==='ipaSounds')is=0;
       if(is<0)return;
       var imp3=findHeaderIndex(h,['mp3',/audio/,/sound.*url/,/mp3.*url/]);
+      if(imp3<0 && inferred)imp3=inferred.url;
       var iimg=findHeaderIndex(h,['image',/image.*url/,/^img$/]);
       var isrc=findHeaderIndex(h,['source',/^src$/,/source.*url/]);
       var idesc=findHeaderIndex(h,['description',/^desc$/,/explanation/]);
       for(var r=1;r<sh.rows.length;r++){
         var row=sh.rows[r],sym=cleanCell(row[is]);if(!sym)continue;
+        if(sym==='ɡ')sym='g';
         var e=ensureSym(sym);if(!e)continue;
         // Prefer named MP3 column. If absent/blank, scan the row for an audio-looking URL.
         var mp3=imp3>=0?cleanCell(row[imp3]):'';
+        if(mp3 && !looksLikeUrl(mp3)) mp3='';
         if(!mp3){
           for(var c=0;c<row.length;c++){
             var cell=cleanCell(row[c]);
@@ -715,6 +743,7 @@ function loadAllSources(){
       var ib=findHeaderIndex(h,['bold',/target sound/,/highlight/]);
       for(var r=1;r<sh.rows.length;r++){
         var row=sh.rows[r],sym=cleanCell(row[is]),word=cleanCell(row[iw]);
+        if(sym==='ɡ')sym='g';
         if(!sym||!word)continue;
         var e=ensureSym(sym);if(!e)continue;
         if(e.words.some(function(x){return x.w===word;}))continue;
@@ -729,12 +758,13 @@ function loadAllSources(){
 
     DATA_STATUS.wordCount=allWords.length;
     DATA_STATUS.ipaCount=IPA_DATA.length;
-    DATA_STATUS.playableIPA=IPA_DATA.filter(function(d){return !!d.mp3;}).length;
+    DATA_STATUS.playableIPA=IPA_DATA.filter(function(d){return !!d.mp3&&looksLikeUrl(d.mp3);}).length;
     DATA_STATUS.exampleCount=IPA_DATA.reduce(function(n,d){return n+(d.words||[]).length;},0);
     console.table(DATA_STATUS.sheets);
     console.log('Words:',DATA_STATUS.wordCount,'IPA:',DATA_STATUS.ipaCount,'Playable IPA:',DATA_STATUS.playableIPA,'Examples:',DATA_STATUS.exampleCount);
-    var missing=IPA_DATA.filter(function(d){return !d.mp3;}).map(function(d){return d.sym;});
-    if(missing.length)console.warn('IPA symbols with no MP3 URL in any supplied sheet:',missing);
+    var missing=IPA_DATA.filter(function(d){return !d.mp3||!looksLikeUrl(d.mp3);}).map(function(d){return d.sym;});
+    if(missing.length)console.warn('IPA symbols with no usable MP3 URL in any supplied sheet:',missing);
+    console.table(IPA_DATA.map(function(d){return {symbol:d.sym,mp3:!!d.mp3,urlOK:looksLikeUrl(d.mp3),url:d.mp3||''};}));
     loadSt();showHome();
   });
 }
@@ -750,7 +780,7 @@ function getAI(word){
 }
 
 function getQuizIPAData(){
-  return IPA_DATA.filter(function(d){return d&&d.sym&&d.mp3&&(d.words||[]).length>0;});
+  return IPA_DATA.filter(function(d){return d&&d.sym&&d.mp3&&looksLikeUrl(d.mp3)&&(d.words||[]).length>0;});
 }
 function loadWords(){return loadAllSources();}
 function loadIPA(){return Promise.resolve();}
@@ -1033,15 +1063,21 @@ function escHTML(v){
   return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
 }
 function linkifyText(v){
-  var text=String(v==null?'':v), re=/(https?:\/\/[^\s|]+)/g, out='', last=0, m;
-  while((m=re.exec(text))){
-    out+=escHTML(text.slice(last,m.index));
-    var url=m[1], trailing='';
-    while(/[),.;]$/.test(url)){trailing=url.slice(-1)+trailing;url=url.slice(0,-1);}
-    out+='<a class="source-link" href="'+escHTML(url)+'" target="_blank" rel="noopener noreferrer">'+escHTML(url)+'</a>'+escHTML(trailing);
-    last=m.index+m[1].length;
+  var text=String(v==null?'':v);
+  // Source cells commonly separate references with |. Render each reference on its own line.
+  var parts=text.split(/\s*\|\s*/).filter(function(x){return String(x).trim();});
+  function one(part){
+    var re=/(https?:\/\/[^\s]+)/g, out='', last=0, m;
+    while((m=re.exec(part))){
+      out+=escHTML(part.slice(last,m.index));
+      var url=m[1], trailing='';
+      while(/[),.;]$/.test(url)){trailing=url.slice(-1)+trailing;url=url.slice(0,-1);}
+      out+='<a class="source-link" href="'+escHTML(url)+'" target="_blank" rel="noopener noreferrer">'+escHTML(url)+'</a>'+escHTML(trailing);
+      last=m.index+m[1].length;
+    }
+    return '<div class="source-line">'+out+escHTML(part.slice(last))+'</div>';
   }
-  return out+escHTML(text.slice(last));
+  return parts.map(one).join('');
 }
 var _ttsBlock=null,_ttsUtterance=null;
 function stopBlockTTS(){
@@ -1857,6 +1893,8 @@ function gradeMultiSelect() {
     // Enable audio on click after grading
     b.onclick = function() { speak(b.dataset.val, 0.5); };
   });
+  // Reveal the stored word IPA only after the answer has been checked.
+  revealQuizWordIPAs();
 
   var descHL = item.desc.replace(/"([^"]+)"/g, '"<span style="color:var(--accent3);font-weight:700">$1</span>"');
   document.getElementById('iqCheckBtn').style.display = 'none';
