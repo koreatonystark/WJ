@@ -288,87 +288,35 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .review-filter.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
 .review-filter.wrong-filter.active{background:var(--accent2);border-color:var(--accent2);}
 
-
-/* IPA Guide */
-.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:8px;display:flex;gap:14px;align-items:center;}
-.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:12px;padding:0;cursor:pointer;font-size:1.4rem;font-weight:400;font-family:'Nunito',sans-serif;flex-shrink:0;width:58px;height:58px;display:flex;align-items:center;justify-content:center;transition:all .18s;line-height:1;}
-.ipa-sym-btn:active{transform:scale(.97);}
-.ipa-sym-btn.vowel{color:#1a9e5c;border-color:#1a9e5c;}
-.ipa-sym-btn.vowel:hover{background:#1a9e5c;color:#fff;transform:scale(1.05);}
-.ipa-sym-btn.consonant{color:#3b82f6;border-color:#3b82f6;}
-.ipa-sym-btn.consonant:hover{background:#3b82f6;color:#fff;transform:scale(1.05);}
-.ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
-.ipa-desc-main{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.4;}
-.ipa-desc-main .ipa-sound{color:var(--accent3);font-weight:700;}
-.ipa-words-list{display:flex;flex-wrap:wrap;gap:4px 16px;}
-.ipa-word-entry{display:inline-flex;align-items:baseline;gap:4px;font-size:.86rem;cursor:pointer;padding:2px 4px;border-radius:6px;transition:background .15s;}
-.ipa-word-entry:hover{background:var(--surface2);}
-.ipa-word-text{font-weight:400;color:var(--text);}
-.ipa-word-pron{color:var(--muted);font-family:'Courier New',monospace;font-size:.8rem;}
-.ipa-word-pron .ipa-bold{color:var(--accent);font-weight:800;font-family:'Courier New',monospace;}
-@keyframes blink{0%,100%{opacity:0;}50%{opacity:1;}}
-.home-boxes{display:flex;gap:10px;width:100%;max-width:440px;margin-top:8px;}
-.home-box-btn{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;}
-.home-box-btn:hover{border-color:var(--accent);background:rgba(108,99,255,.08);}
-.home-box-icon{font-size:1.5rem;line-height:1;}
-.home-box-label{font-size:.9rem;font-weight:700;color:var(--text);}
-.home-box-sub{font-size:.72rem;color:var(--muted);}
-.iq-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:14px;}
-.iq-type-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:14px;}
-.iq-badge-1{background:rgba(108,99,255,.2);color:var(--accent);}
-.iq-badge-2{background:rgba(247,151,30,.2);color:var(--accent4);}
-.iq-badge-3{background:rgba(67,233,123,.2);color:var(--accent3);}
-.iq-question{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:6px;}
-.iq-question .iq-sym{font-size:1.6rem;color:var(--accent);font-family:'Courier New',monospace;margin-right:8px;}
-.iq-question .iq-sound{color:var(--accent3);font-weight:800;}
-.iq-hint{font-size:.82rem;color:var(--muted);margin-bottom:18px;}
-.iq-options{display:flex;flex-wrap:wrap;gap:9px;}
-.iq-opt{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.95rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
-.iq-opt:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
-.iq-opt.selected{border-color:var(--accent);background:rgba(108,99,255,.15);}
-.iq-opt.correct{border-color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;color:var(--accent3)!important;}
-.iq-opt.wrong{border-color:var(--accent2)!important;background:rgba(255,101,132,.15)!important;color:var(--accent2)!important;}
-.iq-opt.missed{border-color:var(--accent3)!important;background:rgba(67,233,123,.08)!important;color:var(--accent3)!important;opacity:.7;}
-.iq-opt:disabled{cursor:default;}
-.iq-sym-opt{min-width:52px;text-align:center;font-family:'Courier New',monospace;font-size:1.1rem;}
-.iq-feedback{margin-top:14px;border-radius:12px;padding:12px 16px;font-size:.88rem;line-height:1.5;}
-.iq-feedback.correct{background:rgba(67,233,123,.1);border:1px solid rgba(67,233,123,.3);color:var(--accent3);}
-.iq-feedback.wrong{background:rgba(255,101,132,.1);border:1px solid rgba(255,101,132,.3);color:var(--accent2);}
-.iq-next-btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;border:none;border-radius:11px;padding:13px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
-.iq-opt.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.25)!important;color:#1a9e5c!important;transform:scale(1.12);transition:all .15s;}
-.iq-all-syms-panel{background:var(--surface2);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
-.iq-syms-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-bottom:8px;}
-.iq-sym-grid{display:flex;flex-wrap:wrap;gap:7px;}
-.iq-sym-grid-btn{background:var(--surface);border:2px solid var(--border);border-radius:9px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:400;font-family:'Nunito',sans-serif;cursor:pointer;color:var(--text);transition:all .15s;}
-.iq-sym-grid-btn:hover{border-color:var(--accent);color:var(--accent);}
-.iq-sym-grid-btn.iq-sym-answer{border-color:var(--accent3)!important;color:var(--accent3)!important;background:rgba(67,233,123,.15)!important;font-weight:800;}
-.iq-sym-grid-btn.iq-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.3)!important;color:#1a9e5c!important;transform:scale(1.18);box-shadow:0 0 12px rgba(26,158,92,.4);}
-.iq-opt.iq-word-playing{border-color:#1a9e5c!important;background:rgba(26,158,92,.2)!important;color:#1a9e5c!important;transform:scale(1.1);box-shadow:0 0 10px rgba(26,158,92,.3);transition:all .15s;}
-.iq-score-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px;font-size:.85rem;}
-.iq-score-num{font-weight:800;color:var(--gold);}
-.tw-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .6s step-end infinite;margin-left:1px;}
-
-
-/* IPA Guide Conveyor */
-.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
+/* IPA Guide - clean two-row analog tuner */
+.ipa-card{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:12px 14px;margin-bottom:9px;display:grid;grid-template-columns:70px minmax(0,1fr);grid-template-rows:64px auto;column-gap:14px;row-gap:7px;align-items:center;min-height:112px;}
 .ipa-card:hover{border-color:rgba(108,99,255,.3);}
-.ipa-sym-btn{background:var(--surface2);border:2px solid currentColor;border-radius:14px;padding:0;cursor:pointer;font-size:1.6rem;font-family:'Courier New',monospace;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.ipa-sym-btn{grid-column:1;grid-row:1;background:var(--surface2);border:2px solid currentColor;border-radius:13px;padding:0;cursor:pointer;font-size:1.62rem;font-family:'Courier New',monospace;width:64px;height:64px;display:flex;align-items:center;justify-content:center;transition:all .2s;justify-self:center;align-self:center;}
 .ipa-sym-btn.vowel{color:var(--accent3);}.ipa-sym-btn.consonant{color:var(--accent);}
-.ipa-sym-btn:hover{transform:scale(1.07);}
+.ipa-sym-btn:hover{transform:scale(1.04);}
 .ipa-playing{animation:ipaPulse 1.1s ease-in-out infinite!important;box-shadow:0 0 0 3px var(--accent2)!important;}
 @keyframes ipaPulse{0%,100%{box-shadow:0 0 0 3px var(--accent2),0 0 8px rgba(255,101,132,.3);}50%{box-shadow:0 0 0 3px var(--accent2),0 0 20px rgba(255,101,132,.6);}}
-.ipa-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
-.ipa-desc-main{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.55;}
-.ipa-word-stage{height:50px;overflow:hidden;border-top:1px solid var(--border);margin-top:8px;padding-top:6px;}
-.ipa-strip{display:flex;align-items:center;gap:20px;will-change:transform;}
-.ipa-chip{display:inline-flex;align-items:baseline;gap:8px;flex-shrink:0;}
-.ipa-chip-big .ipa-chip-word{font-size:1.85rem;font-weight:800;font-family:'Space Grotesk',sans-serif;color:var(--accent2);line-height:1;white-space:nowrap;}
-.ipa-chip-pron{font-size:.82rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.03em;white-space:nowrap;}
-.ipa-chip-pron .ipa-bold{color:var(--accent3);font-weight:700;}
-.ipa-chip-sm .ipa-chip-word{font-size:.92rem;font-weight:500;color:var(--muted);white-space:nowrap;}
-.ipa-section-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
-  font-weight:700;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
-
+.ipa-word-stage{grid-column:2;grid-row:1;overflow:hidden;position:relative;height:64px;min-width:0;}
+.ipa-tuner-track{display:flex;align-items:center;gap:0;position:absolute;left:0;top:0;height:64px;white-space:nowrap;will-change:transform;}
+.ipa-tuner-item{width:104px;min-width:104px;max-width:104px;flex:0 0 104px;display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:visible;height:64px;}
+.ipa-tuner-item:first-child{width:228px;min-width:228px;max-width:228px;flex-basis:228px;}
+.ipa-tuner-word{font-size:.92rem;font-weight:600;color:var(--muted);line-height:1;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease,font-weight .52s ease;transform-origin:left center;}
+.ipa-tuner-pron{font-size:.68rem;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.02em;line-height:1;white-space:nowrap;transition:font-size .52s cubic-bezier(.22,.61,.36,1),color .52s ease,font-weight .52s ease;transform-origin:left center;}
+.ipa-tuner-pron .ipa-bold{color:var(--accent3);font-weight:700;}
+.ipa-tuner-item.is-focus .ipa-tuner-word{font-size:1.82rem;font-weight:800;color:var(--accent2);font-family:'Space Grotesk',sans-serif;}
+.ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:1.18rem;font-weight:700;color:var(--text);}
+.ipa-desc-main{grid-column:1 / -1;grid-row:2;font-size:.88rem;font-weight:600;color:var(--text);line-height:1.35;padding:6px 4px 0;border-top:1px solid var(--border);min-height:27px;display:flex;align-items:flex-start;}
+.ipa-section-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 8px;}
+@media(max-width:560px){
+  .ipa-card{grid-template-columns:60px minmax(0,1fr);grid-template-rows:58px auto;padding:10px 11px;column-gap:10px;row-gap:6px;min-height:104px;}
+  .ipa-sym-btn{width:56px;height:56px;font-size:1.48rem;}
+  .ipa-word-stage,.ipa-tuner-track,.ipa-tuner-item{height:58px;}
+  .ipa-tuner-item{width:92px;min-width:92px;max-width:92px;flex-basis:92px;}
+  .ipa-tuner-item:first-child{width:202px;min-width:202px;max-width:202px;flex-basis:202px;}
+  .ipa-tuner-item.is-focus .ipa-tuner-word{font-size:1.62rem;}
+  .ipa-tuner-item.is-focus .ipa-tuner-pron{font-size:1.05rem;}
+  .ipa-desc-main{font-size:.83rem;}
+}
 </style>
 </head>
 <body>
@@ -466,9 +414,18 @@ var WORD_DB={};
 var IPA_MAP={};
 var WD=JSON.parse(document.getElementById('wordData').textContent);
 var IPA_MAP={"be":"bi","have":"hæv","do":"du","say":"seɪ","go":"goʊ","get":"gɪt","make":"meɪk","know":"noʊ","think":"θɪŋk","take":"teɪk","see":"si","come":"kəm","want":"wɔnt","look":"lʊk","use":"juz","find":"faɪnd","give":"gɪv","tell":"tɛl","work":"wərk","call":"kɔl","try":"traɪ","ask":"æsk","need":"nid","feel":"fil","become":"bɪˈkəm","leave":"liv","put":"pʊt","mean":"min","keep":"kip","let":"lɛt","begin":"bɪˈgɪn","seem":"sim","help":"hɛlp","talk":"tɔk","turn":"tərn","start":"stɑrt","show":"ʃoʊ","hear":"hir","play":"pleɪ","run":"rən","move":"muv","live":"lɪv","believe":"bɪˈliv","bring":"brɪŋ","happen":"ˈhæpən","write":"raɪt","sit":"sɪt","stand":"stænd","lose":"luz","pay":"peɪ","meet":"mit","include":"ˌɪnˈklud","continue":"kənˈtɪnju","set":"sɛt","learn":"lərn","change":"ʧeɪnʤ","lead":"lɛd","understand":"ˌəndərˈstænd","watch":"wɔʧ","follow":"ˈfɑloʊ","stop":"stɑp","create":"kriˈeɪt","speak":"spik","read":"rɛd","allow":"əˈlaʊ","add":"æd","spend":"spɛnd","grow":"groʊ","open":"ˈoʊpən","walk":"wɔk","win":"wɪn","offer":"ˈɔfər","remember":"rɪˈmɛmbər","love":"ləv","consider":"kənˈsɪdər","appear":"əˈpɪr","buy":"baɪ","wait":"weɪt","serve":"sərv","die":"daɪ","send":"sɛnd","expect":"ɪkˈspɛkt","build":"bɪld","stay":"steɪ","fall":"fɔl","cut":"kət","reach":"riʧ","remain":"rɪˈmeɪn","suggest":"səˈʤɛst","raise":"reɪz","pass":"pæs","sell":"sɛl","require":"ˌrikˈwaɪər","report":"rɪˈpɔrt","decide":"ˌdɪˈsaɪd","pull":"pʊl","return":"rɪˈtərn","explain":"ɪkˈspleɪn","hope":"hoʊp","carry":"ˈkɛri","person":"ˈpərsən","people":"ˈpipəl","man":"mæn","woman":"ˈwʊmən","boy":"bɔɪ","girl":"gərl","child":"ʧaɪld","children":"ˈʧɪldrən","friend":"frɛnd","family":"ˈfæməli","mother":"ˈməðər","father":"ˈfɑðər","mom":"mɑm","dad":"dæd","parent":"ˈpɛrənt","brother":"ˈbrəðər","sister":"ˈsɪstər","baby":"ˈbeɪbi","adult":"ˈædəlt","neighbor":"ˈneɪbər","name":"neɪm","age":"eɪʤ","home":"hoʊm","house":"haʊs","room":"rum","bedroom":"ˈbɛˌdrum","bathroom":"ˈbæθˌrum","kitchen":"ˈkɪʧən","floor":"flɔr","wall":"wɔl","door":"dɔr","window":"ˈwɪndoʊ","roof":"rʊf","stairs":"stɛrz","table":"ˈteɪbəl","chair":"ʧɛr","bed":"bɛd","desk":"dɛsk","sofa":"ˈsoʊfə","lamp":"læmp","light":"laɪt","key":"ki","box":"bɑks","bag":"bæg","bottle":"ˈbɑtəl","cup":"kəp","plate":"pleɪt","bowl":"boʊl","spoon":"spun","fork":"fɔrk","knife":"naɪf","towel":"taʊəl","soap":"soʊp","brush":"brəʃ","clock":"klɑk","picture":"ˈpɪkʧər","photo":"ˈfoʊˌtoʊ","toy":"tɔɪ","game":"geɪm","book":"bʊk","paper":"ˈpeɪpər","pen":"pɛn","pencil":"ˈpɛnsəl","phone":"foʊn","computer":"kəmˈpjutər","screen":"skrin","TV":"ˌtɛləˈvɪʒən","music":"mˈjuzɪk","sound":"saʊnd","voice":"vɔɪs","water":"ˈwɔtər","air":"ɛr","fire":"faɪər","clean":"klin","dirty":"ˈdərti","full":"fʊl","empty":"ˈɛmti","safe":"seɪf","dangerous":"ˈdeɪnʤərəs","inside":"ˌɪnˈsaɪd","outside":"ˈaʊtˈsaɪd","upstairs":"əpˈstɛrz","downstairs":"ˈdaʊnˈstɛrz","front":"frənt","back":"bæk","side":"saɪd","middle":"ˈmɪdəl","top":"tɔp","bottom":"ˈbɑtəm","near":"nɪr","far":"fɑr","alone":"əˈloʊn","together":"təˈgɛðər","own":"oʊn","other":"ˈəðər","another":"əˈnəðər","same":"seɪm","kind":"kaɪnd","place":"pleɪs","thing":"θɪŋ","school":"skul","class":"klæs","classroom":"ˈklæsˌrum","teacher":"ˈtiʧər","student":"ˈstudənt","principal":"ˈprɪnsəpəl","lesson":"ˈlɛsən","subject":"ˈsəbʤɪkt","English":"ˈɪŋlɪʃ","math":"mæθ","science":"saɪəns","history":"ˈhɪstəri","art":"ɑrt","reading":"ˈrɛdɪŋ","writing":"ˈraɪtɪŋ","spelling":"ˈspɛlɪŋ","word":"wərd","sentence":"ˈsɛntəns","question":"kˈwɛʃən","answer":"ˈænsər","problem":"ˈprɑbləm","example":"ɪgˈzæmpəl","idea":"aɪˈdiə","story":"ˈstɔri","page":"peɪʤ","chapter":"ˈʧæptər","line":"laɪn","paragraph":"ˈpɛrəˌgræf","title":"ˈtaɪtəl","topic":"ˈtɑpɪk","test":"tɛst","quiz":"kwɪz","grade":"greɪd","score":"skɔr","homework":"ˈhoʊmˌwərk","project":"ˈprɑʤɛkt","practice":"ˈpræktɪs","activity":"ækˈtɪvɪti","rule":"rul","direction":"dɪˈrɛkʃɪn","instruction":"ˌɪnˈstrəkʃən","choice":"ʧɔɪs","list":"lɪst","note":"noʊt","board":"bɔrd","marker":"ˈmɑrkər","eraser":"ɪˈreɪsər","folder":"ˈfoʊldər","notebook":"ˈnoʊtˌbʊk","backpack":"ˈbækˌpæk","library":"ˈlaɪbrɛˌri","lunch":"lənʧ","recess":"ˈrisɛs","team":"tim","group":"grup","partner":"ˈpɑrtnər","share":"ʃɛr","check":"ʧɛk","correct":"kərˈɛkt","wrong":"rɔŋ","right":"raɪt","finish":"ˈfɪnɪʃ","complete":"kəmˈplit","copy":"ˈkɑpi","draw":"drɔ","color":"ˈkələr","circle":"ˈsərkəl","underline":"ˈəndərˌlaɪn","match":"mæʧ","choose":"ʧuz","pick":"pɪk","repeat":"rɪˈpit","spell":"spɛl","count":"kaʊnt","solve":"sɑlv","study":"ˈstədi","review":"ˌrivˈju","prepare":"priˈpɛr","listen":"ˈlɪsən","quiet":"kwaɪət","loud":"laʊd","ready":"ˈrɛdi","careful":"ˈkɛrfəl","important":"ˌɪmˈpɔrtənt","easy":"ˈizi","hard":"hɑrd","busy":"ˈbɪzi","free":"fri","early":"ˈərli","late":"leɪt","present":"ˈprɛzənt","absent":"ˈæbsənt","break":"breɪk","schedule":"ˈskɛʤʊl","calendar":"ˈkæləndər","date":"deɪt","level":"ˈlɛvəl","skill":"skɪl","goal":"goʊl","accept":"əkˈsɛpt","time":"taɪm","day":"deɪ","week":"wik","month":"mənθ","year":"jɪr","today":"təˈdeɪ","tomorrow":"təˈmɑˌroʊ","yesterday":"ˈjɛstərˌdeɪ","morning":"ˈmɔrnɪŋ","afternoon":"ˌæftərˈnun","evening":"ˈivnɪŋ","night":"naɪt","hour":"aʊər","minute":"ˈmɪnət","second":"ˈsɛkənd","now":"naʊ","then":"ðɛn","before":"ˌbiˈfɔr","after":"ˈæftər","first":"fərst","last":"læst","next":"nɛkst","soon":"sun","later":"ˈleɪtər","always":"ˈɔlˌweɪz","usually":"ˈjuʒəwəli","often":"ˈɔfən","sometimes":"ˈsəmˌtaɪmz","never":"ˈnɛvər","again":"əˈgɛn","once":"wəns","twice":"twaɪs","past":"pæst","future":"fˈjuʧər","beginning":"bɪˈgɪnɪŋ","end":"ɛnd","city":"ˈsɪti","town":"taʊn","street":"strit","road":"roʊd","avenue":"ˈævəˌnu","park":"pɑrk","store":"stɔr","shop":"ʃɑp","market":"ˈmɑrkɪt","restaurant":"ˈrɛˌstrɑnt","hospital":"ˈhɑˌspɪtəl","station":"ˈsteɪʃən","bus":"bəs","train":"treɪn","car":"kɑr","bike":"baɪk","plane":"pleɪn","trip":"trɪp","travel":"ˈtrævəl","map":"mæp","area":"ˈɛriə","country":"ˈkəntri","state":"steɪt","world":"wərld","north":"nɔrθ","south":"saʊθ","east":"ist","west":"wɛst","left":"lɛft","straight":"streɪt","across":"əˈkrɔs","along":"əˈlɔŋ","around":"əraʊnd","through":"θru","toward":"təˈwɔrd","away":"əˈweɪ","here":"hir","there":"ðɛr","where":"wɛr","anywhere":"ˈɛniˌwɛr","somewhere":"ˈsəmˌwɛr","nowhere":"ˈnoʊˌwɛr","entrance":"ˈɛntrəns","exit":"ˈɛksət","corner":"ˈkɔrnər","center":"ˈsɛnər","between":"bɪtˈwin","behind":"bɪˈhaɪnd","beside":"ˌbiˈsaɪd","above":"əˈbəv","below":"bɪˈloʊ","under":"ˈəndər","over":"ˈoʊvər","onto":"ˈɔntu","into":"ˈɪntu","out":"aʊt","forward":"ˈfɔrwərd","backward":"ˈbækwərd","arrive":"əraɪv","enter":"ˈɛnər","cross":"krɔs","ride":"raɪd","drive":"draɪv","fly":"flaɪ","body":"ˈbɑdi","head":"hɛd","face":"feɪs","hair":"hɛr","eye":"aɪ","ear":"ɪr","nose":"noʊz","mouth":"maʊθ","tooth":"tuθ","teeth":"tiθ","tongue":"təŋ","neck":"nɛk","shoulder":"ˈʃoʊldər","arm":"ɑrm","hand":"hænd","finger":"ˈfɪŋgər","chest":"ʧɛst","stomach":"ˈstəmək","leg":"lɛg","knee":"ni","foot":"fʊt","feet":"fit","toe":"toʊ","skin":"skɪn","heart":"hɑrt","blood":"bləd","brain":"breɪn","bone":"boʊn","muscle":"ˈməsəl","health":"hɛlθ","healthy":"ˈhɛlθi","sick":"sɪk","ill":"ɪl","hurt":"hərt","pain":"peɪn","fever":"ˈfivər","cold":"koʊld","cough":"kɔf","medicine":"ˈmɛdəsən","doctor":"ˈdɔktər","nurse":"nərs","rest":"rɛst","sleep":"slip","wake":"weɪk","breathe":"brið","hungry":"ˈhəŋgri","thirsty":"ˈθərsti","tired":"taɪərd","strong":"strɔŋ","weak":"wik","happy":"ˈhæpi","sad":"sæd","angry":"ˈæŋgri","afraid":"əˈfreɪd","scared":"skɛrd","worried":"ˈwərid","nervous":"ˈnərvəs","excited":"ɪkˈsaɪtɪd","surprised":"səˈpraɪzd","bored":"bɔrd","interested":"ˈɪntəˌrɛstɪd","proud":"praʊd","shy":"ʃaɪ","calm":"kɑm","nice":"nis","friendly":"ˈfrɛndli","helpful":"ˈhɛlpfəl","honest":"ˈɑnəst","brave":"breɪv","smart":"smɑrt","funny":"ˈfəni","serious":"ˈsɪriəs","careless":"ˈkɛrlɛs","patient":"ˈpeɪʃənt","polite":"pəˈlaɪt","rude":"rud","active":"ˈæktɪv","lazy":"ˈleɪzi","comfortable":"ˈkəmfərtəbəl","uncomfortable":"ənˈkəmfərtəbəl","better":"ˈbɛtər","worse":"wərs","well":"wɛl","bad":"bæd","good":"gʊd","fine":"faɪn","okay":"ˌoʊˈkeɪ","smile":"smaɪl","laugh":"læf","cry":"kraɪ","worry":"ˈwəri","relax":"rɪˈlæks","care":"kɛr","trust":"trəst","respect":"rɪˈspɛkt","act":"ækt","advise":"ədˈvaɪz","arrange":"əreɪnʤ","borrow":"ˈbɑˌroʊ","cancel":"ˈkænsəl","food":"fud","meal":"mil","breakfast":"ˈbrɛkfəst","dinner":"ˈdɪnər","snack":"snæk","bread":"brɛd","rice":"raɪs","meat":"mit","beef":"bif","pork":"pɔrk","chicken":"ˈʧɪkən","fish":"fɪʃ","egg":"ɛg","milk":"mɪlk","cheese":"ʧiz","fruit":"frut","apple":"ˈæpəl","banana":"bəˈnænə","orange":"ˈɔrɪnʤ","berry":"ˈbɛri","vegetable":"ˈvɛʤtəbəl","potato":"pəˈteɪˌtoʊ","tomato":"təˈmɑˌtoʊ","onion":"ˈənjən","salad":"ˈsæləd","soup":"sup","sandwich":"ˈsænwɪʧ","sugar":"ˈʃʊgər","salt":"sɔlt","pepper":"ˈpɛpər","juice":"ʤus","drink":"drɪŋk","cook":"kʊk","eat":"it","taste":"teɪst","sweet":"swit","sour":"saʊər","hot":"hɑt","fresh":"frɛʃ","clothes":"kloʊðz","shirt":"ʃərt","pants":"pænts","jeans":"ʤinz","shorts":"ʃɔrts","dress":"drɛs","skirt":"skərt","coat":"koʊt","jacket":"ˈʤækɪt","sweater":"sˈwɛtər","sock":"sɑk","shoe":"ʃu","hat":"hæt","glove":"gləv","belt":"bɛlt","size":"saɪz","small":"smɔl","medium":"ˈmidiəm","large":"lɑrʤ","wear":"wɛr","fit":"fɪt","shopping":"ˈʃɑpɪŋ","money":"ˈməni","price":"praɪs","cost":"kɔst","dollar":"ˈdɔlər","cent":"sɛnt","cash":"kæʃ","card":"kɑrd","sale":"seɪl","cheap":"ʧip","expensive":"ɪkˈspɛnsɪv","customer":"ˈkəstəmər","clerk":"klərk","receipt":"rɪˈsit","order":"ˈɔrdər","menu":"ˈmɛnju","mall":"mɔl","counter":"ˈkaʊntər","closed":"kloʊzd","enough":"ɪˈnəf","more":"mɔr","less":"lɛs","most":"moʊst","few":"fju","many":"ˈmɛni","much":"məʧ","some":"səm","any":"ˈɛni","all":"ɔl","catch":"kæʧ","chance":"ʧæns","collect":"kəˈlɛkt","compare":"kəmˈpɛr","complain":"kəmˈpleɪn","connect":"kəˈnɛkt","cover":"ˈkəvər","dance":"dæns","deliver":"dɪˈlɪvər","drop":"drɔp","earn":"ərn","nature":"ˈneɪʧər","weather":"ˈwɛðər","sun":"sən","moon":"mun","star":"stɑr","sky":"skaɪ","cloud":"klaʊd","rain":"reɪn","snow":"snoʊ","wind":"wɪnd","storm":"stɔrm","thunder":"ˈθəndər","lightning":"ˈlaɪtnɪŋ","ice":"aɪs","season":"ˈsizən","spring":"spərɪŋ","summer":"ˈsəmər","winter":"ˈwɪntər","warm":"wɔrm","cool":"kul","wet":"wɛt","dry":"draɪ","bright":"braɪt","dark":"dɑrk","temperature":"ˈtɛmpərəʧər","tree":"tri","plant":"plænt","flower":"flaʊər","grass":"græs","leaf":"lif","root":"rut","seed":"sid","forest":"ˈfɔrɪst","field":"fild","farm":"fɑrm","garden":"ˈgɑrdən","river":"ˈrɪvər","lake":"leɪk","ocean":"ˈoʊʃən","sea":"si","beach":"biʧ","mountain":"ˈmaʊntən","hill":"hɪl","land":"lænd","rock":"rɑk","sand":"sænd","earth":"ərθ","animal":"ˈænəməl","pet":"pɛt","dog":"dɔg","cat":"kæt","bird":"bərd","horse":"hɔrs","cow":"kaʊ","pig":"pɪg","sheep":"ʃip","rabbit":"ˈræbɪt","mouse":"maʊs","bear":"bɛr","lion":"laɪən","tiger":"ˈtaɪgər","elephant":"ˈɛləfənt","monkey":"ˈməŋki","snake":"sneɪk","frog":"frɑg","insect":"ˈɪnˌsɛkt","bee":"bi","ant":"ænt","butterfly":"ˈbətərˌflaɪ","wing":"wɪŋ","tail":"teɪl","fur":"fər","wild":"waɪld","feed":"fid","hunt":"hənt","hide":"haɪd","climb":"klaɪm","swim":"swɪm","jump":"ʤəmp","crawl":"krɔl","alive":"əˈlaɪv","dead":"dɛd","natural":"ˈnæʧərəl","warmth":"wɔrmθ","shade":"ʃeɪd","shadow":"ˈʃæˌdoʊ","ground":"graʊnd","space":"speɪs","environment":"ɪnˈvaɪrənmənt","pollution":"pəˈluʃən","trash":"træʃ","recycle":"riˈsaɪkəl","save":"seɪv","protect":"prəˈtɛkt","energy":"ˈɛnərʤi","weathering":"ˈwɛðərɪŋ","exercise":"ˈɛksərˌsaɪz","fill":"fɪl","hurry":"ˈhəri","invite":"ˌɪnˈvaɪt","forget":"fərˈgɛt","guess":"gɛs","wonder":"ˈwəndər","agree":"əˈgri","disagree":"dɪsəˈgri","like":"laɪk","dislike":"dɪsˈlaɪk","prefer":"prɪˈfər","wish":"wɪʃ","plan":"plæn","reason":"ˈrizən","fact":"fækt","truth":"truθ","lie":"laɪ","message":"ˈmɛsɪʤ","email":"iˈmeɪl","letter":"ˈlɛtər","news":"nuz","conversation":"ˌkɑnvərˈseɪʃən","language":"ˈlæŋgwɪʤ","meaning":"ˈminɪŋ","reply":"rɪˈplaɪ","text":"tɛkst","point":"pɔɪnt","describe":"dɪˈskraɪb","soft":"sɔft","clear":"klɪr","simple":"ˈsɪmpəl","difficult":"ˈdɪfəkəlt","new":"nu","old":"oʊld","young":"jəŋ","big":"bɪg","tiny":"ˈtaɪni","long":"lɔŋ","short":"ʃɔrt","tall":"tɔl","low":"loʊ","high":"haɪ","wide":"waɪd","narrow":"ˈnɛroʊ","thick":"θɪk","thin":"θɪn","heavy":"ˈhɛvi","fast":"fæst","slow":"sloʊ","beautiful":"ˈbjutəfəl","pretty":"ˈprɪti","ugly":"ˈəgli","rich":"rɪʧ","poor":"pur","True":"tru","real":"ril","special":"ˈspɛʃəl","different":"ˈdɪfərənt","possible":"ˈpɑsəbəl","sure":"ʃʊr","maybe":"ˈmeɪbi","probably":"ˈprɑbəˌbli","really":"ˈrɪli","very":"ˈvɛri","quite":"kwaɪt","almost":"ˈɔlˌmoʊst","only":"ˈoʊnli","also":"ˈɔlsoʊ","join":"ʤɔɪn","lend":"lɛnd","miss":"mɪs","notice":"ˈnoʊtɪs","pack":"pæk","paint":"peɪnt","promise":"ˈprɑməs","receive":"rɪˈsiv","repair":"rɪˈpɛr","ring":"rɪŋ","roll":"roʊl","sing":"sɪŋ","smell":"smɛl","teach":"tiʧ","throw":"θroʊ","touch":"təʧ","wash":"wɑʃ","wave":"weɪv","welcome":"ˈwɛlkəm","ahead":"əˈhɛd","besides":"ˌbiˈsaɪdz","nearby":"ˈnɪrˈbaɪ","up":"əp","down":"daʊn","third":"θərd","fourth":"fɔrθ","half":"hæf","quarter":"kˈwɔrtər","pair":"pɛr","single":"ˈsɪŋgəl","double":"ˈdəbəl","extra":"ˈɛkstrə","favorite":"ˈfeɪvərɪt","normal":"ˈnɔrməl","community":"kəmˈjunɪti","neighborhood":"ˈneɪbərˌhʊd","building":"ˈbɪldɪŋ","apartment":"əˈpɑrtmənt","office":"ˈɔfəs","bank":"bæŋk","post":"poʊst","mail":"meɪl","police":"pəˈlis","firefighter":"ˈfaɪrˌfaɪtər","museum":"mˈjuziəm","zoo":"zu","playground":"ˈpleɪˌgraʊnd","church":"ʧərʧ","service":"ˈsərvɪs","worker":"ˈwərkər","job":"ʤɑb","boss":"bɔs","company":"ˈkəmpəˌni","business":"ˈbɪznɪs","hotel":"hoʊˈtɛl","airport":"ˈɛrˌpɔrt","ticket":"ˈtɪkɪt","seat":"sit","passenger":"ˈpæsənʤər","driver":"ˈdraɪvər","traffic":"ˈtræfɪk","sign":"saɪn","address":"ˈæˌdrɛs","number":"ˈnəmbər","emergency":"ˈimərʤənsi","internet":"ˈɪntərˌnɛt","website":"ˈwɛbˌsaɪt","app":"æp","password":"ˈpæsˌwərd","account":"əˈkaʊnt","file":"faɪl","document":"ˈdɑkjəmɛnt","video":"ˈvɪdioʊ","camera":"ˈkæmərə","keyboard":"ˈkiˌbɔrd","button":"ˈbətən","click":"klɪk","type":"taɪp","print":"prɪnt","search":"sərʧ","download":"ˈdaʊnˌloʊd","upload":"ˈəˌploʊd","online":"ˈɔnˌlaɪn","offline":"ˈɔˌflaɪn","link":"lɪŋk","signal":"ˈsɪgnəl","battery":"ˈbætəri","charge":"ʧɑrʤ","power":"paʊər","machine":"məˈʃin","tool":"tul","fix":"fɪks","broken":"ˈbroʊkən","close":"kloʊz","lock":"lɑk","unlock":"ənˈlɑk","push":"pʊʃ","press":"prɛs","hold":"hoʊld","form":"fɔrm","information":"ˌɪnˌfɔrˈmeɪʃən","appointment":"əˈpɔɪntmənt","visit":"ˈvɪzɪt","solution":"səˈluʃən","lost":"lɔst","found":"faʊnd","available":"əˈveɪləbəl","public":"ˈpəblɪk","private":"ˈpraɪvət","local":"ˈloʊkəl","strange":"streɪnʤ","perfect":"ˈpərˌfɪkt","useful":"ˈjusfəl","useless":"ˈjusləs","lucky":"ˈləki","unlucky":"ənˈləki","popular":"ˈpɑpjələr","famous":"ˈfeɪməs","quietly":"kˈwaɪətli","loudly":"ˈlaʊdli","ago":"əˈgoʊ","everywhere":"ˈɛvriˌwɛr","someone":"ˈsəmˌwən","anyone":"ˈɛniˌwən","nobody":"ˈnoʊˌbɑˌdi","something":"ˈsəmθɪŋ","anything":"ˈɛniˌθɪŋ","nothing":"ˈnəθɪŋ","myself":"ˌmaɪˈsɛlf","yourself":"ˈjɔrsɛlf","himself":"hɪmˈsɛlf","herself":"hərˈsɛlf","ourselves":"ɑrˈsɛlvz","themselves":"ðɛmˈsɛlvz","necessary":"ˈnɛsəˌsɛri","common":"ˈkɑmən","similar":"ˈsɪmələr","general":"ˈʤɛnərəl","main":"meɪn","whole":"hoʊl","part":"pɑrt","piece":"pis","way":"weɪ","result":"rɪˈzəlt","cause":"kɔz","effect":"ˈifɛkt","amount":"əˈmaʊnt","several":"ˈsɛvərəl","each":"iʧ","every":"ˈɛvəri","either":"ˈiðər","both":"boʊθ","during":"ˈdʊrɪŋ","while":"waɪl","because":"bɪˈkəz","since":"sɪns","so":"soʊ","if":"ɪf","unless":"ənˈlɛs","although":"ˌɔlˈðoʊ","but":"bət","however":"ˌhaʊˈɛvər","and":"ənd","or":"ər","than":"ðən","as":"ɛz","about":"əˈbaʊt","against":"əˈgɛnst","without":"wɪˈθaʊt","with":"wɪθ","from":"frəm","to":"tɪ","for":"fər","by":"baɪ","of":"əv","at":"æt","on":"ɔn","in":"ɪn","among":"əˈməŋ","usual":"ˈjuʒəwəl","normally":"ˈnɔrməli","perhaps":"pərˈhæps","already":"ɔˈrɛdi","still":"stɪl","just":"ʤɪst","even":"ˈivɪn","instead":"ˌɪnˈstɛd","certainly":"ˈsərtənli","finally":"ˈfaɪnəli","suddenly":"ˈsədənli","quickly":"kˈwɪkli","slowly":"sˈloʊli","carefully":"ˈkɛrfəli","easily":"ˈizəli","clearly":"ˈklɪrli","take care":"teɪk kɛr","find out":"faɪnd aʊt","get up":"gɪt əp","sit down":"sɪt daʊn","stand up":"stænd əp","come back":"kəm bæk","go back":"goʊ bæk","come in":"kəm ɪn","go out":"goʊ aʊt","pick up":"pɪk əp","put down":"pʊt daʊn","turn on":"tərn ɔn","turn off":"tərn ɔf","look for":"lʊk fər","look at":"lʊk æt","wait for":"weɪt fər","talk about":"tɔk əˈbaʊt","think about":"θɪŋk əˈbaʊt","ask for":"æsk fər","listen to":"ˈlɪsən tɪ","work on":"wərk ɔn","write down":"raɪt daʊn","read aloud":"rɛd əˈlaʊd","line up":"laɪn əp","clean up":"klin əp","hurry up":"ˈhəri əp","slow down":"sloʊ daʊn","come from":"kəm frəm","belong to":"bɪˈlɔŋ tɪ","be ready":"bi ˈrɛdi","be careful":"bi ˈkɛrfəl","be late":"bi leɪt","be absent":"bi ˈæbsənt","be quiet":"bi kwaɪət","be sure":"bi ʃʊr","at home":"æt hoʊm","at school":"æt skul","on time":"ɔn taɪm","right now":"raɪt naʊ","identify":"aɪˈdɛntəˌfaɪ","determine":"dɪˈtərmən","analyze":"ˈænəˌlaɪz","examine":"ɪgˈzæmɪn","interpret":"ˌɪnˈtərprət","infer":"ˌɪnˈfər","conclude":"kənˈklud","predict":"prɪˈdɪkt","evaluate":"ɪˈvæljuˌeɪt","assess":"əˈsɛs","recognize":"ˈrɛkəgˌnaɪz","distinguish":"dɪˈstɪŋgwɪʃ","investigate":"ˌɪnˈvɛstəˌgeɪt","observe":"əbˈzərv","discover":"dɪˈskəvər","explore":"ɪkˈsplɔr","focus":"ˈfoʊkɪs","select":"səˈlɛkt","classify":"ˈklæsəˌfaɪ","organize":"ˈɔrgəˌnaɪz","apply":"əˈplaɪ","estimate":"ˈɛstəˌmeɪt","calculate":"ˈkælkjəˌleɪt","measure":"ˈmɛʒər","approach":"əˈproʊʧ","reflect":"rɪˈflɛkt","assume":"əˈsum","derive":"dəraɪv","formulate":"ˈfɔrmjəˌleɪt","perceive":"pərˈsiv","comprehend":"ˌkɑmpriˈhɛnd","anticipate":"ænˈtɪsəˌpeɪt","verify":"ˈvɛrəˌfaɪ","contrast":"ˈkɑntræst","relate":"rɪˈleɪt","trace":"treɪs","inspect":"ˌɪnˈspɛkt","monitor":"ˈmɑnətər","judge":"ʤəʤ","evidence":"ˈɛvədəns","detail":"ˈditeɪl","opinion":"əˈpɪnjən","statement":"ˈsteɪtmənt","claim":"kleɪm","argument":"ˈɑrgjəmənt","conclusion":"kənˈkluʒən","purpose":"ˈpərpəs","context":"ˈkɑntɛkst","source":"sɔrs","reference":"ˈrɛfərəns","relevant":"ˈrɛləvənt","accurate":"ˈækjərət","specific":"spɪˈsɪfɪk","support":"səˈpɔrt","summary":"ˈsəməri","theme":"θim","passage":"ˈpæsɪʤ","phrase":"freɪz","term":"tərm","definition":"ˌdɛfəˈnɪʃən","description":"dɪˈskrɪpʃən","explanation":"ˌɛkspləˈneɪʃən","central":"ˈsɛntrəl","textual":"ˈtɛksˌʧuəl","literal":"ˈlɪtərəl","figurative":"ˈfɪgjərətɪv","implicit":"ˌɪmˈplɪsət","explicit":"ɪkˈsplɪsət","direct":"dɪˈrɛkt","indirect":"ˌɪndərˈɛkt","clue":"klu","quote":"kwoʊt","cite":"saɪt","refer":"rɪˈfər","mention":"ˈmɛnʃən","highlight":"ˈhaɪˌlaɪt","emphasize":"ˈɛmfəˌsaɪz","summarize":"ˈsəmərˌaɪz","express":"ɪkˈsprɛs","indicate":"ˈɪndəˌkeɪt","reveal":"rɪˈvil","represent":"ˌrɛprɪˈzɛnt","demonstrate":"ˈdɛmənˌstreɪt","illustrate":"ˈɪləˌstreɪt","clarify":"ˈklɛrəˌfaɪ","define":"dɪˈfaɪn","introduce":"ˌɪntrəˈdus","provide":"prəˈvaɪd","contain":"kənˈteɪn","communicate":"kəmˈjunəˌkeɪt","convey":"kənˈveɪ","respond":"rɪˈspɑnd","discuss":"dɪˈskəs","inform":"ˌɪnˈfɔrm","announce":"əˈnaʊns","outline":"ˈaʊˌtlaɪn","elaborate":"ɪˈlæbərˌeɪt","paraphrase":"ˈpɛrəˌfreɪz","retell":"riˈtɛl","argue":"ˈɑrgju","persuade":"pərsˈweɪd","convince":"kənˈvɪns","assert":"əˈsərt","propose":"prəˈpoʊz","advocate":"ˈædvəˌkeɪt","defend":"dɪˈfɛnd","oppose":"əˈpoʊz","debate":"dəˈbeɪt","justify":"ˈʤəstəˌfaɪ","questioning":"kˈwɛsʧənɪŋ","discussion":"dɪˈskəʃən","response":"rɪˈspɑns","communication":"kəmˌjunəˈkeɪʃən","presentation":"ˌprɛzənˈteɪʃən","expression":"ɪkˈsprɛʃən","feedback":"ˈfidˌbæk","comment":"ˈkɑmɛnt","affect":"əˈfɛkt","influence":"ˈɪnfluəns","contribute":"kənˈtrɪbjut","occur":"əˈkər","develop":"dɪˈvɛləp","increase":"ˌɪnˈkris","decrease":"ˈdiˌkris","improve":"ˌɪmˈpruv","reduce":"rɪˈdus","prevent":"prɪˈvɛnt","depend":"dɪˈpɛnd","react":"riækt","process":"ˈprɔˌsɛs","progress":"ˈprɑˌgrɛs","transform":"ˈtrænsfɔrm","alter":"ˈɔltər","modify":"ˈmɑdəˌfaɪ","adjust":"əˈʤəst","adapt":"əˈdæpt","expand":"ɪkˈspænd","decline":"dɪˈklaɪn","diminish":"dɪˈmɪnɪʃ","enhance":"ɛnˈhæns","maintain":"meɪnˈteɪn","preserve":"prɪˈzərv","replace":"ˌriˈpleɪs","restore":"rɪˈstɔr","emerge":"ˈimərʤ","evolve":"ɪˈvɑlv","shift":"ʃɪft","transition":"trænˈzɪʃən","fluctuate":"ˈfləkʧəˌweɪt","stabilize":"ˈsteɪbəˌlaɪz","generate":"ˈʤɛnərˌeɪt","produce":"ˈproʊdus","establish":"ɪˈstæblɪʃ","initiate":"ˌɪˈnɪʃiˌeɪt","achieve":"əˈʧiv","accomplish":"əˈkɑmplɪʃ","difference":"ˈdɪfərəns","similarity":"ˌsɪməˈlɛrəti","unlike":"ənˈlaɪk","relationship":"riˈleɪʃənˌʃɪp","connection":"kəˈnɛkʃən","related":"rɪˈleɪtɪd","separate":"ˈsɛpərˌeɪt","individual":"ˌɪndəˈvɪʤəwəl","particular":"ˌpɑˈtɪkjələr","various":"ˈvɛriəs","certain":"ˈsərtən","entire":"ɪnˈtaɪər","major":"ˈmeɪʤər","minor":"ˈmaɪnər","equal":"ˈikwəl","opposite":"ˈɑpəzɪt","associate":"əˈsoʊʃiˌeɪt","correspond":"ˌkɔrəˈspɑnd","interact":"ˌɪnərˈækt","vary":"ˈvɛri","differentiate":"ˌdɪfərˈɛnʧiˌeɪt","equivalent":"ɪkˈwɪvələnt","consistent":"kənˈsɪstənt","inconsistent":"ˌɪnkənˈsɪstənt","compatible":"kəmˈpætəbəl","independent":"ˌɪndɪˈpɛndənt","dependent":"dɪˈpɛndənt","mutual":"mˈjuʧuəl","parallel":"ˈpɛrəˌlɛl","relative":"ˈrɛlətɪv","proportion":"prəˈpɔrʃən","pattern":"ˈpætərn","structure":"ˈstrəkʧər","category":"ˈkætəˌgɔri","combine":"ˈkɑmbaɪn","divide":"dɪˈvaɪd","inferential":"ˌɪnfərˈɛnʃəl","balance":"ˈbæləns","coordinate":"koʊˈɔrdəˌneɪt","interconnect":"ˌɪntərkəˈnɛkt","overlap":"ˈoʊvərˌlæp","contrastive":"contrastive","significant":"sɪgˈnɪfɪkənt","likely":"ˈlaɪkli","unlikely":"ənˈlaɪkli","appropriate":"əˈproʊpriˌeɪt","effective":"ˈifɛktɪv","successful":"səkˈsɛsfəl","complex":"ˈkɑmplɛks","obvious":"ˈɑbviəs","sufficient":"səˈfɪʃənt","typical":"ˈtɪpɪkəl","unusual":"ənˈjuˌʒuəl","essential":"ɛˈsɛnʃəl","valuable":"ˈvæljəbəl","adequate":"ˈædəkˌweɪt","beneficial":"ˌbɛnəˈfɪʃəl","considerable":"kənˈsɪdərəbəl","efficient":"ɪˈfɪʃənt","exceptional":"ɪkˈsɛpʃənəl","favorable":"ˈfeɪvərəbəl","fundamental":"ˌfəndəˈmɛnəl","meaningful":"ˈminɪŋfəl","notable":"ˈnoʊtəbəl","practical":"ˈpræktɪkəl","primary":"ˈpraɪˌmɛri","reasonable":"ˈrizənəbəl","substantial":"səbˈstænʃəl","suitable":"ˈsutəbəl","valid":"ˈvælɪd","reliable":"rɪˈlaɪəbəl","precise":"prɪˈsaɪs","objective":"əˈbʤɛktɪv","subjective":"səˈbʤɛktɪv","logical":"ˈlɑʤɪkəl","noteworthy":"ˈnoʊtˌwərði","critical":"ˈkrɪtɪkəl","crucial":"ˈkruʃəl","apparent":"əˈpɛrənt","evident":"ˈɛvədənt","potential":"pəˈtɛnʃəl","widespread":"ˈwaɪdˈsprɛd","predominant":"prɪˈdɑmənənt","sequence":"ˈsikwəns","stage":"steɪʤ","period":"ˈpɪriəd","previous":"ˈpriviəs","following":"ˈfɑloʊɪŋ","initial":"ˌɪˈnɪʃəl","final":"ˈfaɪnəl","eventually":"ɪˈvɛnʧəwəli","gradually":"ˈgræʤuəli","immediately":"ˌɪˈmiˌdiətli","recently":"ˈrisəntli","currently":"ˈkərəntli","frequently":"ˈfrikwɛntli","rarely":"ˈrɛrli","temporary":"ˈtɛmpərˌɛri","permanent":"ˈpərmɑˌnɛnt","prior":"praɪər","subsequent":"ˈsəbsəkwənt","simultaneous":"ˌsaɪməlˈteɪniəs","formerly":"ˈfɔrmərli","ultimately":"ˈəltəmətli","initially":"ˌɪˈnɪʃəli","previously":"ˈpriviəsli","afterward":"ˈæftərwərd","meanwhile":"ˈminˌwaɪl","occasionally":"ɔˈkeɪʒənəˌli","regularly":"ˈrɛgjələrli","constantly":"ˈkɑnstəntli","annually":"ˈænjuəli","daily":"ˈdeɪli","duration":"ˈdʊˈreɪʃən","interval":"ˈɪntərvəl","phase":"feɪz","cycle":"ˈsaɪkəl","trend":"trɛnd","precede":"prɪˈsid","delay":"dɪˈleɪ","plausible":"ˈplɔzəbəl","pause":"pɔz","resume":"ˈrɛzəˌmeɪ","coherent":"koʊˈhɪrənt","timely":"ˈtaɪmli","ongoing":"ˈɔnˌgoʊɪŋ","consecutive":"kənˈsɛkjətɪv","issue":"ˈɪʃu","challenge":"ˈʧælənʤ","difficulty":"ˈdɪfɪˌkəlti","consequence":"ˈkɑnsəkwəns","impact":"ˌɪmˈpækt","benefit":"ˈbɛnəfɪt","advantage":"ædˈvæntɪʤ","disadvantage":"ˌdɪsədˈvænɪʤ","risk":"rɪsk","conflict":"ˈkɑnflɪkt","resolve":"riˈzɑlv","overcome":"ˈoʊvərˌkəm","avoid":"əˈvɔɪd","manage":"ˈmænɪʤ","concise":"kənˈsaɪs","recover":"rɪˈkəvər","handle":"ˈhændəl","strategy":"ˈstrætəʤi","method":"ˈmɛθəd","procedure":"prəˈsiʤər","technique":"tɛkˈnik","option":"ˈɔpʃən","alternative":"ɔlˈtərnətɪv","decision":"dɪˈsɪʒən","action":"ˈækʃən","attempt":"əˈtɛmpt","effort":"ˈɛfərt","target":"ˈtərgət","implement":"ˈɪmpləmənt","perform":"pərˈfɔrm","comprehensive":"ˌkɑmpriˈhɛnsɪv","obtain":"əbˈteɪn","conventional":"kənˈvɛnʃənəl","pursue":"pərˈsu","undertake":"ˈəndərˌteɪk","facilitate":"fəˈsɪləˌteɪt","enable":"ɪˈneɪbəl","assist":"əˈsɪst","participate":"pɑrˈtɪsəˌpeɪt","cooperate":"kˈwɑpərˌeɪt","controversial":"ˌkɑntrəˈvərʃəl","control":"kənˈtroʊl","cumulative":"ˈkjumjələtɪv","deliberate":"dɪˈlɪbərˌeɪt","attitude":"ˈætəˌtud","behavior":"bɪˈheɪvjər","motivation":"ˌmoʊtəˈveɪʃən","intention":"ˌɪnˈtɛnʧən","reaction":"riˈækʃən","emotion":"ˈiˌmoʊʃən","perspective":"pərˈspɛktɪv","experience":"ɪkˈspɪriəns","struggle":"ˈstrəgəl","dynamic":"daɪˈnæmɪk","responsibility":"riˌspɑnsəˈbɪləti","determination":"dɪˌtərməˈneɪʃən","courage":"kərɪʤ","confidence":"ˈkɑnfədɛns","concern":"kənˈsərn","desire":"dɪˈzaɪər","disappointment":"ˌdɪsəˈpɔɪntmənt","frustration":"frəˈstreɪʃən","hesitation":"ˌhɛzəˈteɪʃən","curiosity":"ˌkjʊriˈɑsəti","sympathy":"ˈsɪmpəθi","generosity":"ˌʤɛnərˈɑsəti","independence":"ˌɪndɪˈpɛndəns","loyalty":"ˈlɔɪəlti","honesty":"ˈɑnəsti","character":"ˈkɛrɪktər","trait":"treɪt","motive":"ˈmoʊtɪv","belief":"bɪˈlif","value":"ˈvælju","tradition":"trəˈdɪʃən","custom":"ˈkəstəm","society":"soʊˈsaɪɪti","culture":"ˈkəlʧər","identity":"aɪˈdɛntəˌti","role":"roʊl","empirical":"ˌɛmˈpɪrɪkəl","interaction":"ˌɪnərˈækʃən","cooperation":"kˌwɔpərˈeɪʃən","fairness":"ˈfɛrnəs","justice":"ˈʤəstɪs","feasible":"ˈfizəbəl","resolution":"ˌrɛzəˈluʃən","flexible":"ˈflɛksəbəl","growth":"groʊθ","framework":"ˈfreɪmˌwərk","factor":"ˈfæktər","function":"ˈfəŋkʃən","concept":"ˈkɑnsɛpt","principle":"ˈprɪnsəpəl","theory":"ˈθɪri","inherent":"ˌɪnˈhɛrənt","data":"ˈdætə","research":"ˈrisərʧ","variable":"ˈvɛriəbəl","condition":"kənˈdɪʃən","feature":"ˈfiʧər","property":"ˈprɑpərti","element":"ˈɛləmənt","component":"kəmˈpoʊnənt","resource":"ˈrisɔrs","system":"ˈsɪstəm","innovative":"ˈɪnəˌveɪtɪv","integrate":"ˈɪnəˌgreɪt","model":"ˈmɑdəl","region":"ˈriʤən","location":"loʊˈkeɪʃən","population":"ˌpɑpjəˈleɪʃən","distribution":"ˌdɪstrəˈbjuʃən","range":"reɪnʤ","scale":"skeɪl","rate":"reɪt","quantity":"kˈwɑntəti","majority":"məˈʤɔrəti","minority":"məˈnɔrəti","average":"ˈævərɪʤ","approximately":"əˈprɑksəmətli","nearly":"ˈnɪrli","primarily":"praɪˈmɛrəli","generally":"ˈʤɛnərəli","relatively":"ˈrɛlətɪvli","extremely":"ɪkˈstrimli","considerably":"kənˈsɪdərəbli","slightly":"sˈlaɪtli","additional":"əˈdɪʃənəl","overall":"ˈoʊvərˌɔl","mediate":"ˈmidiˌeɪt","neutral":"ˈnutrəl","notion":"ˈnoʊʃən","unique":"juˈnik","precedent":"ˈprɛsɪdənt","basic":"ˈbeɪsɪk","advanced":"ədˈvænst","credible":"ˈkrɛdəbəl","validity":"vəˈlɪdɪti","reasoning":"ˈrizənɪŋ","counterargument":"counterargument","refute":"rɪfˈjut","position":"pəˈzɪʃən","viewpoint":"vˈjuˌpɔɪnt","preliminary":"prɪˈlɪməˌnɛri","bias":"baɪəs","priority":"praɪˈɔrəti","random":"ˈrændəm","reinforcement":"ˌriɪnˈfɔrsmənt","scenario":"sɪˈnɛrioʊ","citation":"saɪˈteɪʃən","scope":"skoʊp","investigation":"ˌɪnˌvɛstəˈgeɪʃən","stable":"ˈsteɪbəl","proof":"pruf","supporting":"səˈpɔrtɪŋ","substitute":"ˈsəbstəˌtut","irrelevant":"ˌɪˈrɛləvənt","tentative":"ˈtɛntətɪv","unreliable":"ˌənrɪˈlaɪəbəl","transfer":"ˈtrænsfər","inaccurate":"ˌɪˈnækjərət","trigger":"ˈtrɪgər","insufficient":"ˌɪnsəˈfɪʃənt","uniform":"ˈjunəˌfɔrm","invalid":"ˌɪnˈvæləd","visible":"ˈvɪzəbəl","assumption":"əˈsəmpʃən","implication":"ˌɪmpləˈkeɪʃən","criterion":"kraɪˈtɪriən","criteria":"kraɪˈtɪriə","basis":"ˈbeɪsɪs","methodology":"ˌmɛθəˈdɑləʤi","finding":"ˈfaɪndɪŋ","viable":"ˈvaɪəbəl","interpretation":"ˌɪnˌtərprɪˈteɪʃən","analysis":"æˈnælɪsɪs","evaluation":"ɪˌvæljuˈeɪʃən","comparison":"kəmˈpɛrəsən","abstract":"ˈæbˌstrækt","synthesis":"ˈsɪnθəsəs","aggregate":"ˈægrəgət","persuasion":"pərsˈweɪʒən","argumentative":"ˌɑrgjəˈmɛntətɪv","informative":"ˌɪnˈfɔrmətɪv","explanatory":"ɪkˈsplænəˌtɔri","acquire":"əkˈwaɪər","allocate":"ˈæləˌkeɪt","attribute":"əˈtrɪˌbjut","construct":"ˈkɑnstrəkt","encounter":"ɪnˈkaʊnər","incorporate":"ˌɪnˈkɔrpərˌeɪt","retain":"rɪˈteɪn","specify":"ˈspɛsəˌfaɪ","sustain":"səˈsteɪn","utilize":"ˈjutəˌlaɪz","acknowledge":"ækˈnɑlɪʤ","criticize":"ˈkrɪtɪˌsaɪz","depict":"dɪˈpɪkt","exemplify":"ɪgˈzɛmpləˌfaɪ","portray":"pɔrˈtreɪ","reinforce":"ˌriɪnˈfɔrs","signify":"ˈsɪgnəˌfaɪ","synthesize":"ˈsɪnθəˌsaɪz","validate":"ˈvælədeɪt","contradict":"ˌkɑntrəˈdɪkt","circumstance":"ˈsərkəmˌstæns","phenomenon":"fəˈnɑməˌnɑn","tendency":"ˈtɛndənsi","variation":"ˌvɛriˈeɪʃən","significance":"sɪgˈnɪfɪkəns","coincide":"ˌkoʊɪnˈsaɪd","compile":"kəmˈpaɪl","concurrent":"kənˈkərənt","discrete":"dɪˈskrit","domain":"doʊˈmeɪn","underlying":"ˌəndərˈlaɪɪŋ","inevitable":"ˌɪˈnɛvətəbəl","distinct":"dɪˈstɪŋkt","diverse":"dɪˈvərs","integral":"ˈɪnəgrəl","parameter":"pərˈæmətər","predominantly":"ˌprɪˈdɑmənənˌtli","abundant":"əˈbəndənt","accessible":"ækˈsɛsəbəl","accompany":"əˈkəmpəni","consequently":"ˈkɑnsəkˌwɛntli","furthermore":"ˈfərðərˌmɔr","nevertheless":"ˌnɛvərðəˈlɛs","therefore":"ˈðɛrˌfɔr","otherwise":"ˈəðərˌwaɪz","similarly":"ˈsɪmələrli","specifically":"spəˈsɪfɪkli","whereas":"wɛˈræz","alternatively":"ɔlˈtərnətɪvli","accordingly":"əˈkɔrdɪŋli","organism":"ˈɔrgəˌnɪzəm","cell":"sɛl","tissue":"ˈtɪʃu","organ":"ˈɔrgən","species":"ˈspiʃiz","ecosystem":"ˈikoʊˌsɪstəm","habitat":"ˈhæbəˌtæt","adaptation":"ˌædəpˈteɪʃən","heredity":"hərˈɛdəti","offspring":"ˈɔfˌsprɪŋ","life cycle":"laɪf ˈsaɪkəl","reproduction":"ˌriprəˈdəkʃən","development":"dɪˈvɛləpmənt","survival":"sərˈvaɪvəl","producer":"prəˈdusər","consumer":"kənˈsumər","decomposer":"decomposer","food chain":"fud ʧeɪn","food web":"fud wɛb","predator":"ˈprɛdətər","prey":"preɪ","competition":"ˌkɑmpəˈtɪʃən","biodiversity":"ˌbaɪoʊdaɪˈvərsəti","matter":"ˈmætər","mass":"mæs","volume":"ˈvɑljum","density":"ˈdɛnsɪti","solid":"ˈsɑləd","liquid":"ˈlɪkwɪd","gas":"gæs","particle":"ˈpɑrtɪkəl","mixture":"ˈmɪksʧər","dissolve":"dɪˈzɑlv","evaporation":"ɪˌvæpərˈeɪʃən","condensation":"ˌkɑndənˈseɪʃən","freezing":"ˈfrizɪŋ","melting":"ˈmɛltɪŋ","heat":"hit","force":"fɔrs","motion":"ˈmoʊʃən","speed":"spid","velocity":"vəˈlɑsəti","gravity":"ˈgrævɪti","friction":"ˈfrɪkʃən","magnet":"ˈmægnət","magnetic":"mægˈnɛtɪk","electricity":"ɪˌlɛkˈtrɪsəti","circuit":"ˈsərkət","current":"ˈkɑrənt","conductor":"kənˈdəktər","insulator":"ˈɪnsəˌleɪtər","reflection":"rɪˈflɛkʃən","refraction":"refraction","vibration":"vaɪˈbreɪʃən","frequency":"ˈfrikwənsi","climate":"ˈklaɪmɪt","atmosphere":"ˈætməsˌfɪr","precipitation":"prɪˌsɪpɪˈteɪʃən","humidity":"hjuˈmɪdəti","forecast":"ˈfɔrˌkæst","water cycle":"ˈwɔtər ˈsaɪkəl","erosion":"ɪˈroʊʒən","deposition":"ˌdɛpəˈzɪʃən","mineral":"ˈmɪnərəl","fossil":"ˈfɑsəl","soil":"sɔɪl","crust":"krəst","mantle":"ˈmæntəl","core":"kɔr","volcano":"vɑlˈkeɪnoʊ","earthquake":"ˈərθkˌweɪk","solar system":"ˈsoʊlər ˈsɪstəm","planet":"ˈplænət","orbit":"ˈɔrbət","rotation":"roʊˈteɪʃən","revolution":"ˌrɛvəˈluʃən","moon phase":"mun feɪz","galaxy":"ˈgæləksi","universe":"ˈjunəˌvərs","gravity field":"ˈgrævɪti fild","citizen":"ˈsɪtɪzən","government":"ˈgəvərnmənt","democracy":"dɪˈmɑkrəsi","republic":"riˈpəblɪk","constitution":"ˌkɑnstəˈtuʃən","law":"lɔ","rights":"raɪts","freedom":"ˈfridəm","election":"ɪˈlɛkʃən","vote":"voʊt","representative":"ˌrɛprɪˈzɛnətɪv","legislature":"ˈlɛʤəsˌleɪʧər","executive":"ɪgˈzɛkjətɪv","judicial":"ʤuˈdɪʃəl","court":"kɔrt","mayor":"meɪər","governor":"ˈgəvərnər","president":"ˈprɛzɪdənt","federal":"ˈfɛdərəl","local government":"ˈloʊkəl ˈgəvərnmənt","policy":"ˈpɑləsi","public service":"ˈpəblɪk ˈsərvɪs","tax":"tæks","budget":"ˈbəʤɪt","civic":"ˈsɪvɪk","amendment":"əˈmɛndmənt","economy":"ɪˈkɑnəmi","goods":"gʊdz","services":"ˈsərvɪsɪz","supply":"səˈplaɪ","demand":"dɪˈmænd","trade":"treɪd","currency":"ˈkərənsi","income":"ˈɪnˌkəm","expense":"ɪkˈspɛns","profit":"ˈprɑfɪt","labor":"ˈleɪbər","industry":"ˈɪndəstri","agriculture":"ˈægrɪˌkəlʧər","manufacturing":"ˌmænjəˈfækʧərɪŋ","technology":"tɛkˈnɑləʤi","scarcity":"ˈskɛrsɪti","continent":"ˈkɑntənənt","nation":"ˈneɪʃən","border":"ˈbɔrdər","capital":"ˈkæpɪtəl","urban":"ˈərbən","rural":"ˈrʊrəl","suburban":"səˈbərbən","latitude":"ˈlætəˌtud","longitude":"ˈlɑnʤəˌtud","equator":"ɪkˈweɪtər","hemisphere":"ˈhɛmɪsˌfɪr","map scale":"mæp skeɪl","legend":"ˈlɛʤənd","compass rose":"ˈkəmpəs roʊz","physical map":"ˈfɪzɪkəl mæp","political map":"pəˈlɪtɪkəl mæp","geography":"ʤiˈɑgrəfi","migration":"maɪˈgreɪʃən","immigration":"ˌɪməˈgreɪʃən","emigration":"ˌɛməˈgreɪʃən","settlement":"ˈsɛtəlmənt","colony":"ˈkɑləni","exploration":"ˌɛksplərˈeɪʃən","expedition":"ˌɛkspəˈdɪʃən","navigation":"ˌnævəˈgeɪʃən","route":"rut","territory":"ˈtɛrɪˌtɔri","religion":"rɪˈlɪʤən","heritage":"ˈhɛrɪtɪʤ","diversity":"dɪˈvərsɪti","civilization":"ˌsɪvəlɪˈzeɪʃən","war":"wɔr","peace":"pis","alliance":"əˈlaɪəns","treaty":"ˈtriti","slavery":"sˈleɪvəri","abolition":"ˌæbəˈlɪʃən","civil rights":"ˈsɪvəl raɪts","digit":"ˈdɪʤɪt","place value":"pleɪs ˈvælju","whole number":"hoʊl ˈnəmbər","integer":"ˈɪntəʤər","decimal":"ˈdɛsəməl","fraction":"ˈfrækʃən","numerator":"numerator","denominator":"dɪˈnɑməˌneɪtər","mixed number":"mɪkst ˈnəmbər","equivalent fraction":"ɪkˈwɪvələnt ˈfrækʃən","multiple":"ˈməltəpəl","prime number":"praɪm ˈnəmbər","composite number":"kəmˈpɑzət ˈnəmbər","product":"ˈprɑdəkt","quotient":"kˈwoʊʃənt","sum":"səm","remainder":"rɪˈmeɪndər","operation":"ˌɑpərˈeɪʃən","equation":"ɪkˈweɪʒən","unknown":"ənˈnoʊn","inequality":"ˌɪnɪkˈwɑləti","greater than":"ˈgreɪtər ðən","less than":"lɛs ðən","order of operations":"ˈɔrdər əv ˌɑpərˈeɪʃənz","ratio":"ˈreɪʃiˌoʊ","unit rate":"ˈjunɪt reɪt","percent":"pərˈsɛnt","scale factor":"skeɪl ˈfæktər","constant":"ˈkɑnstənt","line segment":"laɪn ˌsɛgˈmɛnt","ray":"reɪ","angle":"ˈæŋgəl","acute angle":"əˈkjut ˈæŋgəl","right angle":"raɪt ˈæŋgəl","obtuse angle":"ɑbˈtus ˈæŋgəl","perpendicular":"ˌpərpənˈdɪkjələr","polygon":"ˈpɑlɪˌgɑn","triangle":"ˈtraɪˌæŋgəl","quadrilateral":"quadrilateral","rectangle":"ˈrɛktæŋgəl","square":"skwɛr","rhombus":"rhombus","trapezoid":"trapezoid","radius":"ˈreɪdiəs","diameter":"daɪˈæmətər","perimeter":"pərˈɪmətər","surface area":"ˈsərfəs ˈɛriə","length":"lɛŋθ","width":"wɪdθ","height":"haɪt","distance":"ˈdɪstəns","coordinate plane":"koʊˈɔrdəˌneɪt pleɪn","axis":"ˈæksəs","origin":"ˈɔrəʤən","graph":"græf","survey":"ˈsərˌveɪ","median":"ˈmidiən","mode":"moʊd","probability":"ˌprɑbəˈbɪləˌti","outcome":"ˈaʊtˌkəm","event":"ɪˈvɛnt","sample space":"ˈsæmpəl speɪs","round":"raʊnd","benchmark":"ˈbɛnʧˌmɑrk","approximate":"əˈprɑksəˌmeɪt","measurement":"ˈmɛʒərmənt","unit":"ˈjunɪt","convert":"ˈkɑnvərt","metric system":"ˈmɛtrɪk ˈsɪstəm","inch":"ɪnʧ","yard":"jɑrd","mile":"maɪl","capacity":"kəˈpæsɪti","elapsed time":"ɪˈlæpst taɪm","genre":"ˈʒɑnrə","fiction":"ˈfɪkʃən","nonfiction":"nɑnˈfɪkʃən","poetry":"ˈpoʊətri","drama":"ˈdrɑmə","myth":"mɪθ","folktale":"ˈfoʊkˌteɪl","fable":"ˈfeɪbəl","biography":"baɪˈɑgrəfi","autobiography":"ˌɔtəbaɪˈɑgrəfi","narrative":"ˈnɛrətɪv","informational text":"ˌɪnˈfɔrˌmeɪʃənəl tɛkst","argumentative text":"ˌɑrgjəˈmɛntətɪv tɛkst","persuasive text":"pərsˈweɪsɪv tɛkst","section":"ˈsɛkʃən","heading":"ˈhɛdɪŋ","caption":"ˈkæpʃən","diagram":"ˈdaɪəˌgræm","timeline":"ˈtaɪmlaɪn","text feature":"tɛkst ˈfiʧər","main idea":"meɪn aɪˈdiə","central idea":"ˈsɛntrəl aɪˈdiə","supporting detail":"səˈpɔrtɪŋ ˈditeɪl","protagonist":"proʊˈtægənəst","antagonist":"ænˈtægənəst","setting":"ˈsɛtɪŋ","plot":"plɑt","climax":"ˈklaɪˌmæks","character trait":"ˈkɛrɪktər treɪt","narrator":"ˈnɛreɪtər","speaker":"ˈspikər","point of view":"pɔɪnt əv vju","first person":"fərst ˈpərsən","third person":"θərd ˈpərsən","tone":"toʊn","mood":"mud","dialogue":"ˈdaɪəˌlɔg","inference":"ˈɪnfərəns","credibility":"ˌkrɛdəˈbɪlɪti","context clue":"ˈkɑntɛkst klu","synonym":"ˈsɪnəˌnɪm","antonym":"antonym","homophone":"ˈhoʊmoʊˌfoʊn","prefix":"ˈprifɪks","suffix":"ˈsəfɪks","root word":"rut wərd","figurative language":"ˈfɪgjərətɪv ˈlæŋgwɪʤ","literal meaning":"ˈlɪtərəl ˈminɪŋ","connotation":"ˌkɑnəˈteɪʃən","simile":"simile","metaphor":"ˈmɛtəfɔr","personification":"pərˌsɑnəfəˈkeɪʃən","hyperbole":"haɪˈpərbəˌli","idiom":"ˈɪdiəm","imagery":"ˈɪmɪʤri","symbolism":"ˈsɪmbəˌlɪzəm","alliteration":"əˈlɪtərˌeɪʃən","onomatopoeia":"onomatopoeia","rhyme":"raɪm","stanza":"ˈstænzə","verse":"vərs","rhythm":"ˈrɪðəm","author's purpose":"ˈɔθərz ˈpərpəs","compare and contrast":"kəmˈpɛr ənd ˈkɑntræst","cause and effect":"kɔz ənd ˈifɛkt","problem and solution":"ˈprɑbləm ənd səˈluʃən","chronological order":"ˌkrɑnəˈlɑʤɪkəl ˈɔrdər","text structure":"tɛkst ˈstrəkʧər","topic sentence":"ˈtɑpɪk ˈsɛntəns","concluding sentence":"kənˈkludɪŋ ˈsɛntəns","draft":"dræft","revise":"rɪˈvaɪz","edit":"ˈɛdət","proofread":"ˈpruˌfrid","thesis":"ˈθiˌsɪs","counterclaim":"ˈkaʊntərˌkleɪm","categorize":"ˈkætəgərˌaɪz","conceptualize":"conceptualize","deduce":"dɪˈdus","discern":"dɪˈsərn","hypothesize":"haɪˈpɑθəˌsaɪz","prioritize":"praɪˈɔrəˌtaɪz","scrutinize":"ˈskrutəˌnaɪz","speculate":"ˈspɛkjəˌleɪt","concrete":"ˈkɑnkrit","contradictory":"ˌkɑntrəˈdɪktəri","probable":"ˈprɑbəbəl","hypothesis":"haɪˈpɑθəsəs","insight":"ˈɪnˌsaɪt","dimension":"dɪˈmɛnʃən","mechanism":"ˈmɛkəˌnɪzəm","concede":"kənˈsid","dispute":"dɪˈspjut","prove":"pruv","weigh":"weɪ","corroborate":"kərˈɑbərˌeɪt","qualify":"kˈwɑləˌfaɪ","substantiate":"səbˈstænʧiˌeɪt","biased":"baɪəst","compelling":"kəmˈpɛlɪŋ","convincing":"kənˈvɪnsɪŋ","defensible":"dɪˈfɛnsəbəl","flawed":"flɔd","persuasive":"pərsˈweɪsɪv","balanced":"ˈbælənst","fair":"fɛr","assertion":"əˈsərʃən","fallacy":"ˈfæləsi","justification":"ˌʤəstəfəˈkeɪʃən","premise":"ˈprɛmɪs","rebuttal":"rɪˈbətəl","warrant":"ˈwɔrənt","authority":"əˈθɔrəti","consensus":"kənˈsɛnsəs","controversy":"ˈkɑntrəˌvərsi","judgment":"ˈʤəʤmənt","reliability":"riˌlaɪəˈbɪləti","stance":"stæns","testimony":"ˈtɛstɪˌmoʊni","relevance":"ˈrɛləvəns","accuracy":"ˈækjərəsi","assessment":"əˈsɛsmənt","allusion":"əˈluʒən","analogy":"əˈnæləʤi","anecdote":"ˈænɪkˌdoʊt","characterization":"ˌkɛrɪktərɪˈzeɪʃən","denotation":"denotation","diction":"ˈdɪkʃən","foreshadowing":"fɔrˈʃædoʊɪŋ","irony":"ˈaɪrəni","motif":"moʊˈtif","rhetoric":"ˈrɛtərɪk","flashback":"ˈflæʃˌbæk","prose":"proʊz","characterize":"ˈkɛrɪktərˌaɪz","evoke":"ɪˈvoʊk","imply":"ˌɪmˈplaɪ","rhetorical":"rɪˈtɔrɪkəl","symbolic":"sɪmˈbɑlɪk","thematic":"θiˈmætɪk","dramatic":"drəˈmætɪk","descriptive":"dɪˈskrɪptɪv","reflective":"rɪˈflɛktɪv","satirical":"səˈtɪrɪkəl","ambiguous":"æmˈbɪgjuəs","subtle":"ˈsətəl","vivid":"ˈvɪvɪd","dominant":"ˈdɑmənənt","recurring":"rɪˈkərɪŋ","excerpt":"ˈɛksərpt","subheading":"subheading","annotation":"ˌænəˈteɪʃən","footnote":"ˈfʊtˌnoʊt","quotation":"kwoʊˈteɪʃən","organization":"ˌɔrgənəˈzeɪʃən","access":"ˈækˌsɛs","constraint":"kənˈstreɪnt","equity":"ˈɛkwəti","ethics":"ˈɛθɪks","institution":"ˌɪnstɪˈtuʃən","knowledge":"ˈnɑlɪʤ","leadership":"ˈlidərˌʃɪp","legacy":"ˈlɛgəsi","opportunity":"ˌɑpərˈtunəti","innovation":"ˌɪnəˈveɪʃən","sustainability":"səˌsteɪnəˈbɪlɪti","interdependence":"ˌɪntərdəˈpɛndəns","boundary":"ˈbaʊndəri","continuity":"ˌkɑntəˈnuəti","efficiency":"ɪˈfɪʃənsi","limitation":"ˌlɪmɪˈteɪʃən","reform":"rɪˈfɔrm","stability":"stəˈbɪlɪti","discovery":"ˌdɪˈskəvri","incentive":"ˌɪnˈsɛnɪv","global":"ˈgloʊbəl","regional":"ˈriʤənəl","cultural":"ˈkəlʧərəl","economic":"ˌɛkəˈnɑmɪk","environmental":"ɪnˌvaɪrənˈmɛnəl","historical":"hɪˈstɔrɪkəl","political":"pəˈlɪtɪkəl","social":"ˈsoʊʃəl","technological":"ˌtɛknəˈlɑʤɪkəl","collective":"kəˈlɛktɪv","internal":"ˌɪnˈtərnəl","external":"ɪkˈstərnəl","secondary":"ˈsɛkənˌdɛri","amplify":"ˈæmpləˌfaɪ","attain":"əˈteɪn","constrain":"kənˈstreɪn","distribute":"dɪˈstrɪbjut","eliminate":"ɪˈlɪməˌneɪt","restrict":"riˈstrɪkt"};
-var PRO2_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1292431835&single=true&output=csv';
-var PRO_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1930488780&single=true&output=csv';
-var CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=543563696&single=true&output=csv';
+var SHEET_URLS=[
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=543563696&single=true&output=csv',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1575709928&single=true&output=csv',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=2057317834&single=true&output=csv',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1196401470&single=true&output=csv',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1930488780&single=true&output=csv',
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7es3dK4ywxvi4SL3CQ7QTyozaEMmE5nff0YOTCxPcBGCUSyYcmwDbK_ltMN-a2ZAeDllVviNkUlE7/pub?gid=1292431835&single=true&output=csv'
+];
+var CSV_URL=SHEET_URLS[0];
+var PRO_CSV_URL=SHEET_URLS[4];
+var PRO2_CSV_URL=SHEET_URLS[5];
+var DATA_STATUS={sheets:[],wordCount:0,ipaCount:0,playableIPA:0,exampleCount:0};
 var MASTERY_THRESHOLD=20,MASTERY_CORRECT=5,QPR=10,TYPE_TIME=60,WMULT=1.5;
 var allWords=[],round=[],qIdx=0,score=0,rs={correct:0,wrong:0,bonus:0,nm:0},roundResults=[];
 var prog={},recs=[],gCount=0,filter='all',timer=null,answering=false,cache={};
@@ -495,75 +452,219 @@ function parseCSV(txt){
 }
 function ssplit(line){var r=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(cur);cur='';}else cur+=ch;}r.push(cur);return r;}
 
-function parseCSVFull(txt){
-  var lines=txt.trim().split('\n'),res=[];
-  for(var i=1;i<lines.length;i++){
-    var cols=ssplit(lines[i]);if(cols.length<7)continue;
-    var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
-    var pri=c(cols[16]),stars=pri?(pri.match(/★/g)||[]).length:1;
-    res.push({
-      word:c(cols[0]),tier:c(cols[1]),level:c(cols[2]),cat:c(cols[3]),subcat:c(cols[4]),
-      ipa:c(cols[5]),def:c(cols[6]),kid:c(cols[7]),logic:c(cols[8]),nuance:c(cols[9]),
-      origin:c(cols[10]),korean:c(cols[14]),priority:pri,stars:stars,
-      afc:c(cols[17]),trel:c(cols[18]),
-      exA:c(cols[19]),exB:c(cols[20]),exC:c(cols[21]),exD:c(cols[22]),ans:c(cols[23])
-    });
+// RFC-style CSV parser: preserves commas, escaped quotes, and line breaks inside quoted cells.
+// This avoids losing MP3/source fields when the pronunciation sheet contains multi-line descriptions.
+function parseCSVRows(txt){
+  var rows=[], row=[], cur='', q=false;
+  txt=(txt||'').replace(/^\uFEFF/,'');
+  for(var i=0;i<txt.length;i++){
+    var ch=txt[i];
+    if(ch==='"'){
+      if(q && txt[i+1]==='"'){cur+='"';i++;}
+      else q=!q;
+    } else if(ch===',' && !q){
+      row.push(cur);cur='';
+    } else if((ch==='\n' || ch==='\r') && !q){
+      if(ch==='\r' && txt[i+1]==='\n')i++;
+      row.push(cur);cur='';
+      if(row.some(function(v){return v!=='';}))rows.push(row);
+      row=[];
+    } else {
+      cur+=ch;
+    }
   }
-  return res;
+  if(cur!=='' || row.length){row.push(cur);rows.push(row);}
+  return rows;
 }
 
-function loadWords(){
-  allWords=[];
-  fetch(CSV_URL)
-    .then(function(r){return r.ok?r.text():Promise.reject('HTTP '+r.status);})
-    .then(function(csv){
-      var rows=parseCSVFull(csv);
-      if(rows.length>100){
-        rows.forEach(function(r){
-          if(!r.word)return;
-          var stars=r.priority?(r.priority.match(/★/g)||[]).length:1;
-          allWords.push({word:r.word,tier:r.tier,level:r.level,cat:r.cat,subcat:r.subcat,korean:r.korean,priority:r.priority||'',stars:stars});
-          WORD_DB[r.word]={ipa:r.ipa,def:r.def,kid:r.kid,logic:r.logic,nuance:r.nuance,origin:r.origin,trel:r.trel,exA:r.exA,exB:r.exB,exC:r.exC,exD:r.exD,ans:r.ans,afc:r.afc,pri:r.priority||'',stars:stars,korean:r.korean};
-        });
+function cleanCell(v){return (v==null?'':String(v)).replace(/^\uFEFF/,'').trim();}
+function headerKey(v){return cleanCell(v).toLowerCase().replace(/[\s\n\r_\-—–/()]+/g,' ').trim();}
+function findHeaderIndex(headers, tests){
+  for(var i=0;i<headers.length;i++){
+    var h=headerKey(headers[i]);
+    for(var j=0;j<tests.length;j++){
+      var t=tests[j];
+      if(typeof t==='string' ? h===t : t.test(h)) return i;
+    }
+  }
+  return -1;
+}
+function getGid(url){var m=String(url||'').match(/[?&]gid=(\d+)/);return m?m[1]:'?';}
+function looksLikeUrl(v){return /^https?:\/\//i.test(cleanCell(v));}
+function normalizeAudioUrl(url){
+  url=cleanCell(url);
+  if(!url)return '';
+  var m=url.match(/drive\.google\.com\/file\/d\/([^/?#]+)/i);
+  if(m)return 'https://drive.google.com/uc?export=download&id='+encodeURIComponent(m[1]);
+  m=url.match(/drive\.google\.com\/(?:open|uc)\?[^#]*\bid=([^&#]+)/i);
+  if(m)return 'https://drive.google.com/uc?export=download&id='+encodeURIComponent(decodeURIComponent(m[1]));
+  return url;
+}
+
+// Header-based parser for the main word database. It correctly handles embedded newlines
+// and does not depend on fragile fixed line numbers or column positions.
+function parseWordRows(rows){
+  if(!rows||rows.length<2)return [];
+  var h=rows[0];
+  var ix={
+    word:findHeaderIndex(h,['word']), tier:findHeaderIndex(h,['tier']), level:findHeaderIndex(h,['level']),
+    cat:findHeaderIndex(h,['category']), subcat:findHeaderIndex(h,['subcategory']), ipa:findHeaderIndex(h,['ipa']),
+    def:findHeaderIndex(h,[/^definition\b/]), kid:findHeaderIndex(h,[/^kid explanation\b/]),
+    logic:findHeaderIndex(h,[/^word logic/]), nuance:findHeaderIndex(h,[/^nuance/]), origin:findHeaderIndex(h,[/^origin/]),
+    korean:findHeaderIndex(h,[/^korean\b/]), priority:findHeaderIndex(h,[/^grade 4 priority/]),
+    afc:findHeaderIndex(h,[/^academic function/]), trel:findHeaderIndex(h,[/^state test relevance/]),
+    exA:findHeaderIndex(h,[/^example a\b/]), exB:findHeaderIndex(h,[/^example b\b/]),
+    exC:findHeaderIndex(h,[/^example c\b/]), exD:findHeaderIndex(h,[/^example d\b/]), ans:findHeaderIndex(h,[/^answer \/ thinking cue/])
+  };
+  if(ix.word<0||ix.tier<0||ix.def<0)return [];
+  var out=[];
+  for(var r=1;r<rows.length;r++){
+    var row=rows[r];
+    var g=function(k){var i=ix[k];return i>=0?cleanCell(row[i]):'';};
+    var word=g('word');if(!word)continue;
+    var pri=g('priority'),stars=pri?(pri.match(/★/g)||[]).length:1;
+    out.push({word:word,tier:g('tier'),level:g('level'),cat:g('cat'),subcat:g('subcat'),ipa:g('ipa'),
+      def:g('def'),kid:g('kid'),logic:g('logic'),nuance:g('nuance'),origin:g('origin'),korean:g('korean'),
+      priority:pri,stars:stars,afc:g('afc'),trel:g('trel'),exA:g('exA'),exB:g('exB'),exC:g('exC'),exD:g('exD'),ans:g('ans')});
+  }
+  return out;
+}
+
+function detectSheetRole(rows){
+  if(!rows||!rows.length)return 'empty';
+  var h=rows[0].map(headerKey);
+  var has=function(re){return h.some(function(x){return re.test(x);});};
+  if(has(/^word$/)&&has(/^tier$/)&&has(/^definition\b/))return 'words';
+  if(has(/^symbol$/)&&has(/^word$/)&&has(/^ipa$/))return 'ipaExamples';
+  if(has(/^symbol$/)&&(has(/^mp3$/)||has(/audio|sound.*url|mp3.*url/)))return 'ipaSounds';
+  // Some pronunciation sheets use generic headers; detect by data shape as a fallback.
+  var sample=rows.slice(1,12);
+  var urlInCol1=sample.filter(function(r){return r.length>1&&looksLikeUrl(r[1]);}).length;
+  if(urlInCol1>=2 && sample.some(function(r){return cleanCell(r[0]).length<=4;}))return 'ipaSounds';
+  return 'other';
+}
+
+function loadAllSources(){
+  allWords=[];WORD_DB={};IPA_DATA=[];
+  DATA_STATUS={sheets:[],wordCount:0,ipaCount:0,playableIPA:0,exampleCount:0};
+  var requests=SHEET_URLS.map(function(url){
+    return fetch(url,{cache:'no-store'}).then(function(r){
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      return r.text();
+    }).then(function(text){
+      var rows=parseCSVRows(text),role=detectSheetRole(rows);
+      DATA_STATUS.sheets.push({gid:getGid(url),role:role,rows:rows.length,ok:true});
+      return {url:url,rows:rows,role:role};
+    }).catch(function(err){
+      DATA_STATUS.sheets.push({gid:getGid(url),role:'error',rows:0,ok:false,error:String(err)});
+      console.warn('Sheet '+getGid(url)+' failed:',err);
+      return {url:url,rows:[],role:'error'};
+    });
+  });
+
+  Promise.all(requests).then(function(sheets){
+    // 1) Main word database: use the largest sheet positively identified by headers.
+    var wordSheets=sheets.filter(function(x){return x.role==='words';}).sort(function(a,b){return b.rows.length-a.rows.length;});
+    if(wordSheets.length){
+      parseWordRows(wordSheets[0].rows).forEach(function(r){
+        var stars=r.priority?(r.priority.match(/★/g)||[]).length:1;
+        allWords.push({word:r.word,tier:r.tier,level:r.level,cat:r.cat,subcat:r.subcat,korean:r.korean,priority:r.priority||'',stars:stars});
+        WORD_DB[r.word]={ipa:r.ipa,def:r.def,kid:r.kid,logic:r.logic,nuance:r.nuance,origin:r.origin,trel:r.trel,
+          exA:r.exA,exB:r.exB,exC:r.exC,exD:r.exD,ans:r.ans,afc:r.afc,pri:r.priority||'',stars:stars,korean:r.korean};
+      });
+    }
+
+    // 2) Build IPA symbol table. Merge every symbol row found across all supplied sheets,
+    // preferring non-empty MP3/description fields instead of assuming one fixed gid.
+    var bySym={};
+    function ensureSym(sym){
+      sym=cleanCell(sym);if(!sym)return null;
+      if(!bySym[sym]){
+        var vowelSyms=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɝ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ'];
+        bySym[sym]={sym:sym,mp3:'',img:'',src:'',name:sym,cat:vowelSyms.indexOf(sym)>-1?'Vowel':'Consonant',desc:'',words:[]};
       }
-    })
-    .catch(function(e){console.warn('CSV:',e);})
-    .finally(function(){loadSt();showHome();});
-}
-function loadIPA(){
-  if(!PRO_CSV_URL)return;
-  fetch(PRO_CSV_URL).then(function(r){return r.ok?r.text():Promise.reject(r.status);}).then(function(csv){
-    var lines=csv.split('\n');IPA_DATA=[];
-    for(var i=1;i<lines.length;i++){
-      var cols=ssplit(lines[i]);if(cols.length<5||!cols[0].trim())continue;
-      var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
-      var sym=c(cols[0]),mp3=c(cols[1]),img=c(cols[2]),src=c(cols[3]),desc=c(cols[4]);
-      var vowelSyms=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ'];
-      IPA_DATA.push({sym:sym,mp3:mp3,img:img,src:src,name:sym,cat:vowelSyms.indexOf(sym)>-1?'Vowel':'Consonant',desc:desc,words:[]});
+      return bySym[sym];
     }
-    console.log('IPA:',IPA_DATA.length);
-    loadPro2();
-  }).catch(function(e){console.warn('IPA:',e);});
+
+    sheets.forEach(function(sh){
+      if(!sh.rows.length)return;
+      var h=sh.rows[0];
+      var is= findHeaderIndex(h,['symbol',/^ipa symbol$/]);
+      if(is<0 && sh.role==='ipaSounds')is=0;
+      if(is<0)return;
+      var imp3=findHeaderIndex(h,['mp3',/audio/,/sound.*url/,/mp3.*url/]);
+      var iimg=findHeaderIndex(h,['image',/image.*url/,/^img$/]);
+      var isrc=findHeaderIndex(h,['source',/^src$/,/source.*url/]);
+      var idesc=findHeaderIndex(h,['description',/^desc$/,/explanation/]);
+      for(var r=1;r<sh.rows.length;r++){
+        var row=sh.rows[r],sym=cleanCell(row[is]);if(!sym)continue;
+        var e=ensureSym(sym);if(!e)continue;
+        // Prefer named MP3 column. If absent/blank, scan the row for an audio-looking URL.
+        var mp3=imp3>=0?cleanCell(row[imp3]):'';
+        if(!mp3){
+          for(var c=0;c<row.length;c++){
+            var cell=cleanCell(row[c]);
+            if(looksLikeUrl(cell) && (/\.mp3(?:[?#]|$)/i.test(cell)||/drive\.google\.com/i.test(cell)||/audio/i.test(headerKey(h[c]||'')))){mp3=cell;break;}
+          }
+        }
+        if(mp3&&!e.mp3)e.mp3=normalizeAudioUrl(mp3);
+        if(iimg>=0&&!e.img)e.img=cleanCell(row[iimg]);
+        if(isrc>=0&&!e.src)e.src=cleanCell(row[isrc]);
+        if(idesc>=0&&!e.desc)e.desc=cleanCell(row[idesc]);
+      }
+    });
+
+    // 3) Attach example words and their IPA. Merge all sheets that contain Symbol + Word.
+    sheets.forEach(function(sh){
+      if(!sh.rows.length)return;
+      var h=sh.rows[0];
+      var is=findHeaderIndex(h,['symbol',/^ipa symbol$/]);
+      var iw=findHeaderIndex(h,['word',/^example word$/]);
+      if(is<0||iw<0)return;
+      var ii=findHeaderIndex(h,['ipa',/^word ipa$/,/pronunciation/]);
+      var ib=findHeaderIndex(h,['bold',/target sound/,/highlight/]);
+      for(var r=1;r<sh.rows.length;r++){
+        var row=sh.rows[r],sym=cleanCell(row[is]),word=cleanCell(row[iw]);
+        if(!sym||!word)continue;
+        var e=ensureSym(sym);if(!e)continue;
+        if(e.words.some(function(x){return x.w===word;}))continue;
+        e.words.push({w:word,ipa:ii>=0?cleanCell(row[ii]):'',bold:ib>=0?cleanCell(row[ib]):''});
+      }
+    });
+
+    IPA_DATA=Object.keys(bySym).map(function(k){return bySym[k];});
+    // Keep a predictable teaching order when the sound master sheet provides one.
+    var order=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɝ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ','p','b','t','d','k','g','f','v','θ','ð','s','z','ʃ','ʒ','h','tʃ','dʒ','m','n','ŋ','l','r','w','j'];
+    IPA_DATA.sort(function(a,b){var ia=order.indexOf(a.sym),ib=order.indexOf(b.sym);if(ia<0)ia=999;if(ib<0)ib=999;return ia-ib||a.sym.localeCompare(b.sym);});
+
+    DATA_STATUS.wordCount=allWords.length;
+    DATA_STATUS.ipaCount=IPA_DATA.length;
+    DATA_STATUS.playableIPA=IPA_DATA.filter(function(d){return !!d.mp3;}).length;
+    DATA_STATUS.exampleCount=IPA_DATA.reduce(function(n,d){return n+(d.words||[]).length;},0);
+    console.table(DATA_STATUS.sheets);
+    console.log('Words:',DATA_STATUS.wordCount,'IPA:',DATA_STATUS.ipaCount,'Playable IPA:',DATA_STATUS.playableIPA,'Examples:',DATA_STATUS.exampleCount);
+    var missing=IPA_DATA.filter(function(d){return !d.mp3;}).map(function(d){return d.sym;});
+    if(missing.length)console.warn('IPA symbols with no MP3 URL in any supplied sheet:',missing);
+    loadSt();showHome();
+  });
 }
-function loadPro2(){
-  if(!PRO2_CSV_URL)return;
-  fetch(PRO2_CSV_URL).then(function(r){return r.ok?r.text():Promise.reject(r.status);}).then(function(csv){
-    var lines=csv.split('\n');
-    var hdrs=ssplit(lines[0]).map(function(h){return h.trim().toLowerCase().replace(/^"|"$/g,'');});
-    var ci={sym:0,word:2,ipa:3,bold:4};
-    hdrs.forEach(function(h,i){if(h==='symbol')ci.sym=i;else if(h==='word')ci.word=i;else if(h==='ipa')ci.ipa=i;else if(h==='bold')ci.bold=i;});
-    IPA_DATA.forEach(function(d){d.words=[];});
-    for(var i=1;i<lines.length;i++){
-      var cols=ssplit(lines[i]);if(cols.length<3)continue;
-      var c=function(s){return(s||'').trim().replace(/^"|"$/g,'').replace(/""/g,'"');};
-      var sym=c(cols[ci.sym]),word=c(cols[ci.word]),ipa=c(cols[ci.ipa]||''),bold=c(cols[ci.bold]||'');
-      if(!sym||!word)continue;
-      var e=IPA_DATA.find(function(d){return d.sym===sym;});
-      if(e)e.words.push({w:word,ipa:ipa,bold:bold});
-    }
-    console.log('pro2:',IPA_DATA.reduce(function(n,d){return n+d.words.length;},0));
-  }).catch(function(e){console.warn('pro2:',e);});
+
+// The quiz used to call getAI(), but no function existed, which caused the 10-question game
+// to stop on the first definition question. Use the loaded word database directly.
+function getAI(word){
+  var key=(word&&word.word)||word||'';
+  var d=WORD_DB[key]||{};
+  var def=d.def||d.kid||('Choose the word that best matches the meaning of “'+key+'”.');
+  var ex=d.exA||d.exB||d.exC||'';
+  return Promise.resolve({def:def,ex:ex});
 }
+
+function getQuizIPAData(){
+  return IPA_DATA.filter(function(d){return d&&d.sym&&d.mp3&&(d.words||[]).length>0;});
+}
+function loadWords(){return loadAllSources();}
+function loadIPA(){return Promise.resolve();}
+function loadPro2(){return Promise.resolve();}
 
 function showHome(){
   stopAllAudio();
@@ -1071,8 +1172,8 @@ function toggleIPACard(cardId, mp3, wordCsv) {
   if (!stage) return;
   var cur = 0;
   var spokenCount = 0;
-  var WAIT_W = window.matchMedia('(max-width:560px)').matches ? 102 : 112;
-  var FOCUS_W = window.matchMedia('(max-width:560px)').matches ? 188 : 205;
+  var WAIT_W = window.matchMedia('(max-width:560px)').matches ? 92 : 104;
+  var FOCUS_W = window.matchMedia('(max-width:560px)').matches ? 202 : 228;
 
   function isActive() { return myId === _cardSeqId; }
 
@@ -1212,7 +1313,6 @@ function stopCardAnim() {
 
 
 
-
 function makeIPACards(items){
   var h='';
   items.forEach(function(item,idx){
@@ -1222,14 +1322,12 @@ function makeIPACards(items){
     var catCls=item.cat==='Vowel'?'vowel':'consonant';
     h+='<div class="ipa-card" id="'+cardId+'">'
       +'<button class="ipa-sym-btn '+catCls+'" data-card="'+cardId+'" data-mp3="'+(item.mp3||'')+'" data-words="'+wordList+'">'+item.sym+'</button>'
-      +'<div class="ipa-body">'
-      +'<div class="ipa-desc-main">'+descHL+'</div>'
       +'<div class="ipa-word-stage" id="'+cardId+'-stage"></div>'
-      +'</div></div>';
+      +'<div class="ipa-desc-main">'+descHL+'</div>'
+      +'</div>';
   });
   return h;
 }
-
 function showIPA(){
   show('ipaScreen');
   stopCardAnim();
@@ -1302,9 +1400,11 @@ function renderIQQuestion() {
 
   if (type === 0) {
     // TYPE 0: Description → Pick the correct IPA symbol
-    var correct = IPA_DATA[Math.floor(Math.random() * IPA_DATA.length)];
-    var distractors = pickRandom(IPA_DATA.filter(function(d){ return d.sym !== correct.sym && d.cat === correct.cat; }), 4);
-    if (distractors.length < 4) distractors = pickRandom(IPA_DATA.filter(function(d){ return d.sym !== correct.sym; }), 4);
+    var quizData=getQuizIPAData();
+    if(quizData.length<5){area.innerHTML='<div class="iq-feedback wrong">IPA audio data is still loading or incomplete. Please return and try again.</div>';return;}
+    var correct = quizData[Math.floor(Math.random() * quizData.length)];
+    var distractors = pickRandom(quizData.filter(function(d){ return d.sym !== correct.sym && d.cat === correct.cat; }), 4);
+    if (distractors.length < 4) distractors = pickRandom(quizData.filter(function(d){ return d.sym !== correct.sym; }), 4);
     var opts = shuffleArr([correct].concat(distractors.slice(0, 4)));
     iqCurrent.correct = correct.sym;
     iqCurrent.correctItem = correct;
@@ -1327,8 +1427,9 @@ function renderIQQuestion() {
     // TYPE 1: Word → Pick the correct IPA symbol for its KEY sound
     var pool = getIPAWordPool();
     var entry = pool[Math.floor(Math.random() * pool.length)];
-    var correct = IPA_DATA.find(function(d){ return d.sym === entry.sym; });
-    var distractors = pickRandom(IPA_DATA.filter(function(d){ return d.sym !== entry.sym; }), 4);
+    var quizData=getQuizIPAData();
+    var correct = quizData.find(function(d){ return d.sym === entry.sym; }) || quizData[0];
+    var distractors = pickRandom(quizData.filter(function(d){ return d.sym !== correct.sym; }), 4);
     var opts = shuffleArr([correct].concat(distractors.slice(0, 4)));
     iqCurrent.correct = entry.sym;
     iqCurrent.correctItem = correct;
@@ -1349,11 +1450,13 @@ function renderIQQuestion() {
 
   } else {
     // TYPE 2: Symbol → Pick ALL words that contain this sound (multi-select)
-    var correct = IPA_DATA[Math.floor(Math.random() * IPA_DATA.length)];
+    var quizData=getQuizIPAData();
+    if(!quizData.length){area.innerHTML='<div class="iq-feedback wrong">IPA audio data is still loading or incomplete. Please return and try again.</div>';return;}
+    var correct = quizData[Math.floor(Math.random() * quizData.length)];
     var correctWords = correct.words.map(function(w){ return w.w; });
     // Get 7 total words: correct ones + distractors
     var allOtherWords = [];
-    IPA_DATA.forEach(function(item) {
+    quizData.forEach(function(item) {
       if (item.sym !== correct.sym) {
         item.words.forEach(function(wobj){ allOtherWords.push(wobj.w); });
       }
@@ -1444,8 +1547,9 @@ function gradeSingleSelect(chosen, btn) {
       + '</div>';
     setTimeout(function() {
       // Build full IPA symbol grid grouped by category
-      var vowels = IPA_DATA.filter(function(d){ return d.cat === 'Vowel'; });
-      var consonants = IPA_DATA.filter(function(d){ return d.cat === 'Consonant'; });
+      var qd=getQuizIPAData();
+      var vowels = qd.filter(function(d){ return d.cat === 'Vowel'; });
+      var consonants = qd.filter(function(d){ return d.cat === 'Consonant'; });
       function makeSymGrid(arr) {
         return arr.map(function(d) {
           var isCorrectSym = d.sym === correct;
@@ -1549,8 +1653,9 @@ function gradeMultiSelect() {
     confetti();
     fbEl2.innerHTML = feedbackContent;
     setTimeout(function() {
-      var vowels2 = IPA_DATA.filter(function(d){ return d.cat === 'Vowel'; });
-      var consonants2 = IPA_DATA.filter(function(d){ return d.cat === 'Consonant'; });
+      var qd2=getQuizIPAData();
+      var vowels2 = qd2.filter(function(d){ return d.cat === 'Vowel'; });
+      var consonants2 = qd2.filter(function(d){ return d.cat === 'Consonant'; });
       function makeGrid2(arr) {
         return arr.map(function(d) {
           var isAns = d.sym === item.sym;
@@ -1615,7 +1720,7 @@ function playSymbolsSequence() {
 
 function playSymbolsSequenceGrid() {
   _seqCancelled = false;
-  var items = IPA_DATA.slice();
+  var items = getQuizIPAData().slice();
   var idx = 0;
   function playNext() {
     if (_seqCancelled || idx >= items.length) return;
@@ -1664,8 +1769,7 @@ function showIQResult() {
 }
 
 
-loadWords();
-  loadIPA();
+loadAllSources();
 </script>
 <div id="ipaQuizScreen" class="screen hidden" style="padding:16px;align-items:stretch;">
   <div style="max-width:660px;width:100%;margin:0 auto;">
