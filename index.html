@@ -973,9 +973,23 @@ function showWrong(word,ai,extraMsg){
 
 // AI CALLS
 
-
-
-
+// Build the wrong-answer detail panel from the already-loaded Word Database.
+// This replaces the old remote-AI helper that was removed during the data-loader rewrite.
+function getWrongEx(word, ai){
+  var db = WORD_DB[word.word] || {};
+  var definition = (ai && ai.def) || db.def || db.kid || 'No definition available.';
+  var examples = [];
+  [db.exA, db.exB, db.exC, db.exD].forEach(function(ex){
+    if (ex && String(ex).trim()) examples.push(String(ex).trim());
+  });
+  if (ai && ai.ex && examples.indexOf(ai.ex) < 0) examples.unshift(ai.ex);
+  if (!examples.length) examples.push('Try using "' + word.word + '" in a complete sentence.');
+  return Promise.resolve({
+    ipa: db.ipa || (ai && ai.ipa) || '',
+    definition: definition,
+    examples: examples.slice(0, 4)
+  });
+}
 
 function startTimer(secs,onExp){
   var left=secs,circ=2*Math.PI*27;
