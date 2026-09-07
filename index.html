@@ -372,7 +372,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* WJ Interactive American IPA Explorer */
 .ipa-explorer{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:18px}.ipa-ex-grid{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 15px}.ipa-ex-key{width:44px;height:44px;border-radius:50%;border:0;color:#fff;font:700 1.05rem 'Nunito',sans-serif;cursor:pointer;transition:.15s}.ipa-ex-key.vowel{background:#e84b38}.ipa-ex-key.consonant{background:#1385bd}.ipa-ex-key.active{outline:3px solid var(--text);outline-offset:2px;transform:scale(1.08)}.ipa-ex-key.no-local{opacity:.56}.ipa-ex-layout{display:grid;grid-template-columns:minmax(220px,.9fr) minmax(260px,1.1fr);gap:18px;align-items:center}.ipa-mouth{position:relative;min-height:245px;border-radius:18px;background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center}.ipa-mouth-svg{width:90%;max-width:330px;height:220px}.ipa-ex-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:56px;border:0;background:transparent;color:var(--text);font-size:2.2rem;cursor:pointer}.ipa-ex-prev{left:5px}.ipa-ex-next{right:5px}.ipa-ex-symplay{position:absolute;right:14px;bottom:12px;min-width:48px;height:48px;padding:0 13px;border-radius:24px;border:0;background:var(--accent);color:white;font-size:1.05rem;cursor:pointer}.ipa-ex-symplay.fallback{background:var(--surface);border:1px solid var(--accent4);color:var(--accent4)}.ipa-ex-symbol{font:800 3rem 'Space Grotesk',sans-serif;margin-bottom:2px}.ipa-ex-name{font-size:.8rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.07em}.ipa-ex-example{font-size:1.55rem;font-weight:800;margin:12px 0 2px;cursor:pointer}.ipa-ex-example-ipa{font-family:'Courier New',monospace;color:var(--accent2);margin-bottom:12px}.ipa-ex-desc{line-height:1.6;font-size:.92rem}.ipa-ex-tip{margin-top:10px;padding:9px 11px;border-left:3px solid var(--accent3);background:rgba(67,233,123,.06);font-size:.82rem;color:var(--muted)}.ipa-audio-note{font-size:.72rem;color:var(--accent4);margin-top:6px}.mouth-label{font:800 13px 'Nunito',sans-serif;fill:currentColor}.mouth-sub{font:700 11px 'Nunito',sans-serif;fill:var(--muted)}@media(max-width:650px){.ipa-ex-layout{grid-template-columns:1fr}.ipa-mouth{min-height:210px}.ipa-mouth-svg{height:190px}}
 
-/* v24: phonetic names + Merriam-Webster bridge */
+/* v25: phonetic names + Merriam-Webster bridge + local /ɝ/ */
 .ipa-notation-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:5px 0 2px}.ipa-notation-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:8px;background:rgba(108,99,255,.08);border:1px solid var(--border);font-size:.75rem;color:var(--muted)}.ipa-notation-pill strong{color:var(--text);font-weight:800}.ipa-notation-pill.same{border-color:rgba(67,233,123,.35);background:rgba(67,233,123,.06)}.ipa-name-friendly{font-size:.86rem;color:var(--text);font-weight:800;margin-top:2px}.ipa-name-tech{font-size:.72rem;color:var(--muted);margin-top:2px}.mw-key{margin:12px 0 4px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.018);overflow:hidden}.mw-key summary{cursor:pointer;padding:10px 12px;font-size:.78rem;font-weight:800;color:var(--accent);user-select:none}.mw-key-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;padding:0 10px 10px}.mw-key-item{padding:7px 8px;border-radius:8px;background:var(--surface2);font-size:.74rem;color:var(--muted)}.mw-key-item b{color:var(--text)}.ipa-card-meta{grid-column:1 / -1;font-size:.7rem;color:var(--muted);padding:0 4px 2px;display:flex;gap:8px;flex-wrap:wrap}.ipa-card-meta b{color:var(--text)}
 </style>
 </head>
@@ -455,7 +455,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div style="max-width:700px;width:100%;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v24</span></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v25</span></div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
       </div>
       <button class="btn-s" id="ipaBackBtn">&#8592; Back</button>
@@ -573,6 +573,7 @@ var LOCAL_IPA_AUDIO={
   'æ':'audio/ipa/ae.mp3',
   'ɑ':'audio/ipa/aa.mp3',
   'ʌ':'audio/ipa/uh.mp3',
+  'ɝ':'audio/ipa/ɝ.mp3',
   'ɔ':'audio/ipa/aw.mp3',
   'ʊ':'audio/ipa/uu.mp3',
   'u':'audio/ipa/u.mp3',
@@ -596,7 +597,7 @@ function getLocalIPAAudio(sym){
 function isUsableAudioSource(src){
   src=cleanCell(src);
   if(!src)return false;
-  return looksLikeUrl(src)||/^(?:\.\/)?audio\/ipa\/[A-Za-z0-9._-]+\.mp3(?:[?#].*)?$/i.test(src)||/^\.\.\/.*\.mp3(?:[?#].*)?$/i.test(src);
+  return looksLikeUrl(src)||/^(?:\.\/)?audio\/ipa\/[^/?#]+\.mp3(?:[?#].*)?$/i.test(src)||/^\.\.\/.*\.mp3(?:[?#].*)?$/i.test(src);
 }
 
 function normalizeAudioUrl(url){
@@ -735,7 +736,7 @@ function loadAllSources(){
     function ensureSym(sym){
       sym=cleanCell(sym);if(!sym)return null;
       if(!bySym[sym]){
-        var vowelSyms=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɝ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ'];
+        var vowelSyms=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɝ','ɚ','ɔ','ʊ','u','oʊ','aɪ','aʊ','ɔɪ'];
         bySym[sym]={sym:sym,mp3:'',img:'',src:'',name:sym,cat:vowelSyms.indexOf(sym)>-1?'Vowel':'Consonant',desc:'',words:[]};
       }
       return bySym[sym];
@@ -792,6 +793,20 @@ function loadAllSources(){
         e.words.push({w:word,ipa:ii>=0?cleanCell(row[ii]):'',bold:ib>=0?cleanCell(row[ib]):''});
       }
     });
+
+    // /ɝ/ may not exist in the legacy Google Sheet because older WJ versions used a different r-colored-vowel inventory.
+    // The user now hosts a dedicated General American /ɝ/ recording at audio/ipa/ɝ.mp3,
+    // so ensure the sound exists in the teaching inventory even when the sheet omits it.
+    if(!bySym['ɝ']){
+      bySym['ɝ']={sym:'ɝ',mp3:'',img:'',src:'',name:'Stressed R-colored vowel',cat:'Vowel',
+        desc:'The stressed American ER sound. Curl or bunch the tongue slightly without touching the roof of the mouth.',
+        words:[
+          {w:'bird',ipa:'bɝd',bold:'ɝ'},
+          {w:'word',ipa:'wɝd',bold:'ɝ'},
+          {w:'girl',ipa:'gɝl',bold:'ɝ'},
+          {w:'learn',ipa:'lɝn',bold:'ɝ'}
+        ]};
+    }
 
     IPA_DATA=Object.keys(bySym).map(function(k){return bySym[k];});
 
@@ -1666,7 +1681,7 @@ var _ipaExplorerIndex=0,_ipaExplorerWordIndex=0;
 function ipaMouthType(sym){
   if(['i','ɪ','eɪ','ɛ'].indexOf(sym)>=0)return 'smile';
   if(['æ','ɑ','ʌ'].indexOf(sym)>=0)return 'open';
-  if(['ə','ɜ'].indexOf(sym)>=0)return 'relaxed';
+  if(sym==='ə')return 'relaxed';
   if(['ɔ','ʊ','u','oʊ','ɔɪ','w'].indexOf(sym)>=0)return 'round';
   if(['aɪ','aʊ'].indexOf(sym)>=0)return 'openmove';
   if(['ɝ','ɚ','r','ɹ'].indexOf(sym)>=0)return 'r';
