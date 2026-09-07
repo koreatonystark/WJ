@@ -560,6 +560,42 @@ function getDriveFileId(url){
   m=url.match(/drive\.usercontent\.google\.com\/download\?[^#]*[?&]?id=([^&#]+)/i);if(m)return decodeURIComponent(m[1]);
   return '';
 }
+// WJ local IPA audio files hosted with this GitHub Pages site.
+// These files live at: WJ/audio/ipa/*.mp3
+var LOCAL_IPA_AUDIO={
+  'i':'audio/ipa/i.mp3',
+  'ɪ':'audio/ipa/ih.mp3',
+  'eɪ':'audio/ipa/ey.mp3',
+  'ɛ':'audio/ipa/eh.mp3',
+  'æ':'audio/ipa/ae.mp3',
+  'ɑ':'audio/ipa/aa.mp3',
+  'ʌ':'audio/ipa/uh.mp3',
+  'ɔ':'audio/ipa/aw.mp3',
+  'ʊ':'audio/ipa/uu.mp3',
+  'u':'audio/ipa/u.mp3',
+  'oʊ':'audio/ipa/oh.mp3',
+  'aɪ':'audio/ipa/ai.mp3',
+  'aʊ':'audio/ipa/au.mp3',
+  'ɔɪ':'audio/ipa/oi.mp3',
+  'p':'audio/ipa/p.mp3','b':'audio/ipa/b.mp3','t':'audio/ipa/t.mp3','d':'audio/ipa/d.mp3',
+  'k':'audio/ipa/k.mp3','g':'audio/ipa/g.mp3','ɡ':'audio/ipa/g.mp3',
+  'f':'audio/ipa/f.mp3','v':'audio/ipa/v.mp3','θ':'audio/ipa/th.mp3','ð':'audio/ipa/dh.mp3',
+  's':'audio/ipa/s.mp3','z':'audio/ipa/z.mp3','ʃ':'audio/ipa/sh.mp3','ʒ':'audio/ipa/zh.mp3',
+  'h':'audio/ipa/h.mp3','tʃ':'audio/ipa/ch.mp3','dʒ':'audio/ipa/jh.mp3',
+  'm':'audio/ipa/m.mp3','n':'audio/ipa/n.mp3','ŋ':'audio/ipa/ng.mp3','l':'audio/ipa/l.mp3',
+  'r':'audio/ipa/r.mp3','ɹ':'audio/ipa/r.mp3','w':'audio/ipa/w.mp3','j':'audio/ipa/y.mp3'
+};
+function getLocalIPAAudio(sym){
+  sym=cleanCell(sym);
+  if(sym==='ɡ')sym='g';
+  return LOCAL_IPA_AUDIO[sym]||'';
+}
+function isUsableAudioSource(src){
+  src=cleanCell(src);
+  if(!src)return false;
+  return looksLikeUrl(src)||/^(?:\.\/)?audio\/ipa\/[A-Za-z0-9._-]+\.mp3(?:[?#].*)?$/i.test(src)||/^\.\.\/.*\.mp3(?:[?#].*)?$/i.test(src);
+}
+
 function normalizeAudioUrl(url){
   url=cleanCell(url);if(!url)return '';
   var id=getDriveFileId(url);
@@ -755,19 +791,27 @@ function loadAllSources(){
     });
 
     IPA_DATA=Object.keys(bySym).map(function(k){return bySym[k];});
+    // Prefer our own GitHub-hosted audio for every sound we have locally.
+    // Keep the sheet URL only as metadata/fallback for sounds that are not in the local pack.
+    IPA_DATA.forEach(function(d){
+      var local=getLocalIPAAudio(d.sym);
+      if(local){ d.remoteMp3=d.mp3||''; d.mp3=local; d.audioSource='local'; }
+      else { d.audioSource=d.mp3?'sheet':'missing'; }
+    });
     // Keep a predictable teaching order when the sound master sheet provides one.
     var order=['i','ɪ','eɪ','ɛ','æ','ɑ','ʌ','ə','ɜ','ɝ','ɔ','ʊ','u','aɪ','aʊ','ɔɪ','p','b','t','d','k','g','f','v','θ','ð','s','z','ʃ','ʒ','h','tʃ','dʒ','m','n','ŋ','l','r','w','j'];
     IPA_DATA.sort(function(a,b){var ia=order.indexOf(a.sym),ib=order.indexOf(b.sym);if(ia<0)ia=999;if(ib<0)ib=999;return ia-ib||a.sym.localeCompare(b.sym);});
 
     DATA_STATUS.wordCount=allWords.length;
     DATA_STATUS.ipaCount=IPA_DATA.length;
-    DATA_STATUS.playableIPA=IPA_DATA.filter(function(d){return !!d.mp3&&looksLikeUrl(d.mp3);}).length;
+    DATA_STATUS.playableIPA=IPA_DATA.filter(function(d){return isUsableAudioSource(d.mp3);}).length;
     DATA_STATUS.exampleCount=IPA_DATA.reduce(function(n,d){return n+(d.words||[]).length;},0);
     console.table(DATA_STATUS.sheets);
     console.log('Words:',DATA_STATUS.wordCount,'IPA:',DATA_STATUS.ipaCount,'Playable IPA:',DATA_STATUS.playableIPA,'Examples:',DATA_STATUS.exampleCount);
-    var missing=IPA_DATA.filter(function(d){return !d.mp3||!looksLikeUrl(d.mp3);}).map(function(d){return d.sym;});
-    if(missing.length)console.warn('IPA symbols with no usable MP3 URL in any supplied sheet:',missing);
-    console.table(IPA_DATA.map(function(d){return {symbol:d.sym,mp3:!!d.mp3,urlOK:looksLikeUrl(d.mp3),url:d.mp3||''};}));
+    console.log('Local IPA audio:',IPA_DATA.filter(function(d){return d.audioSource==='local';}).length,'/',IPA_DATA.length,'— folder: audio/ipa/');
+    var missing=IPA_DATA.filter(function(d){return !isUsableAudioSource(d.mp3);}).map(function(d){return d.sym;});
+    if(missing.length)console.warn('IPA symbols with no usable local or sheet MP3:',missing);
+    console.table(IPA_DATA.map(function(d){return {symbol:d.sym,source:d.audioSource||'',mp3:!!d.mp3,usable:isUsableAudioSource(d.mp3),path:d.mp3||'',remote:d.remoteMp3||''};}));
     loadSt();showHome();
   });
 }
@@ -783,7 +827,7 @@ function getAI(word){
 }
 
 function getQuizIPAData(){
-  return IPA_DATA.filter(function(d){return d&&d.sym&&d.mp3&&looksLikeUrl(d.mp3)&&(d.words||[]).length>0;});
+  return IPA_DATA.filter(function(d){return d&&d.sym&&isUsableAudioSource(d.mp3)&&(d.words||[]).length>0;});
 }
 function loadWords(){return loadAllSources();}
 function loadIPA(){return Promise.resolve();}
