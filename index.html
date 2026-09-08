@@ -553,6 +553,42 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   .review-word-image-wrap{width:50%;}
 }
 
+
+/* v36: tappable floating image viewer with pinch zoom */
+.word-explain-image,.review-word-image{cursor:zoom-in;touch-action:manipulation;}
+.word-image-lightbox{
+  position:fixed;inset:0;z-index:9999;background:rgba(5,7,12,.92);
+  display:flex;align-items:center;justify-content:center;padding:18px;
+  opacity:0;pointer-events:none;transition:opacity .18s ease;
+}
+.word-image-lightbox.open{opacity:1;pointer-events:auto;}
+.word-image-lightbox-stage{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;touch-action:none;cursor:grab;
+}
+.word-image-lightbox-stage.dragging{cursor:grabbing;}
+.word-image-lightbox-img{
+  max-width:94vw;max-height:90vh;width:auto;height:auto;object-fit:contain;
+  user-select:none;-webkit-user-drag:none;transform-origin:center center;
+  will-change:transform;transition:transform .08s linear;
+}
+.word-image-lightbox-hint{
+  position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+  background:rgba(20,24,36,.82);border:1px solid var(--border);color:var(--muted);
+  padding:7px 12px;border-radius:999px;font-size:.72rem;white-space:nowrap;
+  pointer-events:none;
+}
+.word-image-lightbox-close{
+  position:absolute;right:14px;top:14px;width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--border);background:rgba(20,24,36,.85);color:var(--text);
+  font-size:1.25rem;cursor:pointer;z-index:2;
+}
+@media(max-width:520px){
+  .word-image-lightbox{padding:8px;}
+  .word-image-lightbox-img{max-width:98vw;max-height:88vh;}
+  .word-image-lightbox-hint{bottom:10px;font-size:.66rem;}
+}
+
 </style>
 </head>
 <body>
@@ -1474,6 +1510,49 @@ function showWrong(word,ai,extraMsg){
     });
   });
 }
+
+
+// v36: floating image viewer. Tap/click to open, pinch/wheel to zoom, double-click/tap to close.
+(function(){
+  var lb=null,stage=null,img=null,scale=1,tx=0,ty=0,pointers=new Map(),startDist=0,startScale=1,lastTap=0;
+  function ensureLightbox(){
+    if(lb)return;
+    lb=document.createElement('div');lb.className='word-image-lightbox';lb.setAttribute('aria-hidden','true');
+    lb.innerHTML='<button type="button" class="word-image-lightbox-close" aria-label="Close image">×</button><div class="word-image-lightbox-stage"><img class="word-image-lightbox-img" alt=""></div><div class="word-image-lightbox-hint">Pinch to zoom · drag to move · double-click/tap to close</div>';
+    document.body.appendChild(lb);stage=lb.querySelector('.word-image-lightbox-stage');img=lb.querySelector('.word-image-lightbox-img');
+    lb.querySelector('.word-image-lightbox-close').addEventListener('click',closeWordImage);
+    lb.addEventListener('click',function(e){if(e.target===lb)closeWordImage();});
+    img.addEventListener('dblclick',function(e){e.preventDefault();closeWordImage();});
+    stage.addEventListener('wheel',function(e){
+      e.preventDefault();var factor=e.deltaY<0?1.12:0.89;scale=Math.max(1,Math.min(5,scale*factor));if(scale===1){tx=0;ty=0;}applyTransform();
+    },{passive:false});
+    stage.addEventListener('pointerdown',function(e){
+      stage.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,px:e.clientX,py:e.clientY});stage.classList.add('dragging');
+      if(pointers.size===2){var a=Array.from(pointers.values());startDist=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);startScale=scale;}
+    });
+    stage.addEventListener('pointermove',function(e){
+      if(!pointers.has(e.pointerId))return;var p=pointers.get(e.pointerId);var dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+      if(pointers.size===1&&scale>1){tx+=dx;ty+=dy;applyTransform();}
+      else if(pointers.size===2){var a=Array.from(pointers.values());var d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);if(startDist>0){scale=Math.max(1,Math.min(5,startScale*(d/startDist)));if(scale===1){tx=0;ty=0;}applyTransform();}}
+    });
+    function endPointer(e){pointers.delete(e.pointerId);if(pointers.size<2){startDist=0;startScale=scale;}if(!pointers.size)stage.classList.remove('dragging');}
+    stage.addEventListener('pointerup',endPointer);stage.addEventListener('pointercancel',endPointer);
+    stage.addEventListener('pointerup',function(e){
+      if(e.pointerType==='touch'){var now=Date.now();if(now-lastTap<320){e.preventDefault();closeWordImage();lastTap=0;}else lastTap=now;}
+    });
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&lb&&lb.classList.contains('open'))closeWordImage();});
+  }
+  function applyTransform(){if(img)img.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')';}
+  window.openWordImage=function(src,alt){
+    if(!src)return;ensureLightbox();scale=1;tx=0;ty=0;pointers.clear();applyTransform();img.src=src;img.alt=alt||'';lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+  };
+  window.closeWordImage=function(){
+    if(!lb)return;lb.classList.remove('open');lb.setAttribute('aria-hidden','true');document.body.style.overflow='';pointers.clear();scale=1;tx=0;ty=0;applyTransform();
+  };
+  document.addEventListener('click',function(e){
+    var target=e.target.closest&&e.target.closest('.word-explain-image,.review-word-image');if(!target)return;e.preventDefault();e.stopPropagation();openWordImage(target.currentSrc||target.src,target.alt||'');
+  });
+})();
 
 // Normalize a public image URL stored in the Word Database.
 function wordImageUrl(raw){
