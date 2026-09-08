@@ -508,6 +508,51 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   #homeScreen .home-mastered-row{margin-bottom:28px;}
 }
 
+
+/* v35: Google Sheet word-image support for quiz explanation panels */
+.wrong-head.has-word-image{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:16px;
+  align-items:center;
+}
+.wrong-head-copy{min-width:0;}
+.word-explain-image-wrap{
+  width:100%;
+  aspect-ratio:4 / 3;
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--surface2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.word-explain-image{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:var(--surface2);
+}
+.review-word-image-wrap{
+  width:50%;
+  max-width:320px;
+  margin:10px auto 12px;
+  aspect-ratio:4 / 3;
+  border:1px solid var(--border);
+  border-radius:11px;
+  overflow:hidden;
+  background:var(--surface2);
+}
+.review-word-image{width:100%;height:100%;object-fit:contain;display:block;}
+@media(max-width:520px){
+  .wrong-head.has-word-image{grid-template-columns:1fr 1fr;gap:10px;}
+  .wrong-head.has-word-image .wrong-word-big{font-size:1.55rem;}
+  .word-explain-image-wrap{border-radius:10px;}
+  .review-word-image-wrap{width:50%;}
+}
+
 </style>
 </head>
 <body>
@@ -605,7 +650,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div style="max-width:700px;width:100%;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v33</span></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;">&#128362; IPA Guide <span style="font-size:.62rem;color:var(--muted);font-weight:700;vertical-align:middle;">GA v35</span></div>
         <div style="color:var(--muted);font-size:.85rem;margin-top:2px;">Learn how English sounds work</div>
       </div>
       <button class="btn-s" id="ipaBackBtn">&#8592; Back</button>
@@ -806,6 +851,7 @@ function parseWordRows(rows){
     afc:findHeaderIndex(h,[/^academic function/]), trel:findHeaderIndex(h,[/^state test relevance/]),
     learn1:findHeaderIndex(h,[/^learning sentence 1/]), learn2:findHeaderIndex(h,[/^learning sentence 2/]), learn3:findHeaderIndex(h,[/^learning sentence 3/]),
     review:findHeaderIndex(h,[/^review notes/]), sourceBasis:findHeaderIndex(h,[/^assessment source basis/]),
+    image:findHeaderIndex(h,['image','image url','image address','picture','picture url','picture address','photo','photo url','photo address','url',/^그림(?:\s*주소)?$/, /^사진(?:\s*주소)?$/]),
     exA:findHeaderIndex(h,[/^example a\b/]), exB:findHeaderIndex(h,[/^example b\b/]),
     exC:findHeaderIndex(h,[/^example c\b/]), exD:findHeaderIndex(h,[/^example d\b/]), ans:findHeaderIndex(h,[/^answer \/ thinking cue/])
   };
@@ -818,7 +864,7 @@ function parseWordRows(rows){
     var pri=g('priority'),stars=pri?(pri.match(/★/g)||[]).length:1;
     out.push({word:word,tier:g('tier'),level:g('level'),cat:g('cat'),subcat:g('subcat'),ipa:g('ipa'),
       def:g('def'),kid:g('kid'),logic:g('logic'),nuance:g('nuance'),origin:g('origin'),korean:g('korean'),
-      priority:pri,stars:stars,afc:g('afc'),trel:g('trel'),learn1:g('learn1'),learn2:g('learn2'),learn3:g('learn3'),review:g('review'),sourceBasis:g('sourceBasis'),exA:g('exA'),exB:g('exB'),exC:g('exC'),exD:g('exD'),ans:g('ans')});
+      priority:pri,stars:stars,afc:g('afc'),trel:g('trel'),learn1:g('learn1'),learn2:g('learn2'),learn3:g('learn3'),review:g('review'),sourceBasis:g('sourceBasis'),image:g('image'),exA:g('exA'),exB:g('exB'),exC:g('exC'),exD:g('exD'),ans:g('ans')});
   }
   return out;
 }
@@ -881,7 +927,7 @@ function loadAllSources(){
         allWords.push({word:r.word,tier:r.tier,level:r.level,cat:r.cat,subcat:r.subcat,korean:r.korean,priority:r.priority||'',stars:stars});
         WORD_DB[r.word]={ipa:r.ipa,def:r.def,kid:r.kid,logic:r.logic,nuance:r.nuance,origin:r.origin,trel:r.trel,
           learn1:r.learn1,learn2:r.learn2,learn3:r.learn3,review:r.review,sourceBasis:r.sourceBasis,subcat:r.subcat,level:r.level,cat:r.cat,tier:r.tier,
-          exA:r.exA,exB:r.exB,exC:r.exC,exD:r.exD,ans:r.ans,afc:r.afc,pri:r.priority||'',stars:stars,korean:r.korean};
+          exA:r.exA,exB:r.exB,exC:r.exC,exD:r.exD,ans:r.ans,afc:r.afc,pri:r.priority||'',stars:stars,korean:r.korean,image:r.image||''};
       });
     }
 
@@ -1146,11 +1192,13 @@ function showReview(recIdx,returnId){
       if(r.choices&&r.choices.length)qhtml+='<div class="review-choices">'+r.choices.map(function(c){var cls='review-choice';if(c===r.correct)cls+=' correct';if(c===r.selected&&r.selected!==r.correct)cls+=' selected-wrong';return '<span class="'+cls+'">'+escHTML(c)+'</span>';}).join('')+'</div>';
       qhtml+='<div class="review-answerline"><div class="review-answerlabel">Your answer</div><div class="review-answer '+(r.ok?'user-ok':'user-wrong')+'">'+escHTML(r.selected||'(no answer)')+'</div></div>';
       qhtml+='<div class="review-answerline"><div class="review-answerlabel">Correct answer</div><div class="review-answer correct">'+escHTML(r.correct||word)+'</div></div></div>';
-      var explain='<div class="review-explain-title">Explanation / Memory Review</div><div class="review-detail-grid">';
+      var reviewImg=wordImageUrl(db.image||'');
+      var explain='<div class="review-explain-title">Explanation / Memory Review</div>'+(reviewImg?'<div class="review-word-image-wrap"><img class="review-word-image" src="'+escHTML(reviewImg)+'" alt="'+escHTML(word)+'" loading="lazy"></div>':'')+'<div class="review-detail-grid">';
       explain+=detail('Definition',db.def||'');explain+=detail('Easy explanation / Think',db.kid||'');explain+=detail('Everyday / School example',db.exA||'');explain+=detail('ELA / Literature example',db.exB||'');explain+=detail('Science / Social Studies / Math example',db.exC||'');explain+=detail('Word structure',db.logic||'');explain+=detail('Nuance & usage',db.nuance||'');explain+=detail('Origin / memory hook',db.origin||'');explain+=detail('Meaning logic',db.learn1||'');explain+=detail('Context',db.learn2||'');explain+=detail('Nuance check',db.learn3||'');explain+=detail('Grade 4 priority',db.pri||'');explain+=detail('Academic function',db.afc||'');explain+=detail('State test relevance',db.trel||'');explain+=detail('Review notes',db.review||'');explain+=detail('Answer strategy',db.ans||'');explain+='</div>';
       body.innerHTML=qhtml+explain;
       header.addEventListener('click',function(){body.classList.toggle('open');card.classList.toggle('is-open',body.classList.contains('open'));});
       card.appendChild(header);card.appendChild(body);list.appendChild(card);
+      var reviewImgEl=body.querySelector('.review-word-image');if(reviewImgEl)reviewImgEl.addEventListener('error',function(){var wr=reviewImgEl.closest('.review-word-image-wrap');if(wr)wr.remove();});
       body.querySelectorAll('.tts-readable').forEach(function(el){el.style.cursor='pointer';el.title='Click to read aloud; click again to stop';el.addEventListener('click',function(){toggleBlockTTS(el,el.dataset.tts||el.textContent);});});
     });
   }
@@ -1395,8 +1443,10 @@ function showWrong(word,ai,extraMsg){
     if(statePrompt) state+='<div class="state-question dex tts-readable" data-tts="'+escHTML(statePrompt)+'">'+escHTML(statePrompt)+'</div>';
     if(d.answerStrategy) state+=box(d.answerStrategy,'strategy-box');
 
+    var imgUrl=wordImageUrl(d.image||'');
+    var headImage=imgUrl?'<div class="word-explain-image-wrap"><img class="word-explain-image" src="'+escHTML(imgUrl)+'" alt="'+escHTML(word.word)+'" loading="lazy"></div>':'';
     fa.innerHTML='<div class="wrong-panel wrong-panel-full">'
-      +'<div class="wrong-head"><div class="wrong-head-row"><span class="wrong-word-big">'+escHTML(word.word)+'</span>'+(d.ipa?'<span class="wrong-ipa">'+escHTML(d.ipa)+'</span>':'')+'</div><span class="wrong-meta">'+meta+'</span></div>'
+      +'<div class="wrong-head'+(imgUrl?' has-word-image':'')+'"><div class="wrong-head-copy"><div class="wrong-head-row"><span class="wrong-word-big">'+escHTML(word.word)+'</span>'+(d.ipa?'<span class="wrong-ipa">'+escHTML(d.ipa)+'</span>':'')+'</div><span class="wrong-meta">'+meta+'</span></div>'+headImage+'</div>'
       +section('🔊 CORE MEANING',core,'core-section')
       +section('🧩 EXAMPLES',examples,'examples-section')
       +section('🔊 WORD STRUCTURE',box(d.logic,'structure-box'),'structure-section')
@@ -1409,6 +1459,8 @@ function showWrong(word,ai,extraMsg){
       +(extraMsg?'<div class="extra-message">'+escHTML(extraMsg)+'</div>':'')
       +'<button class="next-btn" id="nb">Next Question &rarr;</button></div>';
 
+    var heroImg=fa.querySelector('.word-explain-image');
+    if(heroImg)heroImg.addEventListener('error',function(){var wrap=heroImg.closest('.word-explain-image-wrap');if(wrap)wrap.remove();var head=fa.querySelector('.wrong-head');if(head)head.classList.remove('has-word-image');});
     var nb=document.getElementById('nb');if(nb)nb.addEventListener('click',function(){qIdx++;showQ();});
     setTimeout(function(){speak(word.word,0.7);},350);
     var wwb=fa.querySelector('.wrong-word-big');
@@ -1421,6 +1473,17 @@ function showWrong(word,ai,extraMsg){
       });
     });
   });
+}
+
+// Normalize a public image URL stored in the Word Database.
+function wordImageUrl(raw){
+  var u=cleanCell(raw||'');
+  if(!u)return '';
+  if(!/^https?:\/\//i.test(u))return '';
+  // Common Google Drive share links -> directly embeddable image URL.
+  var m=u.match(/drive\.google\.com\/file\/d\/([^/]+)/i)||u.match(/[?&]id=([^&]+)/i);
+  if(m&&m[1])return 'https://drive.google.com/uc?export=view&id='+encodeURIComponent(m[1]);
+  return u;
 }
 
 // AI CALLS
@@ -1436,7 +1499,7 @@ function getWrongEx(word, ai){
     tier:db.tier||word.tier||'', level:db.level||word.level||'', cat:db.cat||word.cat||'', subcat:db.subcat||word.subcat||'',
     kid:db.kid||'', logic:db.logic||'', nuance:db.nuance||'', origin:db.origin||'',
     learn1:db.learn1||'', learn2:db.learn2||'', learn3:db.learn3||'', korean:db.korean||word.korean||'', review:db.review||'',
-    priority:db.pri||'', academicFunction:db.afc||'', stateTest:db.trel||'', answerStrategy:db.ans||'', sourceBasis:db.sourceBasis||'',
+    priority:db.pri||'', academicFunction:db.afc||'', stateTest:db.trel||'', answerStrategy:db.ans||'', sourceBasis:db.sourceBasis||'', image:wordImageUrl(db.image||''),
     examples:examples
   });
 }
